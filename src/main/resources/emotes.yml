@@ -1,0 +1,43 @@
+emotes:
+  1:
+    identifier: ":shrug:"
+    emote: "¯\_(ツ)_/¯"
+  2:
+    identifier: ":bear:"
+    emote: "ʕ•ᴥ•ʔ"
+  3:
+    identifier: ":hearteyes:"
+    emote: "♥‿♥"
+  4:
+    identifier: "<3"
+    emote: "<red>>❤</red>"
+  5:
+    identifier: "o/"
+    emote: "( ﾟ◡ﾟ)/"
+  6:
+    identifier: ":yes:"
+    emote: "<green>>✔</green>"
+  7:
+    identifier: ":no:"
+    emote: "<red>✖</red>"
+  8:
+    identifier: ":star:"
+    emote: "<yellow>>✮</yellow>"
+  9:
+    identifier: ":cute:"
+    emote: "(✿ᴖ‿ᴖ)"
+  10:
+    identifier: ":dj:"
+    emote: "ヽ(⌐■_■)ノ♬"
+  11:
+    identifier: ":typing:"
+    emote: "✎..."
+  12:
+    identifier: ":gimmie:"
+    emote: "༼つ◕_◕༽つ"
+  13:
+    identifier: ":maths:"
+    emote: "√(π+x)=L"
+  14:
+    identifier: ":arrow:"
+    emote: "➜"

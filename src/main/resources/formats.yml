@@ -1,0 +1,7 @@
+formats:
+  default:
+    prefix: ""
+    name: "&7%player_name%"
+    suffix: "&8 \xbb "
+    messageColor: "&7"
+    message: "%message%"

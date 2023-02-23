@@ -1,0 +1,11 @@
+# Sets the name of the server. Used in logging chat.
+server: "server"
+
+# Connects to the MySQL Database
+MySQL:
+  host: localhost
+  port: 3306
+  database: database
+  username: username
+  password: password
+  useSSL: true
