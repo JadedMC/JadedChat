@@ -1,10 +1,6 @@
 package net.jadedmc.jadedchat.channels;
 
-import net.kyori.adventure.audience.Audience;
-import net.kyori.adventure.identity.Identity;
 import net.kyori.adventure.text.Component;
-import net.kyori.adventure.text.TextComponent;
-import net.kyori.adventure.text.serializer.plain.PlainTextComponentSerializer;
 import org.bukkit.Bukkit;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.FileConfiguration;
@@ -33,9 +29,14 @@ public class Channel {
         rawConfig = YamlConfiguration.loadConfiguration(file);
 
         // Loads channel settings.
-        this.name = rawConfig.getString("name");
+        this.name = rawConfig.getString("name").toUpperCase();
         this.permission = rawConfig.getString("permission");
         this.defaultChannel = rawConfig.getBoolean("default");
+
+        // Add the aliases.
+        for(String alias : rawConfig.getStringList("aliases")) {
+            aliases.add(alias.toUpperCase());
+        }
 
         // Loads formats.
         ConfigurationSection allFormats = rawConfig.getConfigurationSection("formats");
