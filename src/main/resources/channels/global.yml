@@ -1,0 +1,42 @@
+# The display name of the channel. Can use color codes.
+name: "GLOBAL"
+
+# Aliases for the channel name. Used when switching channels.
+aliases:
+  - G
+  - ALL
+  - MAIN
+
+# Whether this is the default channel being used.
+# Only set this to true in one channel.
+default: true
+
+# The permission node required to use the channel.
+# Should be empty for the default channel.
+permission: ""
+
+# The available formats in the channel.
+# accessed via the permission formats.[format]
+formats:
+  # Naming a channel default will make it the default channel.
+  default:
+    # Format settings.
+    settings:
+      # Whether the format can use colors
+      color: false
+
+      # Whether the format can use decorations (underlines, bold, etc)
+      decorations: false
+
+      # Whether the format can use hover/click events.
+      # It's probably a good idea to keep this disabled.
+      events: false
+
+    # The various segments of the message.
+    # They are processed in order.
+    # You can create/remove as many as you'd like.
+    segments:
+      prefix: ""
+      name: "<gray>%player_name%"
+      suffix: "<dark_gray> \xbb "
+      message: "<gray><message>"
