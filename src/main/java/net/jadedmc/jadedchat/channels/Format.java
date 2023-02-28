@@ -1,6 +1,7 @@
 package net.jadedmc.jadedchat.channels;
 
 import me.clip.placeholderapi.PlaceholderAPI;
+import net.jadedmc.jadedchat.utils.ConfigUtils;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.TextComponent;
 import net.kyori.adventure.text.minimessage.MiniMessage;
@@ -30,9 +31,9 @@ public class Format {
      */
     public Format(ConfigurationSection section) {
         // Load format settings
-        color = section.getBoolean("settings.color");
-        decorations = section.getBoolean("settings.decorations");
-        events = section.getBoolean("settings.events");
+        color = ConfigUtils.getBoolean(section, "settings.color", false);
+        decorations = ConfigUtils.getBoolean(section, "settings.decorations", false);
+        events = ConfigUtils.getBoolean(section, "settings.events", false);
 
         // Load the sections for the format.
         ConfigurationSection formatSections = section.getConfigurationSection("segments");
