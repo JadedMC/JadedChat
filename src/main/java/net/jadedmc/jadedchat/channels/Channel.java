@@ -1,5 +1,11 @@
 package net.jadedmc.jadedchat.channels;
 
+import net.kyori.adventure.audience.Audience;
+import net.kyori.adventure.identity.Identity;
+import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.TextComponent;
+import net.kyori.adventure.text.serializer.plain.PlainTextComponentSerializer;
+import org.bukkit.Bukkit;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
@@ -117,5 +123,32 @@ public class Channel {
      */
     public boolean isDefaultChannel() {
         return defaultChannel;
+    }
+
+    /**
+     * Sends a message to the channel.
+     * @param player Player who sent the message.
+     * @param message Message the player is sending.
+     */
+    public void sendMessage(Player player, String message) {
+        // Creates the formatted component of the message.
+        Component messageComponent = getFormat(player).processMessage(player, message);
+
+        // Send the message to all players online.
+        for(Player target : Bukkit.getServer().getOnlinePlayers()) {
+            // Makes sure the player should be able to see the channel.
+            if(!target.hasPermission(getPermissionNode())) {
+                continue;
+            }
+
+            // Sends the message to the player.
+            target.sendMessage(messageComponent);
+        }
+
+        // Send the message to the console as well
+        Bukkit.getServer().getConsoleSender().sendMessage(Component.text().content("[" + name + "] ").append(messageComponent).build());
+
+        // TODO: DiscordSRV Support
+        // TODO: Bungeecord Support
     }
 }
