@@ -7,3 +7,8 @@ softdepend: [ DiscordSRV ]
 authors: [ JadedMC ]
 description: Feature-Rich Chat Plugin Developed by JadedMC
 website: http://www.jadedmc.net
+
+commands:
+  channel:
+    description: Change the current channel being used.
+    aliases: [chat, ch]

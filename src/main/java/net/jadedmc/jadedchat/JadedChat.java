@@ -1,6 +1,7 @@
 package net.jadedmc.jadedchat;
 
 import net.jadedmc.jadedchat.channels.ChannelManager;
+import net.jadedmc.jadedchat.commands.ChannelCMD;
 import net.jadedmc.jadedchat.emotes.EmoteManager;
 import net.jadedmc.jadedchat.listeners.AsyncChatListener;
 import net.jadedmc.jadedchat.listeners.PlayerQuitListener;
@@ -22,6 +23,8 @@ public final class JadedChat extends JavaPlugin {
 
         Bukkit.getPluginManager().registerEvents(new AsyncChatListener(this), this);
         Bukkit.getPluginManager().registerEvents(new PlayerQuitListener(this), this);
+
+        getCommand("channel").setExecutor(new ChannelCMD(this));
     }
 
     @Override
