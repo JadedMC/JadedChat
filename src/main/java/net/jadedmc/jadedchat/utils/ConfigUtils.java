@@ -21,7 +21,7 @@ public class ConfigUtils {
         }
 
         // Makes sure the key exists.
-        if(section.isSet(key)) {
+        if(!section.isSet(key)) {
             return defaultValue;
         }
 
