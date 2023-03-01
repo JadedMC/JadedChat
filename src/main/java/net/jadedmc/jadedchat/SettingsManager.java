@@ -19,10 +19,17 @@ public class SettingsManager {
      * @param plugin Instance of the plugin.
      */
     public SettingsManager(JadedChat plugin) {
+        /*
         config = plugin.getConfig();
         config.options().copyDefaults(true);
         configFile = new File(plugin.getDataFolder(), "config.yml");
         plugin.saveConfig();
+         */
+
+        configFile = new File(plugin.getDataFolder(), "config.yml");
+        if(!configFile.exists()) {
+            plugin.saveResource("config.yml", false);
+        }
 
         File globalChannel = new File(plugin.getDataFolder(), "/channels/global.yml");
         if(!globalChannel.exists()) {
