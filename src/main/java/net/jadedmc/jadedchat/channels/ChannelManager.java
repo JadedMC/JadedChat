@@ -47,6 +47,8 @@ public class ChannelManager {
      * @return Corresponding channel.
      */
     public Channel getChannel(String name) {
+        name = name.toUpperCase();
+
         if(!allChannels.containsKey(name)) {
             return null;
         }
