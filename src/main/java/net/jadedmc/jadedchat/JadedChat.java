@@ -25,6 +25,8 @@ public final class JadedChat extends JavaPlugin {
         Bukkit.getPluginManager().registerEvents(new PlayerQuitListener(this), this);
 
         getCommand("channel").setExecutor(new ChannelCMD(this));
+
+        new Metrics(this, 17832);
     }
 
     @Override
