@@ -20,3 +20,11 @@ MySQL:
   username: username
   password: password
   useSSL: true
+
+JoinMessage:
+  override: false
+  message: "<green>%player_name% joined the game."
+
+QuitMessage:
+  override: false
+  message: "<red>%player_name% left the game."

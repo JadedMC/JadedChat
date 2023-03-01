@@ -4,6 +4,7 @@ import net.jadedmc.jadedchat.channels.ChannelManager;
 import net.jadedmc.jadedchat.commands.ChannelCMD;
 import net.jadedmc.jadedchat.emotes.EmoteManager;
 import net.jadedmc.jadedchat.listeners.AsyncChatListener;
+import net.jadedmc.jadedchat.listeners.PlayerJoinListener;
 import net.jadedmc.jadedchat.listeners.PlayerQuitListener;
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -22,6 +23,7 @@ public final class JadedChat extends JavaPlugin {
         emoteManager = new EmoteManager(this);
 
         Bukkit.getPluginManager().registerEvents(new AsyncChatListener(this), this);
+        Bukkit.getPluginManager().registerEvents(new PlayerJoinListener(this), this);
         Bukkit.getPluginManager().registerEvents(new PlayerQuitListener(this), this);
 
         getCommand("channel").setExecutor(new ChannelCMD(this));

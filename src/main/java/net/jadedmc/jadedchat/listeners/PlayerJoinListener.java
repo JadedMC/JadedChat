@@ -7,37 +7,36 @@ import net.kyori.adventure.text.minimessage.MiniMessage;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
-import org.bukkit.event.player.PlayerQuitEvent;
+import org.bukkit.event.player.PlayerJoinEvent;
 
-public class PlayerQuitListener implements Listener {
+public class PlayerJoinListener implements Listener {
     private final JadedChat plugin;
 
-    public PlayerQuitListener(JadedChat plugin) {
+    public PlayerJoinListener(JadedChat plugin) {
         this.plugin = plugin;
     }
 
     @EventHandler(priority = EventPriority.HIGHEST)
-    public void onQuit(PlayerQuitEvent event) {
-        plugin.getChannelManager().removePlayer(event.getPlayer());
+    public void onJoin(PlayerJoinEvent event) {
 
-        if(plugin.getSettingsManager().getConfig().getBoolean("QuitMessage.override")) {
+        if(plugin.getSettingsManager().getConfig().getBoolean("JoinMessage.override")) {
 
-            if(!plugin.getSettingsManager().getConfig().isSet("QuitMessage.message")) {
-                event.quitMessage(null);
+            if(!plugin.getSettingsManager().getConfig().isSet("JoinMessage.message")) {
+                event.joinMessage(null);
                 return;
             }
 
-            String messageString = plugin.getSettingsManager().getConfig().getString("QuitMessage.message");
+            String messageString = plugin.getSettingsManager().getConfig().getString("JoinMessage.message");
 
             if(messageString == null || messageString.equals("null")) {
-                event.quitMessage(null);
+                event.joinMessage(null);
                 return;
             }
 
             messageString = PlaceholderAPI.setPlaceholders(event.getPlayer(), messageString);
             messageString = plugin.getEmoteManager().replaceEmotes(messageString);
             Component messageComponent = MiniMessage.miniMessage().deserialize(messageString);
-            event.quitMessage(messageComponent);
+            event.joinMessage(messageComponent);
         }
     }
 }
