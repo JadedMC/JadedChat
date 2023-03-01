@@ -30,6 +30,7 @@ public class SettingsManager {
         if(!configFile.exists()) {
             plugin.saveResource("config.yml", false);
         }
+        config = YamlConfiguration.loadConfiguration(configFile);
 
         File globalChannel = new File(plugin.getDataFolder(), "/channels/global.yml");
         if(!globalChannel.exists()) {
