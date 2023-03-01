@@ -1,6 +1,7 @@
 package net.jadedmc.jadedchat.channels;
 
 import me.clip.placeholderapi.PlaceholderAPI;
+import net.jadedmc.jadedchat.JadedChat;
 import net.jadedmc.jadedchat.utils.ConfigUtils;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.TextComponent;
@@ -18,6 +19,7 @@ import java.util.List;
  * Represents a format used in a channel.
  */
 public class Format {
+    private final JadedChat plugin;
     private final List<String> sections = new ArrayList<>();
     private final MiniMessage miniMessage;
 
@@ -29,7 +31,9 @@ public class Format {
      * Creates the Format object.
      * @param section Configuration Section of the format.
      */
-    public Format(ConfigurationSection section) {
+    public Format(JadedChat plugin, ConfigurationSection section) {
+        this.plugin = plugin;
+
         // Load format settings
         color = ConfigUtils.getBoolean(section, "settings.color", false);
         decorations = ConfigUtils.getBoolean(section, "settings.decorations", false);
@@ -74,11 +78,12 @@ public class Format {
         for(String section : sections) {
             // Makes sure we don't process placeholders sent in the chat message.
             if(section.contains("<message>")) {
+                message = plugin.getEmoteManager().replaceEmotes(message, player);
                 component.append(MiniMessage.miniMessage().deserialize(section, Placeholder.component("message", miniMessage.deserialize(message))));
             }
             else {
                 // Processes placeholders for the section.
-                component.append(MiniMessage.miniMessage().deserialize(PlaceholderAPI.setPlaceholders(player, section)));
+                component.append(plugin.getEmoteManager().replaceEmotes(MiniMessage.miniMessage().deserialize(PlaceholderAPI.setPlaceholders(player, section))));
             }
         }
 

@@ -28,7 +28,7 @@ public class ChannelManager {
 
         // Loop through each file an load it's channel.
         for(File file : formatFiles) {
-            Channel channel = new Channel(file);
+            Channel channel = new Channel(plugin, file);
             allChannels.put(channel.getName(), channel);
 
             for(String alias : channel.getAliases()) {

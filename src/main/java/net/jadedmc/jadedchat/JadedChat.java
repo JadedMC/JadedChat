@@ -19,7 +19,7 @@ public final class JadedChat extends JavaPlugin {
         settingsManager = new SettingsManager(this);
 
         channelManager = new ChannelManager(this);
-        //emoteManager = new EmoteManager(this);
+        emoteManager = new EmoteManager(this);
 
         Bukkit.getPluginManager().registerEvents(new AsyncChatListener(this), this);
         Bukkit.getPluginManager().registerEvents(new PlayerQuitListener(this), this);
@@ -34,6 +34,10 @@ public final class JadedChat extends JavaPlugin {
 
     public ChannelManager getChannelManager() {
         return channelManager;
+    }
+
+    public EmoteManager getEmoteManager() {
+        return emoteManager;
     }
 
     public SettingsManager getSettingsManager() {

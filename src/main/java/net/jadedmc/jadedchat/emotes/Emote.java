@@ -7,15 +7,17 @@ package net.jadedmc.jadedchat.emotes;
 public class Emote {
     private final String identifier;
     private final String emote;
+    private final String permission;
 
     /**
      * Creates the emote.
      * @param identifier Text to be replaced.
      * @param emote What it is replaced with.
      */
-    public Emote(String identifier, String emote) {
+    public Emote(String identifier, String emote, String permission) {
         this.identifier = identifier;
         this.emote = emote;
+        this.permission = permission;
     }
 
     /**
@@ -32,5 +34,13 @@ public class Emote {
      */
     public String getIdentifier() {
         return identifier;
+    }
+
+    /**
+     * Get the required permission node to use the emote.
+     * @return Required permission node.
+     */
+    public String getPermissionNode() {
+        return permission;
     }
 }

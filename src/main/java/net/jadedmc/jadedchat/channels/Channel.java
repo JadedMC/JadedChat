@@ -1,5 +1,6 @@
 package net.jadedmc.jadedchat.channels;
 
+import net.jadedmc.jadedchat.JadedChat;
 import net.kyori.adventure.text.Component;
 import org.bukkit.Bukkit;
 import org.bukkit.configuration.ConfigurationSection;
@@ -25,7 +26,7 @@ public class Channel {
      * Creates the channel object.
      * @param file Configuration file of the channel.
      */
-    public Channel(File file) {
+    public Channel(JadedChat plugin, File file) {
         rawConfig = YamlConfiguration.loadConfiguration(file);
 
         // Loads channel settings.
@@ -50,7 +51,7 @@ public class Channel {
                 }
 
                 // Stores the format.
-                formats.put(formatID, new Format(formatSection));
+                formats.put(formatID, new Format(plugin, formatSection));
             }
         }
     }

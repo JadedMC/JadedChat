@@ -11,6 +11,8 @@ import java.io.File;
 public class SettingsManager {
     private FileConfiguration config;
     private final File configFile;
+    private FileConfiguration emotes;
+    private final File emotesFile;
 
     /**
      * Loads or Creates configuration files.
@@ -26,6 +28,12 @@ public class SettingsManager {
         if(!globalChannel.exists()) {
             plugin.saveResource("channels/global.yml", false);
         }
+
+        emotesFile = new File(plugin.getDataFolder(), "emotes.yml");
+        if(!emotesFile.exists()) {
+            plugin.saveResource("emotes.yml", false);
+        }
+        emotes = YamlConfiguration.loadConfiguration(emotesFile);
     }
 
     /**
@@ -37,9 +45,18 @@ public class SettingsManager {
     }
 
     /**
+     * Get the emotes.yml FileConfiguration.
+     * @return emotes.yml FileConfiguration.
+     */
+    public FileConfiguration getEmotes() {
+        return emotes;
+    }
+
+    /**
      * Update the configuration files.
      */
     public void reload() {
         config = YamlConfiguration.loadConfiguration(configFile);
+        emotes = YamlConfiguration.loadConfiguration(emotesFile);
     }
 }

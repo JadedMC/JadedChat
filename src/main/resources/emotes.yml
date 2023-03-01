@@ -2,42 +2,60 @@ emotes:
   1:
     identifier: ":shrug:"
     emote: "¯\_(ツ)_/¯"
+    permission: ""
   2:
     identifier: ":bear:"
     emote: "ʕ•ᴥ•ʔ"
+    permission: ""
   3:
     identifier: ":hearteyes:"
     emote: "♥‿♥"
+    permission: ""
   4:
     identifier: "<3"
-    emote: "<red>>❤</red>"
+    emote: "<red>❤</red>"
+    permission: ""
   5:
     identifier: "o/"
     emote: "( ﾟ◡ﾟ)/"
+    permission: ""
   6:
     identifier: ":yes:"
-    emote: "<green>>✔</green>"
+    emote: "<green>✔</green>"
+    permission: ""
   7:
     identifier: ":no:"
     emote: "<red>✖</red>"
+    permission: ""
   8:
     identifier: ":star:"
-    emote: "<yellow>>✮</yellow>"
+    emote: "<yellow>✮</yellow>"
+    permission: ""
   9:
     identifier: ":cute:"
     emote: "(✿ᴖ‿ᴖ)"
+    permission: ""
   10:
     identifier: ":dj:"
     emote: "ヽ(⌐■_■)ノ♬"
+    permission: ""
   11:
     identifier: ":typing:"
     emote: "✎..."
+    permission: ""
   12:
     identifier: ":gimmie:"
     emote: "༼つ◕_◕༽つ"
+    permission: ""
   13:
     identifier: ":maths:"
     emote: "√(π+x)=L"
+    permission: ""
   14:
     identifier: ":arrow:"
     emote: "➜"
+    permission: ""
+  15:
+    identifier: ":sus:"
+    emote: "ඞ"
+    permission: ""
