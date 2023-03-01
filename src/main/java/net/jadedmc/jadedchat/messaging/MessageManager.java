@@ -1,0 +1,185 @@
+package net.jadedmc.jadedchat.messaging;
+
+import net.jadedmc.jadedchat.JadedChat;
+import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.TextComponent;
+import net.kyori.adventure.text.minimessage.MiniMessage;
+import net.kyori.adventure.text.minimessage.tag.resolver.Placeholder;
+import org.bukkit.Sound;
+import org.bukkit.configuration.ConfigurationSection;
+import org.bukkit.configuration.file.FileConfiguration;
+import org.bukkit.entity.Player;
+
+import java.util.*;
+
+/**
+ * This class manages all active conversations. This allows /reply to work.
+ */
+public class MessageManager {
+    private final JadedChat plugin;
+    private final Map<Player, Player> conversations = new HashMap<>();
+    private final Set<Player> spying = new HashSet<>();
+    private final MiniMessage miniMessage;
+
+    public MessageManager(JadedChat plugin) {
+        this.plugin = plugin;
+        miniMessage = MiniMessage.builder().build();
+    }
+
+    /**
+     * Get all players with social spy enabled.
+     * @return Players using social spy.
+     */
+    public Set<Player> getSpying() {
+        return spying;
+    }
+
+    /**
+     * Get if a player is spying on private messages.
+     * @param player Player to check.
+     * @return Whether they are spying on private messages.
+     */
+    public boolean isSpying(Player player) {
+        return spying.contains(player);
+    }
+
+    /**
+     * Makes it so that /r will message between 2 players..
+     * @param messenger Messenger.
+     * @param receiver Receiver.
+     */
+    public void setReplyTarget(Player messenger, Player receiver){
+        conversations.put(messenger, receiver);
+        conversations.put(receiver, messenger);
+    }
+
+    /**
+     * Get who /r should message.
+     * @param messenger Player who is replying.
+     * @return Who to reply to.
+     */
+    public Player getReplyTarget(Player messenger){
+        return conversations.get(messenger);
+    }
+
+    /**
+     * Processes a private message and displays it to everyone.
+     * @param sender Player who is sending the message.
+     * @param receiver Player who is recieveing the message.
+     * @param message The message being sent.
+     */
+    public void processMessage(Player sender, Player receiver, String message) {
+        FileConfiguration configuration = plugin.getSettingsManager().getConfig();
+        Component toSender = plugin.getMessageManager().generateComponent(configuration.getConfigurationSection("PrivateMessages.SenderMessage.segments"), sender, receiver, message);
+        Component toReceiver = plugin.getMessageManager().generateComponent(configuration.getConfigurationSection("PrivateMessages.ReceiverMessage.segments"), sender, receiver, message);
+        Component toSpy = plugin.getMessageManager().generateComponent(configuration.getConfigurationSection("PrivateMessages.SpyMessage.segments"), sender, receiver, message);
+
+        sender.sendMessage(toSender);
+        {
+            if(configuration.isSet("PrivateMessages.SenderMessage.sounds")) {
+                List<String> sounds = configuration.getStringList("PrivateMessages.SenderMessage.sounds");
+
+                for(String soundID : sounds) {
+                    Sound sound = Sound.valueOf(soundID);
+                    sender.playSound(sender.getLocation(), sound, 0.5F, 1F);
+                }
+            }
+        }
+
+        receiver.sendMessage(toReceiver);
+        {
+            if(configuration.isSet("PrivateMessages.ReceiverMessage.sounds")) {
+                List<String> sounds = configuration.getStringList("PrivateMessages.ReceiverMessage.sounds");
+
+                for(String soundID : sounds) {
+                    Sound sound = Sound.valueOf(soundID);
+                    receiver.playSound(receiver.getLocation(), sound, 0.5F, 1F);
+                }
+            }
+        }
+
+        for(Player stalker : plugin.getMessageManager().getSpying()) {
+            stalker.sendMessage(toSpy);
+
+            {
+                if(configuration.isSet("PrivateMessages.SpyMessage.sounds")) {
+                    List<String> sounds = configuration.getStringList("PrivateMessages.SpyMessage.sounds");
+
+                    for(String soundID : sounds) {
+                        Sound sound = Sound.valueOf(soundID);
+                        stalker.playSound(stalker.getLocation(), sound, 0.5F, 1F);
+                    }
+                }
+            }
+        }
+
+        // Creates a conversation between the two players so /reply works.
+        plugin.getMessageManager().setReplyTarget(sender, receiver);
+    }
+
+    /**
+     * Remove a player from the conversations maps.
+     * This is done when they leave the server.
+     * @param player Player to remove.
+     */
+    public void removePlayer(Player player) {
+        // Removes the player.
+        conversations.remove(player);
+
+        // Loops through all the other conversations.
+        for(Player other : conversations.keySet()) {
+            // Checks if the player is the value of another player.
+            if(conversations.get(other).equals(player)) {
+                // If they are, removes that conversation too.
+                conversations.remove(other);
+            }
+        }
+    }
+
+    /**
+     * Toggle social spy for a player.
+     * @param player Player to toggle social spy for.
+     */
+    public void toggleSocialSpy(Player player) {
+        if(isSpying(player)) {
+            spying.remove(player);
+        }
+        else {
+            spying.add(player);
+        }
+    }
+
+    /**
+     * Generates the Component of a private message.
+     * @param config Configuration Section of the private message config.
+     * @param sender The player who is sending the message.
+     * @param receiver The player who is receiving the message.
+     * @param message The message being sent.
+     * @return The component form of the message.
+     */
+    private Component generateComponent(ConfigurationSection config, Player sender, Player receiver, String message) {
+        if(config == null) {
+            return null;
+        }
+
+        TextComponent.Builder output = Component.text();
+
+        for(String section : config.getKeys(false)) {
+            String value = config.getString(section);
+
+            if(value == null) {
+                continue;
+            }
+
+            value = value.replace("<sender>", sender.getName()).replace("<receiver>", receiver.getName());
+            value = plugin.getEmoteManager().replaceEmotes(value);
+
+            message = plugin.getEmoteManager().replaceEmotes(message, sender);
+
+            Component component = MiniMessage.miniMessage().deserialize(value, Placeholder.component("message", miniMessage.deserialize(message)));
+            output.append(component);
+        }
+
+        return output.build();
+    }
+}

@@ -19,6 +19,7 @@ public class PlayerQuitListener implements Listener {
     @EventHandler(priority = EventPriority.HIGHEST)
     public void onQuit(PlayerQuitEvent event) {
         plugin.getChannelManager().removePlayer(event.getPlayer());
+        plugin.getMessageManager().removePlayer(event.getPlayer());
 
         if(plugin.getSettingsManager().getConfig().getBoolean("QuitMessage.override")) {
 

@@ -11,4 +11,10 @@ website: http://www.jadedmc.net
 commands:
   channel:
     description: Change the current channel being used.
-    aliases: [chat, ch]
+    aliases: [chat,ch]
+  message:
+    description: Send a private message to a player.
+    aliases: [msg,tell,whisper,w,pm,dm]
+  reply:
+    description: Reply to a private message.
+    aliases: [r,respond]

@@ -10,6 +10,7 @@ JadedChat is a feature-rich JSON chat plugin for [Paper](http://www.papermc.io) 
 * Ability to toggle using colors, decorations (bold, italics, etc) per chat format.
 * Configurable text replacements with the "emote" system.
 * Custom Join/Quit Messages
+* Private Messages
 
 ## Requirements
 * Java 17 or newer

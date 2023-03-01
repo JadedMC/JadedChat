@@ -28,3 +28,20 @@ JoinMessage:
 QuitMessage:
   override: false
   message: "<red>%player_name% left the game."
+
+
+PrivateMessages:
+  SenderMessage:
+    segments:
+      players: "<green>(<white>You <green>:arrow: <white><receiver><green>) "
+      message: "<message>"
+  ReceiverMessage:
+    segments:
+      players: "<green>(<white><sender> <green>:arrow: <white>You<green>) "
+      message: "<message>"
+    sounds:
+      - BLOCK_NOTE_BLOCK_BELL
+  SpyMessage:
+    segments:
+      players: "<green>(<white><sender> <green>:arrow: <white><receiver><green>) "
+      message: "<message>"
