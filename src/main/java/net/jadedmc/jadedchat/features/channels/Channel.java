@@ -1,4 +1,4 @@
-package net.jadedmc.jadedchat.channels;
+package net.jadedmc.jadedchat.features.channels;
 
 import net.jadedmc.jadedchat.JadedChat;
 import net.kyori.adventure.text.Component;

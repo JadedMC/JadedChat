@@ -1,14 +1,14 @@
 package net.jadedmc.jadedchat;
 
-import net.jadedmc.jadedchat.channels.ChannelManager;
+import net.jadedmc.jadedchat.features.channels.ChannelManager;
 import net.jadedmc.jadedchat.commands.ChannelCMD;
 import net.jadedmc.jadedchat.commands.MessageCMD;
 import net.jadedmc.jadedchat.commands.ReplyCMD;
-import net.jadedmc.jadedchat.emotes.EmoteManager;
+import net.jadedmc.jadedchat.features.emotes.EmoteManager;
 import net.jadedmc.jadedchat.listeners.AsyncChatListener;
 import net.jadedmc.jadedchat.listeners.PlayerJoinListener;
 import net.jadedmc.jadedchat.listeners.PlayerQuitListener;
-import net.jadedmc.jadedchat.messaging.MessageManager;
+import net.jadedmc.jadedchat.features.messaging.MessageManager;
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.java.JavaPlugin;
 

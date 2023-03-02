@@ -1,4 +1,4 @@
-package net.jadedmc.jadedchat.channels;
+package net.jadedmc.jadedchat.features.channels;
 
 import me.clip.placeholderapi.PlaceholderAPI;
 import net.jadedmc.jadedchat.JadedChat;

@@ -1,7 +1,7 @@
 package net.jadedmc.jadedchat.commands;
 
 import net.jadedmc.jadedchat.JadedChat;
-import net.jadedmc.jadedchat.channels.Channel;
+import net.jadedmc.jadedchat.features.channels.Channel;
 import net.jadedmc.jadedchat.utils.ChatUtils;
 import net.jadedmc.jadedchat.utils.StringUtils;
 import org.bukkit.command.Command;

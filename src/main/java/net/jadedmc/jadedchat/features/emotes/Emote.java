@@ -1,4 +1,4 @@
-package net.jadedmc.jadedchat.emotes;
+package net.jadedmc.jadedchat.features.emotes;
 
 /**
  * A wrapper class for text replacements.

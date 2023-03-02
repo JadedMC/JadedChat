@@ -2,7 +2,7 @@ package net.jadedmc.jadedchat.listeners;
 
 import io.papermc.paper.event.player.AsyncChatEvent;
 import net.jadedmc.jadedchat.JadedChat;
-import net.jadedmc.jadedchat.channels.Channel;
+import net.jadedmc.jadedchat.features.channels.Channel;
 import net.kyori.adventure.text.serializer.plain.PlainTextComponentSerializer;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;

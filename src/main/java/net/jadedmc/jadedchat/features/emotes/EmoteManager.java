@@ -1,4 +1,4 @@
-package net.jadedmc.jadedchat.emotes;
+package net.jadedmc.jadedchat.features.emotes;
 
 import net.jadedmc.jadedchat.JadedChat;
 import net.jadedmc.jadedchat.SettingsManager;

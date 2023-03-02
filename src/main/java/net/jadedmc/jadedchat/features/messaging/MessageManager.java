@@ -1,4 +1,4 @@
-package net.jadedmc.jadedchat.messaging;
+package net.jadedmc.jadedchat.features.messaging;
 
 import net.jadedmc.jadedchat.JadedChat;
 import net.kyori.adventure.text.Component;
