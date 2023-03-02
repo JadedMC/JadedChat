@@ -59,7 +59,9 @@ public class Format {
         }
         if(events) {
             tagsResolverBuilder.resolver(StandardTags.clickEvent())
-                    .resolver(StandardTags.hoverEvent());
+                    .resolver(StandardTags.hoverEvent())
+                    .resolver(StandardTags.insertion())
+                    .resolver(StandardTags.selector());
         }
 
         miniMessage = MiniMessage.builder().tags(tagsResolverBuilder.build()).build();
