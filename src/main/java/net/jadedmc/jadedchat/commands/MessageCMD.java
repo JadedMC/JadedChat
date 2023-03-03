@@ -31,7 +31,7 @@ public class MessageCMD implements CommandExecutor {
 
         // Make sure they're using the command properly.
         if(args.length < 2) {
-            ChatUtils.chat(player, "&c&lUsage &8» &c/msg [player] [message]");
+            ChatUtils.chat(player, "<red><bold>Usage</bold> <dark_gray>» <red>/msg [player] [message]");
             return true;
         }
 
@@ -40,13 +40,13 @@ public class MessageCMD implements CommandExecutor {
 
         // Make sure they're online.
         if(target == null) {
-            ChatUtils.chat(player, "&c&lError &8» &cThat player isn't online!");
+            ChatUtils.chat(player, "<red><bold>Error</bold> <dark_gray>» <red>That player isn't online!");
             return true;
         }
 
         // Make sure the target isn't the player.
         if(target.equals(player)) {
-            ChatUtils.chat(player, "&c&lError &8» &cYou cannot message yourself!");
+            ChatUtils.chat(player, "<red><bold>Error</bold> <dark_gray>» <red>You cannot message yourself!");
             return true;
         }
 

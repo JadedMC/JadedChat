@@ -1,6 +1,7 @@
 package net.jadedmc.jadedchat.utils;
 
-import org.bukkit.ChatColor;
+import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.minimessage.MiniMessage;
 import org.bukkit.command.CommandSender;
 
 /**
@@ -23,7 +24,7 @@ public class ChatUtils {
      * @param message Message to translate.
      * @return Translated Message.
      */
-    public static String translate(String message) {
-        return ChatColor.translateAlternateColorCodes('&', message);
+    public static Component translate(String message) {
+        return MiniMessage.miniMessage().deserialize(message);
     }
 }

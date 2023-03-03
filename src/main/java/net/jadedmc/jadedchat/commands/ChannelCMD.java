@@ -29,13 +29,13 @@ public class ChannelCMD implements CommandExecutor {
 
         // Make sure they're using the command properly.
         if(args.length < 1) {
-            ChatUtils.chat(player, "&c&lUsage &8» &c/chat [channel] <message>");
+            ChatUtils.chat(player, "<red><bold>Usage</bold> <dark_gray>» <red>/chat [channel] <message>");
             return true;
         }
 
         // Makes sure the channel exists.
         if(plugin.getChannelManager().getChannel(args[0]) == null) {
-            ChatUtils.chat(player, "&c&lError &8» &cThat channel does not exist!");
+            ChatUtils.chat(player, "<red><bold>Error</bold> <dark_gray>» <red>That channel does not exist!");
             return true;
         }
 
@@ -43,7 +43,7 @@ public class ChannelCMD implements CommandExecutor {
 
         // Makes sure the player has access to the channel.
         if(!player.hasPermission(channel.getPermissionNode())) {
-            ChatUtils.chat(player, "&c&lError &8» &cYou do not have access to that channel.");
+            ChatUtils.chat(player, "<red><bold>Error</bold> <dark_gray>» <red>You do not have access to that channel.");
             return true;
         }
 
@@ -51,7 +51,7 @@ public class ChannelCMD implements CommandExecutor {
         if(args.length == 1) {
             // Toggles the channel being used.
             plugin.getChannelManager().setChannel(player, plugin.getChannelManager().getChannel(args[0]));
-            ChatUtils.chat(player, "&a&lChat &8» &aChannel set to &7" + channel.getName() + "&a.");
+            ChatUtils.chat(player, "<green><bold>Chat</bold> <dark_gray>» <green>Channel set to <gray>" + channel.getName() + "<green>.");
         }
         else {
             // Gets the message from the arguments by creating a new array ignoring the username and turning it into a list.

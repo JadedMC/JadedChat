@@ -26,7 +26,7 @@ public class ReplyCMD implements CommandExecutor {
 
         // Make sure they're using the command properly.
         if(args.length < 1) {
-            ChatUtils.chat(player, "&c&lUsage &8» &c/r [message]");
+            ChatUtils.chat(player, "<red><bold>Usage</bold> <dark_gray>» <red>/r [message]");
             return true;
         }
 
@@ -35,7 +35,7 @@ public class ReplyCMD implements CommandExecutor {
 
         // Make sure there is a target.
         if(target == null) {
-            ChatUtils.chat(player, "&c&lError &8» &cYou have no one to reply to!");
+            ChatUtils.chat(player, "<red><bold>Error</bold> &8» <red>You have no one to reply to!");
             return true;
         }
 
