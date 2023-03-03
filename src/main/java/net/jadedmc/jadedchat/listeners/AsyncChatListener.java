@@ -27,6 +27,7 @@ package net.jadedmc.jadedchat.listeners;
 import io.papermc.paper.event.player.AsyncChatEvent;
 import net.jadedmc.jadedchat.JadedChat;
 import net.jadedmc.jadedchat.features.channels.Channel;
+import net.jadedmc.jadedchat.utils.ChatUtils;
 import net.kyori.adventure.text.serializer.plain.PlainTextComponentSerializer;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -59,9 +60,17 @@ public class AsyncChatListener implements Listener {
             return;
         }
 
-        // Get the player's current channel, and sends the chat message to that channel.
+        // Get the player's current channel
         Player player = event.getPlayer();
         Channel channel = plugin.getChannelManager().getChannel(player);
+
+        // Make sure they are actually in a channel.
+        if(channel == null) {
+            ChatUtils.chat(player, "<red><bold>Error</bold> <dark_gray>» <red>You are not currently in a channel!");
+            return;
+        }
+
+        // Sends the chat message to their channel.
         channel.sendMessage(player, PlainTextComponentSerializer.plainText().serialize(event.message()));
         event.setCancelled(true);
     }
