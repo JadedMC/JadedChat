@@ -30,6 +30,7 @@ import net.jadedmc.jadedchat.features.channels.Channel;
 import net.kyori.adventure.text.serializer.plain.PlainTextComponentSerializer;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
+import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 
 /**
@@ -51,7 +52,7 @@ public class AsyncChatListener implements Listener {
      * Runs when the event is called.
      * @param event AsyncChatEvent.
      */
-    @EventHandler
+    @EventHandler(priority = EventPriority.HIGHEST)
     public void onChat(AsyncChatEvent event) {
         // Prevent conflicts with other plugins by exiting if the event is canceled.
         if(event.isCancelled()) {
