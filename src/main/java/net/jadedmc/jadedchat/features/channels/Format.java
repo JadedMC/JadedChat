@@ -9,9 +9,14 @@ import net.kyori.adventure.text.minimessage.MiniMessage;
 import net.kyori.adventure.text.minimessage.tag.resolver.Placeholder;
 import net.kyori.adventure.text.minimessage.tag.resolver.TagResolver;
 import net.kyori.adventure.text.minimessage.tag.standard.StandardTags;
+import org.bukkit.Bukkit;
+import org.bukkit.Material;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Player;
+import org.bukkit.inventory.ItemStack;
 
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -75,13 +80,30 @@ public class Format {
      */
     public Component processMessage(Player player, String message) {
         TextComponent.Builder component = Component.text();
+        TextComponent.Builder itemComponent = Component.text();
+
+        if(player.getInventory().getItemInHand().getType() != Material.AIR) {
+            ItemStack itemStack = player.getInventory().getItemInHand();
+
+            String nbtString = "";
+            if(itemStack.getItemMeta() != null) {
+                nbtString += itemStack.getItemMeta().getAsString();
+            }
+
+            String miniMessageString = "<hover:show_item:" + itemStack.getType().toString().toLowerCase() + ":" + itemStack.getAmount() + ": '" + nbtString + "'>";
+            miniMessageString += "<name></hover>";
+            itemComponent.append(MiniMessage.miniMessage().deserialize(miniMessageString, Placeholder.component("name", itemStack.displayName())));
+        }
+        else {
+            itemComponent.content("[Air]");
+        }
 
         // Loop through each section of the format.
         for(String section : sections) {
             // Makes sure we don't process placeholders sent in the chat message.
             if(section.contains("<message>")) {
                 message = plugin.getEmoteManager().replaceEmotes(message, player);
-                component.append(MiniMessage.miniMessage().deserialize(section, Placeholder.component("message", miniMessage.deserialize(message))));
+                component.append(MiniMessage.miniMessage().deserialize(section, Placeholder.component("message", miniMessage.deserialize(message, Placeholder.component("item", itemComponent.build())))));
             }
             else {
                 // Processes placeholders for the section.
