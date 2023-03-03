@@ -102,6 +102,7 @@ public class Format {
         for(String section : sections) {
             // Makes sure we don't process placeholders sent in the chat message.
             if(section.contains("<message>")) {
+                section = section.replace("<message_raw>", message);
                 message = plugin.getEmoteManager().replaceEmotes(message, player);
                 component.append(MiniMessage.miniMessage().deserialize(section, Placeholder.component("message", miniMessage.deserialize(message, Placeholder.component("item", itemComponent.build())))));
             }
