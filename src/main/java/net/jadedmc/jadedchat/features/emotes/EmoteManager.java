@@ -1,3 +1,27 @@
+/*
+ * This file is part of JadedChat, licensed under the MIT License.
+ *
+ *  Copyright (c) JadedMC
+ *  Copyright (c) contributors
+ *
+ *  Permission is hereby granted, free of charge, to any person obtaining a copy
+ *  of this software and associated documentation files (the "Software"), to deal
+ *  in the Software without restriction, including without limitation the rights
+ *  to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ *  copies of the Software, and to permit persons to whom the Software is
+ *  furnished to do so, subject to the following conditions:
+ *
+ *  The above copyright notice and this permission notice shall be included in all
+ *  copies or substantial portions of the Software.
+ *
+ *  THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ *  IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ *  FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ *  AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ *  LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ *  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+ *  SOFTWARE.
+ */
 package net.jadedmc.jadedchat.features.emotes;
 
 import net.jadedmc.jadedchat.JadedChat;
@@ -51,30 +75,47 @@ public class EmoteManager {
         }
     }
 
+    /**
+     * Replaces registered emotes in a Component.
+     * @param input Component to replace emotes in.
+     * @return Reformatted Component.
+     */
     public Component replaceEmotes(Component input) {
-        Component temp = input;
+        Component output = input;
 
         for(Emote emote : emotes) {
-            temp = temp.replaceText(TextReplacementConfig.builder().match(emote.getIdentifier()).replacement(MiniMessage.miniMessage().deserialize(emote.getEmote())).build());
+            output = output.replaceText(TextReplacementConfig.builder().match(emote.getIdentifier()).replacement(MiniMessage.miniMessage().deserialize(emote.getEmote())).build());
         }
 
-        return temp;
+        return output;
     }
 
+    /**
+     * Replaces registered emotes in a Component, filtered by permissions.
+     * @param input Component to replace emotes in.
+     * @param player Player to check permissions of.
+     * @return Reformatted Component.
+     */
     public Component replaceEmotes(Component input, Player player) {
-        Component temp = input;
+        Component output = input;
 
         for(Emote emote : emotes) {
             if(!player.hasPermission(emote.getPermissionNode())) {
                continue;
             }
 
-            temp = temp.replaceText(TextReplacementConfig.builder().match(emote.getIdentifier()).replacement(MiniMessage.miniMessage().deserialize(emote.getEmote())).build());
+            output = output.replaceText(TextReplacementConfig.builder().match(emote.getIdentifier()).replacement(MiniMessage.miniMessage().deserialize(emote.getEmote())).build());
         }
 
-        return temp;
+        return output;
     }
 
+    /**
+     * Replaces registered emotes in a String, filtered by permissions.
+     * @param input String to replace emotes in.
+     * @param player Player to check permissions of.
+     * @return Reformatted String.
+     */
     public String replaceEmotes(String input, Player player) {
         String output = input;
 
@@ -89,6 +130,11 @@ public class EmoteManager {
         return output;
     }
 
+    /**
+     * Replaces registered emotes in a String.
+     * @param input String to replace emotes in.
+     * @return Reformatted String.
+     */
     public String replaceEmotes(String input) {
         String output = input;
 

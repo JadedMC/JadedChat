@@ -1,4 +1,0 @@
-package net.jadedmc.jadedchat.commands;
-
-public class JadedChatCMD {
-}
