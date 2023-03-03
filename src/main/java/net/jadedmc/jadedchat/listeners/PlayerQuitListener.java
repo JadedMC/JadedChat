@@ -69,6 +69,11 @@ public class PlayerQuitListener implements Listener {
             return;
         }
 
+        // Prevents conflict with over plugins by not overwriting quit messages when they are null.
+        if(event.quitMessage() == null) {
+            return;
+        }
+
         // Grabs the configured quit message.
         String messageString = plugin.getSettingsManager().getConfig().getString("QuitMessage.message");
 

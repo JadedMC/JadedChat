@@ -67,6 +67,11 @@ public class PlayerJoinListener implements Listener {
             return;
         }
 
+        // Prevents conflict with over plugins by not overwriting join messages when they are null.
+        if(event.joinMessage() == null) {
+            return;
+        }
+
         // Grabs the configured join message.
         String messageString = plugin.getSettingsManager().getConfig().getString("JoinMessage.message");
 
