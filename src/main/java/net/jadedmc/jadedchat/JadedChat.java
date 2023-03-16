@@ -24,6 +24,9 @@
  */
 package net.jadedmc.jadedchat;
 
+import com.google.common.io.ByteArrayDataInput;
+import com.google.common.io.ByteStreams;
+import net.jadedmc.jadedchat.features.channels.Channel;
 import net.jadedmc.jadedchat.features.channels.ChannelManager;
 import net.jadedmc.jadedchat.commands.ChannelCMD;
 import net.jadedmc.jadedchat.commands.MessageCMD;
@@ -34,13 +37,20 @@ import net.jadedmc.jadedchat.listeners.PlayerJoinListener;
 import net.jadedmc.jadedchat.listeners.PlayerQuitListener;
 import net.jadedmc.jadedchat.features.messaging.MessageManager;
 import org.bukkit.Bukkit;
+import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
+import org.bukkit.plugin.messaging.PluginMessageListener;
+import org.jetbrains.annotations.NotNull;
+
+import java.io.ByteArrayInputStream;
+import java.io.DataInputStream;
+import java.io.IOException;
 
 /**
  * This class is the main class of the plugin.
  * It links all parts together and registers them with the server.
  */
-public final class JadedChat extends JavaPlugin {
+public final class JadedChat extends JavaPlugin implements PluginMessageListener {
     private ChannelManager channelManager;
     private EmoteManager emoteManager;
     private MessageManager messageManager;
@@ -71,6 +81,39 @@ public final class JadedChat extends JavaPlugin {
 
         // Enables bStats statistics tracking.
         new Metrics(this, 17832);
+
+        getServer().getMessenger().registerOutgoingPluginChannel(this, "BungeeCord");
+        getServer().getMessenger().registerIncomingPluginChannel(this, "BungeeCord", this);
+    }
+
+    @Override
+    public void onPluginMessageReceived(String channel, @NotNull Player player, byte[] bytes) {
+        if (!channel.equalsIgnoreCase( "BungeeCord")) {
+            return;
+        }
+
+        try {
+            DataInputStream in = new DataInputStream(new ByteArrayInputStream(bytes));
+            String subChannel = in.readUTF();
+
+            if(!subChannel.equalsIgnoreCase("jadedchat")) {
+                return;
+            }
+
+            String[] receivedMessage = in.readUTF().split("~~", 2);
+            String chatChannel = receivedMessage[0];
+            Channel channelObject = channelManager.getChannel(chatChannel);
+
+            if(channelObject == null) {
+                return;
+            }
+
+            String chatMessage = receivedMessage[1];
+            channelObject.sendMessage(chatMessage);
+        }
+        catch (IOException exception) {
+            exception.printStackTrace();
+        }
     }
 
     /**

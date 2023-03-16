@@ -24,8 +24,11 @@
  */
 package net.jadedmc.jadedchat.features.channels;
 
+import com.google.common.io.ByteArrayDataOutput;
+import com.google.common.io.ByteStreams;
 import net.jadedmc.jadedchat.JadedChat;
 import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.minimessage.MiniMessage;
 import org.bukkit.Bukkit;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.FileConfiguration;
@@ -39,10 +42,12 @@ import java.util.*;
  * Represents a section of chat separated from others.
  */
 public class Channel {
+    private final JadedChat plugin;
     private final String name;
     private final List<String> aliases = new ArrayList<>();
     private final String permission;
     private final boolean defaultChannel;
+    private final boolean useBungeecord;
     private final FileConfiguration rawConfig;
     private final Map<String, Format> formats = new LinkedHashMap<>();
 
@@ -51,12 +56,14 @@ public class Channel {
      * @param file Configuration file of the channel.
      */
     public Channel(JadedChat plugin, File file) {
+        this.plugin = plugin;
         rawConfig = YamlConfiguration.loadConfiguration(file);
 
         // Loads channel settings.
         this.name = rawConfig.getString("name").toUpperCase();
         this.permission = rawConfig.getString("permission");
         this.defaultChannel = rawConfig.getBoolean("default");
+        this.useBungeecord = rawConfig.getBoolean("bungeecord");
 
         // Add the aliases.
         for(String alias : rawConfig.getStringList("aliases")) {
@@ -175,6 +182,29 @@ public class Channel {
         Bukkit.getServer().getConsoleSender().sendMessage(Component.text().content("[" + name + "] ").append(messageComponent).build());
 
         // TODO: DiscordSRV Support
-        // TODO: Bungeecord Support
+
+        // Sends the message through bungeecord if bungeecord is enabled for the channel.
+        if(useBungeecord) {
+            ByteArrayDataOutput out = ByteStreams.newDataOutput();
+            out.writeUTF("Forward");
+            out.writeUTF("ALL");
+            out.writeUTF("jadedchat");
+            out.writeUTF(name.toLowerCase() + "~~" + MiniMessage.miniMessage().serialize(messageComponent));
+
+            // Sends the message to bungeecord, to send back to all online servers.
+            player.sendPluginMessage(plugin, "BungeeCord", out.toByteArray());
+        }
+    }
+
+    public void sendMessage(String message) {
+        Component component = MiniMessage.miniMessage().deserialize(message);
+
+        for(Player target : Bukkit.getOnlinePlayers()) {
+            if(!target.hasPermission(getPermissionNode())) {
+                continue;
+            }
+
+            target.sendMessage(component);
+        }
     }
 }
