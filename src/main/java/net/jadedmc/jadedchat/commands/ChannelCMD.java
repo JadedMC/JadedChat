@@ -97,7 +97,7 @@ public class ChannelCMD implements CommandExecutor {
         }
         else {
             // Gets the message from the arguments by creating a new array ignoring the username and turning it into a list.
-            String message = StringUtils.join(Arrays.asList(Arrays.copyOfRange(args, 1, args.length)), "");
+            String message = StringUtils.join(Arrays.asList(Arrays.copyOfRange(args, 1, args.length)), " ");
             plugin.getChannelManager().getChannel(args[0]).sendMessage(player, message);
         }
 
