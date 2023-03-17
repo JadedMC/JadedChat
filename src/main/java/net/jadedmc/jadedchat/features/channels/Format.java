@@ -103,20 +103,26 @@ public class Format {
         TextComponent.Builder component = Component.text();
         TextComponent.Builder itemComponent = Component.text();
 
-        if(player.getInventory().getItemInHand().getType() != Material.AIR) {
-            ItemStack itemStack = player.getInventory().getItemInHand();
+        // Enables displaying the held item in chat if the player has permission.
+        if(player.hasPermission("jadedchat.showitem")) {
+            if(player.getInventory().getItemInHand().getType() != Material.AIR) {
+                ItemStack itemStack = player.getInventory().getItemInHand();
 
-            String nbtString = "";
-            if(itemStack.getItemMeta() != null) {
-                nbtString += itemStack.getItemMeta().getAsString();
+                String nbtString = "";
+                if(itemStack.getItemMeta() != null) {
+                    nbtString += itemStack.getItemMeta().getAsString();
+                }
+
+                String miniMessageString = "<hover:show_item:" + itemStack.getType().toString().toLowerCase() + ":" + itemStack.getAmount() + ": '" + nbtString + "'>";
+                miniMessageString += "<name></hover>";
+                itemComponent.append(MiniMessage.miniMessage().deserialize(miniMessageString, Placeholder.component("name", itemStack.displayName())));
             }
-
-            String miniMessageString = "<hover:show_item:" + itemStack.getType().toString().toLowerCase() + ":" + itemStack.getAmount() + ": '" + nbtString + "'>";
-            miniMessageString += "<name></hover>";
-            itemComponent.append(MiniMessage.miniMessage().deserialize(miniMessageString, Placeholder.component("name", itemStack.displayName())));
+            else {
+                itemComponent.content("[Air]");
+            }
         }
         else {
-            itemComponent.content("[Air]");
+            itemComponent.content("<item>");
         }
 
         // Loop through each section of the format.
