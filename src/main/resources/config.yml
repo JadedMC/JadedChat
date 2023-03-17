@@ -15,6 +15,7 @@ server: "server"
 # Toggles various hooks into other plugins JadedChat can use.
 Hooks:
   DiscordSRV: true
+  LuckPerms: true
 
 # Connects to the MySQL Database
 MySQL:

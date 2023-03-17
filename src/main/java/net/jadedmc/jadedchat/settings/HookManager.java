@@ -39,4 +39,23 @@ public class HookManager {
         // Otherwise return what the setting is set to.
         return plugin.getSettingsManager().getConfig().getBoolean("Hooks.DiscordSRV");
     }
+
+    /**
+     * Get whether the plugin should use LuckPerms.
+     * @return If the plugin should use LuckPerms.
+     */
+    public boolean useLuckPerms() {
+        // return false if the server does not have LuckPerms installed.
+        if(!hasLuckPerms) {
+            return false;
+        }
+
+        // Return true if the LuckPerms setting is not set.
+        if(!plugin.getSettingsManager().getConfig().isSet("Hooks.LuckPerms")) {
+            return true;
+        }
+
+        // Otherwise return what the setting is set to.
+        return plugin.getSettingsManager().getConfig().getBoolean("Hooks.LuckPerms");
+    }
 }

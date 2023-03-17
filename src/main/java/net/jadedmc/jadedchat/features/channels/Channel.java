@@ -31,6 +31,8 @@ import net.jadedmc.jadedchat.JadedChat;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.TextComponent;
 import net.kyori.adventure.text.minimessage.MiniMessage;
+import net.luckperms.api.LuckPerms;
+import net.luckperms.api.LuckPermsProvider;
 import org.bukkit.Bukkit;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.FileConfiguration;
@@ -138,6 +140,18 @@ public class Channel {
     public Format getFormat(Player player) {
         // Sets the default chat format to "default" in case no permissions found.
         String format = "default";
+
+        // Looks for a format matching the player's group if LuckPerms is enabled.
+        if(plugin.getHookManager().useLuckPerms()) {
+            // Get the player's current primary group.
+            LuckPerms luckperms = LuckPermsProvider.get();
+            String group = luckperms.getUserManager().getUser(player.getUniqueId()).getPrimaryGroup();
+
+            // Check if the group has a format.
+            if(formats.containsKey(group)) {
+                return getFormat(group);
+            }
+        }
 
         // Loops through all the chat formats to find the highest format allowed.
         for(String str : formats.keySet()) {

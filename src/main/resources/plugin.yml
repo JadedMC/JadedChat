@@ -3,7 +3,7 @@ version: '${project.version}'
 main: net.jadedmc.jadedchat.JadedChat
 api-version: 1.19
 depend: [ PlaceholderAPI ]
-softdepend: [ DiscordSRV ]
+softdepend: [ DiscordSRV, LuckPerms ]
 authors: [ JadedMC ]
 description: Feature-Rich Chat Plugin Developed by JadedMC
 website: http://www.jadedmc.net
