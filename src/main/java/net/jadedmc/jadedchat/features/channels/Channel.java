@@ -151,6 +151,31 @@ public class Channel {
     }
 
     /**
+     * Gets a collection of all players who should be able to view a message sent by a player in the channel.
+     * @param sender Player who sent the message. Can be null.
+     * @return All players who can see that message.
+     */
+    public Collection<Player> getViewers(Player sender) {
+        Collection<Player> viewers = new ArrayList<>();
+
+        // If the permission is empty, return all online players.
+        if(permission.equalsIgnoreCase("")) {
+            viewers.addAll(Bukkit.getOnlinePlayers());
+            return viewers;
+        }
+
+        // Checks each player to see if they have the proper permission.
+        for(Player player : Bukkit.getOnlinePlayers()) {
+            // If so, add them as a viewer.
+            if(player.hasPermission(permission)) {
+                viewers.add(player);
+            }
+        }
+
+        return viewers;
+    }
+
+    /**
      * Get if the channel is the default channel.
      * @return Whether the channel is the default channel.
      */
@@ -172,16 +197,8 @@ public class Channel {
         // Creates the formatted component of the message.
         Component messageComponent = getFormat(player).processMessage(player, message);
 
-        // Send the message to all players online.
-        for(Player target : Bukkit.getServer().getOnlinePlayers()) {
-            // Makes sure the player should be able to see the channel.
-            if(!target.hasPermission(getPermissionNode()) && !permission.equalsIgnoreCase("")) {
-                continue;
-            }
-
-            // Sends the message to the player.
-            target.sendMessage(messageComponent);
-        }
+        // Send the message to all channel viewers.
+        getViewers(player).forEach(viewer -> viewer.sendMessage(messageComponent));
 
         // Send the message to the console as well
         Bukkit.getServer().getConsoleSender().sendMessage(Component.text().content("[" + name + "] ").append(messageComponent).build());
@@ -210,16 +227,8 @@ public class Channel {
         // Creates the formatted component of the message.
         Component component = MiniMessage.miniMessage().deserialize(message);
 
-        // Send the message to all players online.
-        for(Player target : Bukkit.getOnlinePlayers()) {
-            // Makes sure the player should be able to see the channel.
-            if(!target.hasPermission(getPermissionNode())) {
-                continue;
-            }
-
-            // Sends the message to the player.
-            target.sendMessage(component);
-        }
+        // Send the message to all channel viewers.
+        getViewers(null).forEach(viewer -> viewer.sendMessage(component));
 
         // Send the message to the console as well
         Bukkit.getServer().getConsoleSender().sendMessage(Component.text().content("(Bungee) [" + name + "] ").append(component).build());
