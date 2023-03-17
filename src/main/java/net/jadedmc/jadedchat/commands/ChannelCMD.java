@@ -85,7 +85,7 @@ public class ChannelCMD implements CommandExecutor {
         Channel channel = plugin.getChannelManager().getChannel(args[0]);
 
         // Makes sure the player has access to the channel.
-        if(!player.hasPermission(channel.getPermissionNode())) {
+        if(!player.hasPermission(channel.getPermissionNode()) && !channel.getPermissionNode().equalsIgnoreCase("")) {
             ChatUtils.chat(player, plugin.getSettingsManager().getMessage(Message.CHANNEL_NO_PERMISSION));
             return true;
         }
