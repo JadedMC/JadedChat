@@ -196,15 +196,27 @@ public class Channel {
         }
     }
 
+    /**
+     * Sends a message to the channel without a Player object.
+     * Used when processing bungeecord messages.
+     * @param message Full message being sent.
+     */
     public void sendMessage(String message) {
+        // Creates the formatted component of the message.
         Component component = MiniMessage.miniMessage().deserialize(message);
 
+        // Send the message to all players online.
         for(Player target : Bukkit.getOnlinePlayers()) {
+            // Makes sure the player should be able to see the channel.
             if(!target.hasPermission(getPermissionNode())) {
                 continue;
             }
 
+            // Sends the message to the player.
             target.sendMessage(component);
         }
+
+        // Send the message to the console as well
+        Bukkit.getServer().getConsoleSender().sendMessage(Component.text().content("(Bungee) [" + name + "] ").append(component).build());
     }
 }
