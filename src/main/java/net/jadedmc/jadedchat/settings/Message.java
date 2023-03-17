@@ -31,6 +31,7 @@ package net.jadedmc.jadedchat.settings;
 public enum Message {
     CHANNEL_DOES_NOT_EXIST("Channel.DoesNotExist", "<red><bold>Error</bold> <dark_gray>» <red>That channel does not exist!"),
     CHANNEL_NO_PERMISSION("Channel.NoPermission", "<red><bold>Error</bold> <dark_gray>» <red>You do not have access to that channel."),
+    CHANNEL_NOT_IN_CHANNEL("Channel.NotInChannel", "<red><bold>Error</bold> <dark_gray>» <red>You are not currently in a channel!"),
     CHANNEL_SWITCH("Channel.Switch", "<green><bold>Chat</bold> <dark_gray>» <green>Channel set to <gray><channel><green>."),
     CHANNEL_USAGE("Channel.Usage", "<red><bold>Usage</bold> <dark_gray>» <red>/chat [channel] <message>")
     ,

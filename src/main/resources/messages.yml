@@ -1,6 +1,7 @@
 Channel:
   DoesNotExist: "<red><bold>Error</bold> <dark_gray>» <red>That channel does not exist!"
   NoPermission: "<red><bold>Error</bold> <dark_gray>» <red>You do not have access to that channel."
+  NotInChannel: "<red><bold>Error</bold> <dark_gray>» <red>You are not currently in a channel!"
   Switch: "<green><bold>Chat</bold> <dark_gray>» <green>Channel set to <gray><channel><green>."
   Usage: "<red><bold>Usage</bold> <dark_gray>» <red>/chat [channel] <message>"
 

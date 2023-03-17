@@ -27,6 +27,7 @@ package net.jadedmc.jadedchat.listeners;
 import io.papermc.paper.event.player.AsyncChatEvent;
 import net.jadedmc.jadedchat.JadedChat;
 import net.jadedmc.jadedchat.features.channels.Channel;
+import net.jadedmc.jadedchat.settings.Message;
 import net.jadedmc.jadedchat.utils.ChatUtils;
 import net.kyori.adventure.text.serializer.plain.PlainTextComponentSerializer;
 import org.bukkit.entity.Player;
@@ -66,7 +67,7 @@ public class AsyncChatListener implements Listener {
 
         // Make sure they are actually in a channel.
         if(channel == null) {
-            ChatUtils.chat(player, "<red><bold>Error</bold> <dark_gray>» <red>You are not currently in a channel!");
+            ChatUtils.chat(player, plugin.getSettingsManager().getMessage(Message.CHANNEL_NOT_IN_CHANNEL));
             return;
         }
 
