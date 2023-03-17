@@ -39,7 +39,9 @@ public enum Message {
     MESSAGE_SELF("Message.Self", "<red><bold>Error</bold> <dark_gray>» <red>You cannot message yourself!"),
     REPLY_USAGE("Reply.Usage", "<red><bold>Usage</bold> <dark_gray>» <red>/r [message]"),
     REPLY_NOT_ONLINE("Reply.NotOnline", "<red><bold>Error</bold> &8» <red>You have no one to reply to!"),
-    JADEDCHAT_NO_PERMISSION("JadedChat.NoPermission", "<red><bold>Error</bold> <dark_gray>» <red>You do not have access to that command.");
+    JADEDCHAT_NO_PERMISSION("JadedChat.NoPermission", "<red><bold>Error</bold> <dark_gray>» <red>You do not have access to that command."),
+    FILTER_REGEX("Filter.Regex", "<red><bold>Error</bold> <dark_gray>» <red>You cannot say that!"),
+    FILTER_REPEAT_MESSAGE("Filter.RepeatMessage", "<red><bold>Error</bold> <dark_gray>» <red>You cannot say the same message twice!");
 
     private final String messagePath;
     private final String defaultMessage;

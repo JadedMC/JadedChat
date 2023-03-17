@@ -1,0 +1,39 @@
+# When messages are silently filtered, this is prefix is added in front and shown to all players with the
+# jadedchat.filter.view permission.
+FilteredPrefix: "<red>(Filtered)</red> "
+
+# Prevents players from sending the same message twice in a row.
+RepeatMessageFilter:
+  enabled: false
+
+# Uses regex to detect if
+RegexFilter:
+  enabled: false
+  silent: true
+
+  # Each regex statement to check the message for.
+  filter:
+    - n+(i|1|l|;|:)+(g|4)+((e|3)+r+|a+|4+)
+    - f+(a|4|@)+g+(o|0|e|3)+(t|7)
+    - f+(a|4|@)+g
+    - r+(e|3)+(t|7)+(a|4|@)+r+d
+
+# A list to remove before applying the regex filter.
+# Does not remove these from the actual message.
+MiscCharacters:
+  removeWhenFiltering: true
+  characters:
+    - '-'
+    - '_'
+    - '~'
+    - '/'
+    - '\\'
+    - '='
+    - '+'
+    - '.'
+    - '&'
+    - '$'
+    - '%'
+    - '*'
+    - '('
+    - ')'

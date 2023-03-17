@@ -15,3 +15,7 @@ Reply:
 
 JadedChat:
   NoPermission: "<red><bold>Error</bold> <dark_gray>» <red>You do not have access to that command."
+
+Filter:
+  Regex: "<red><bold>Error</bold> <dark_gray>» <red>You cannot say that!"
+  RepeatMessage: "<red><bold>Error</bold> <dark_gray>» <red>You cannot say the same message twice!"

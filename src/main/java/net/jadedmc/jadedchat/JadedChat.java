@@ -31,6 +31,7 @@ import net.jadedmc.jadedchat.commands.ChannelCMD;
 import net.jadedmc.jadedchat.commands.MessageCMD;
 import net.jadedmc.jadedchat.commands.ReplyCMD;
 import net.jadedmc.jadedchat.features.emotes.EmoteManager;
+import net.jadedmc.jadedchat.features.filter.FilterManager;
 import net.jadedmc.jadedchat.listeners.AsyncChatListener;
 import net.jadedmc.jadedchat.listeners.PlayerJoinListener;
 import net.jadedmc.jadedchat.listeners.PlayerQuitListener;
@@ -53,6 +54,7 @@ import java.io.IOException;
 public final class JadedChat extends JavaPlugin implements PluginMessageListener {
     private ChannelManager channelManager;
     private EmoteManager emoteManager;
+    private FilterManager filterManager;
     private MessageManager messageManager;
     private SettingsManager settingsManager;
 
@@ -67,6 +69,7 @@ public final class JadedChat extends JavaPlugin implements PluginMessageListener
         // Load other aspects later.
         channelManager = new ChannelManager(this);
         emoteManager = new EmoteManager(this);
+        filterManager = new FilterManager(this);
         messageManager = new MessageManager(this);
 
         // Registers the listeners used by the plugin.
@@ -131,6 +134,14 @@ public final class JadedChat extends JavaPlugin implements PluginMessageListener
      */
     public EmoteManager getEmoteManager() {
         return emoteManager;
+    }
+
+    /**
+     * Gets the current filter manager instance.
+     * @return Filter manager.
+     */
+    public FilterManager getFilterManager() {
+        return filterManager;
     }
 
     /**

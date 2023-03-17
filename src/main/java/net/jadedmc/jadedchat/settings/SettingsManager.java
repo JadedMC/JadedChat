@@ -40,6 +40,8 @@ public class SettingsManager {
     private final File emotesFile;
     private FileConfiguration messages;
     private File messagesFile;
+    private FileConfiguration filter;
+    private File filterFile;
 
     /**
      * Loads or Creates configuration files.
@@ -68,6 +70,12 @@ public class SettingsManager {
             plugin.saveResource("messages.yml", false);
         }
         messages = YamlConfiguration.loadConfiguration(messagesFile);
+
+        filterFile = new File(plugin.getDataFolder(), "filter.yml");
+        if(!filterFile.exists()) {
+            plugin.saveResource("filter.yml", false);
+        }
+        filter = YamlConfiguration.loadConfiguration(filterFile);
     }
 
     /**
@@ -84,6 +92,14 @@ public class SettingsManager {
      */
     public FileConfiguration getEmotes() {
         return emotes;
+    }
+
+    /**
+     * Get the filter.yml FileConfiguration.
+     * @return filter.yml FileConfiguration.
+     */
+    public FileConfiguration getFilter() {
+        return filter;
     }
 
     /**
@@ -105,6 +121,7 @@ public class SettingsManager {
     public void reload() {
         config = YamlConfiguration.loadConfiguration(configFile);
         emotes = YamlConfiguration.loadConfiguration(emotesFile);
+        filter = YamlConfiguration.loadConfiguration(filterFile);
         messages = YamlConfiguration.loadConfiguration(messagesFile);
     }
 }

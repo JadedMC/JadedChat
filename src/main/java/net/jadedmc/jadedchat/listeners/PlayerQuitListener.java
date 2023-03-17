@@ -57,6 +57,7 @@ public class PlayerQuitListener implements Listener {
         // Prevent memory leaks by removing players from lists when they are no longer needed.
         plugin.getChannelManager().removePlayer(event.getPlayer());
         plugin.getMessageManager().removePlayer(event.getPlayer());
+        plugin.getFilterManager().removePlayer(event.getPlayer());
 
         // We only want to modify the quit message if the plugin is configured to.
         if(!plugin.getSettingsManager().getConfig().getBoolean("QuitMessage.override")) {

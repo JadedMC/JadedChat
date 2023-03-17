@@ -164,6 +164,11 @@ public class Channel {
      * @param message Message the player is sending.
      */
     public void sendMessage(Player player, String message) {
+        // Checks if the message passes the chat filter.
+        if(!plugin.getFilterManager().passesFilter(player, this, message)) {
+            return;
+        }
+
         // Creates the formatted component of the message.
         Component messageComponent = getFormat(player).processMessage(player, message);
 
