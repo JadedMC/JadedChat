@@ -57,6 +57,7 @@ public class SettingsManager {
         File globalChannel = new File(plugin.getDataFolder(), "/channels/global.yml");
         if(!globalChannel.exists()) {
             plugin.saveResource("channels/global.yml", false);
+            plugin.saveResource("channels/staff.yml", false);
         }
 
         emotesFile = new File(plugin.getDataFolder(), "emotes.yml");

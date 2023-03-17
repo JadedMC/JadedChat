@@ -1,0 +1,167 @@
+# The display name of the channel. Can use color codes.
+name: "STAFF"
+
+# Aliases for the channel name. Used when switching channels.
+aliases:
+  - STAFFCHAT
+  - SC
+  - S
+
+# The permission node required to use the channel.
+# Should be empty for the default channel.
+permission: "channel.staff"
+
+settings:
+  # Whether this is the default channel being used.
+  # Only set this to true in one channel.
+  default: false
+
+  # Whether the channel should broadcast messages to bungeecord.
+  # For this to work the receiving servers must have the same channel.
+  bungeecord: true
+
+  # Set if messages sent in this channel should be broadcasted through DiscordSRV.
+  # Requires Hooks.DiscordSRV to be enabled in config.yml
+  DiscordSRV: false
+
+# The available formats in the channel.
+formats:
+  owner:
+    # Format settings.
+    settings:
+      # Whether the format can use colors
+      color: true
+
+      # Whether the format can use decorations (underlines, bold, etc)
+      decorations: true
+
+      events: true
+
+    # The various segments of the message.
+    # They are processed in order.
+    # You can create/remove as many as you'd like.
+    segments:
+      channel: "<bold><dark_red>(<red>Staff<dark_red>) "
+      prefix: "<bold><red>Owner "
+      name: "<white>%player_name%"
+      suffix: "<dark_gray> \xbb "
+      message: "<red><message>"
+  admin:
+    # Format settings.
+    settings:
+      # Whether the format can use colors
+      color: true
+
+      # Whether the format can use decorations (underlines, bold, etc)
+      decorations: true
+
+      events: true
+
+    # The various segments of the message.
+    # They are processed in order.
+    # You can create/remove as many as you'd like.
+    segments:
+      channel: "<bold><dark_red>(<red>Staff<dark_red>) "
+      prefix: "<bold><red>Admin "
+      name: "<white>%player_name%"
+      suffix: "<dark_gray> \xbb "
+      message: "<red><message>"
+  mod:
+    # Format settings.
+    settings:
+      # Whether the format can use colors
+      color: true
+
+      # Whether the format can use decorations (underlines, bold, etc)
+      decorations: true
+
+      events: true
+
+    # The various segments of the message.
+    # They are processed in order.
+    # You can create/remove as many as you'd like.
+    segments:
+      channel: "<bold><dark_red>(<red>Staff<dark_red>) "
+      prefix: "<bold><red>Mod "
+      name: "<white>%player_name%"
+      suffix: "<dark_gray> \xbb "
+      message: "<red><message>"
+  trial:
+    # Format settings.
+    settings:
+      # Whether the format can use colors
+      color: true
+
+      # Whether the format can use decorations (underlines, bold, etc)
+      decorations: true
+
+      events: true
+
+    # The various segments of the message.
+    # They are processed in order.
+    # You can create/remove as many as you'd like.
+    segments:
+      channel: "<bold><dark_red>(<red>Staff<dark_red>) "
+      prefix: "<bold><red>Trial "
+      name: "<white>%player_name%"
+      suffix: "<dark_gray> \xbb "
+      message: "<red><message>"
+  builder:
+    # Format settings.
+    settings:
+      # Whether the format can use colors
+      color: true
+
+      # Whether the format can use decorations (underlines, bold, etc)
+      decorations: true
+
+      events: true
+
+    # The various segments of the message.
+    # They are processed in order.
+    # You can create/remove as many as you'd like.
+    segments:
+      channel: "<bold><dark_red>(<red>Staff<dark_red>) "
+      prefix: "<bold><red>Builder "
+      name: "<white>%player_name%"
+      suffix: "<dark_gray> \xbb "
+      message: "<red><message>"
+  developer:
+    # Format settings.
+    settings:
+      # Whether the format can use colors
+      color: true
+
+      # Whether the format can use decorations (underlines, bold, etc)
+      decorations: true
+
+      events: true
+
+    # The various segments of the message.
+    # They are processed in order.
+    # You can create/remove as many as you'd like.
+    segments:
+      channel: "<bold><dark_red>(<red>Staff<dark_red>) "
+      prefix: "<bold><red>Developer "
+      name: "<white>%player_name%"
+      suffix: "<dark_gray> \xbb "
+      message: "<red><message>"
+  default:
+    # Format settings.
+    settings:
+      # Whether the format can use colors
+      color: true
+
+      # Whether the format can use decorations (underlines, bold, etc)
+      decorations: true
+
+      events: true
+
+    # The various segments of the message.
+    # They are processed in order.
+    # You can create/remove as many as you'd like.
+    segments:
+      prefix: "<bold><dark_red>(<red>Staff<dark_red>) "
+      name: "<white>%player_name%"
+      suffix: "<dark_gray> \xbb "
+      message: "<red><message>"
