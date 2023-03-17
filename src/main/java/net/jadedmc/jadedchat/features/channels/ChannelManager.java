@@ -28,16 +28,15 @@ import net.jadedmc.jadedchat.JadedChat;
 import org.bukkit.entity.Player;
 
 import java.io.File;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.UUID;
+import java.util.*;
 
 /**
  * Manages the creation and use of chat channels.
  */
 public class ChannelManager {
     private final JadedChat plugin;
-    private final Map<String, Channel> allChannels = new HashMap<>();
+    private final Map<String, Channel> channelIDs = new HashMap<>();
+    private final Collection<Channel> loadedChannels = new HashSet<>();
     private final Map<UUID, String> playerChannels = new HashMap<>();
     private Channel defaultChannel;
 
@@ -55,7 +54,8 @@ public class ChannelManager {
      */
     public void loadChannels() {
         // Makes sure the loaded channels are empty.
-        allChannels.clear();
+        channelIDs.clear();
+        loadedChannels.clear();
 
         // Grabs all channel configuration files.
         File[] formatFiles = new File(plugin.getDataFolder(), "channels").listFiles();
@@ -66,11 +66,12 @@ public class ChannelManager {
         // Loop through each file an load it's channel.
         for(File file : formatFiles) {
             Channel channel = new Channel(plugin, file);
-            allChannels.put(channel.getName(), channel);
+            loadedChannels.add(channel);
+            channelIDs.put(channel.getName(), channel);
 
             // Adds the aliases of the channel to the map to speed up lookups.
             for(String alias : channel.getAliases()) {
-                allChannels.put(alias, channel);
+                channelIDs.put(alias, channel);
             }
 
             if(channel.isDefaultChannel()) {
@@ -87,16 +88,16 @@ public class ChannelManager {
     public Channel getChannel(String name) {
         name = name.toUpperCase();
 
-        if(!allChannels.containsKey(name)) {
+        if(!channelIDs.containsKey(name)) {
             return null;
         }
 
-        return allChannels.get(name);
+        return channelIDs.get(name);
     }
 
     /**
      * Get the channel a player is currently in.
-     * @param player Playet to get the channel of.
+     * @param player Player to get the channel of.
      * @return The channel they are currently using. Returns the default channel if not saved.
      */
     public Channel getChannel(Player player) {
@@ -105,6 +106,14 @@ public class ChannelManager {
         }
 
         return defaultChannel;
+    }
+
+    /**
+     * Gets a collection of all currently loaded channels.
+     * @return All currently loaded channels.
+     */
+    public Collection<Channel> getLoadedChannels() {
+        return loadedChannels;
     }
 
     /**

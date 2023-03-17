@@ -1,6 +1,7 @@
 package net.jadedmc.jadedchat.commands;
 
 import net.jadedmc.jadedchat.JadedChat;
+import net.jadedmc.jadedchat.features.channels.Channel;
 import net.jadedmc.jadedchat.utils.ChatUtils;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -50,10 +51,19 @@ public class JadedChatCMD implements CommandExecutor {
 
         // Runs the used sub command.
         switch (subCommand) {
+            // Reloads all plugin configuration files.
             case "reload" -> {
                 plugin.getSettingsManager().reload();
                 plugin.getChannelManager().loadChannels();
                 ChatUtils.chat(sender, "<green><bold>JadedChat</bold> <dark_gray>» <green>Configuration files reloaded successfully!");
+            }
+            // Displays all currently loaded channels.
+            case "channels" -> {
+                ChatUtils.chat(sender, "<green><bold>JadedChat</bold> <dark_gray>» <green>Currently Loaded Channels:");
+
+                for(Channel channel : plugin.getChannelManager().getLoadedChannels()) {
+                    ChatUtils.chat(sender, "  <dark_gray>➤ <gray><hover:show_text:\"<green>Click to switch channels</green>\"><click:suggest_command:/channel " + channel.getName() + ">" + channel.getName() + "</click></hover>");
+                }
             }
         }
 
