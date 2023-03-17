@@ -68,7 +68,7 @@ public class JadedChatCMD implements CommandExecutor {
 
         // Makes sure the command has an argument.
         if(args.length == 0) {
-            return true;
+            args = new String[]{"help"};
         }
 
         // Get the sub command used.
@@ -89,6 +89,17 @@ public class JadedChatCMD implements CommandExecutor {
                 for(Channel channel : plugin.getChannelManager().getLoadedChannels()) {
                     ChatUtils.chat(sender, "  <dark_gray>➤ <gray><hover:show_text:\"<green>Click to switch channels</green>\"><click:suggest_command:/channel " + channel.getName() + ">" + channel.getName() + "</click></hover>");
                 }
+            }
+            // Displays the plugin's current version.
+            case "version" -> {
+                ChatUtils.chat(sender, "<green><bold>JadedChat</bold> <dark_gray>» <green>Current version: <white>" + plugin.getDescription().getVersion());
+            }
+            // Displays the help menu.
+            default -> {
+                ChatUtils.chat(sender, "<green><bold>JadedChat Commands");
+                ChatUtils.chat(sender, "<green>/jc channels <dark_gray>» <white>Lists all loaded channels.");
+                ChatUtils.chat(sender, "<green>/jc reload <dark_gray>» <white>Reloads all configuration files.");
+                ChatUtils.chat(sender, "<green>/jc version <dark_gray>» <white>Displays the plugin version.");
             }
         }
 
