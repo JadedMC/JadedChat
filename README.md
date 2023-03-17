@@ -2,7 +2,7 @@
 
 JadedChat is a feature-rich JSON chat plugin for [Paper](http://www.papermc.io) servers running Minecraft 1.19 or later. It allows you to fully customize your chat easily using the [MiniMessage](https://docs.advntr.dev/minimessage/format.html) format and PlaceholderAPI. It also contains an API to allow developers to have better control over chat without interfering with other plugins.
 
-**This plugin is in early development. The API is likely to change between now and a full release.**
+>⚠️ This plugin is in early development. The API is likely to change between now and a full release.
 
 ## Features
 * Unlimited number of chat channels.
@@ -11,6 +11,8 @@ JadedChat is a feature-rich JSON chat plugin for [Paper](http://www.papermc.io) 
 * Configurable text replacements with the "emote" system.
 * Custom Join/Quit Messages
 * Private Messages
+* Regex filtering
+* Cross-server chat using BungeeCord
 
 ## Requirements
 * Java 17 or newer
@@ -19,8 +21,6 @@ JadedChat is a feature-rich JSON chat plugin for [Paper](http://www.papermc.io) 
 * PlaceholderAPI
 
 ## Planned Features
-* Regex filtering
-* Cross-server chat using Bungeecord/Velocity
 * Per-channel chat cooldowns
 * DiscordSRV support
 * Logging Chat to MySQL
