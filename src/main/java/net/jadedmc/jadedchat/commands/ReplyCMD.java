@@ -25,6 +25,7 @@
 package net.jadedmc.jadedchat.commands;
 
 import net.jadedmc.jadedchat.JadedChat;
+import net.jadedmc.jadedchat.settings.Message;
 import net.jadedmc.jadedchat.utils.ChatUtils;
 import net.jadedmc.jadedchat.utils.StringUtils;
 import org.bukkit.command.Command;
@@ -68,7 +69,7 @@ public class ReplyCMD implements CommandExecutor {
 
         // Make sure they're using the command properly.
         if(args.length < 1) {
-            ChatUtils.chat(player, "<red><bold>Usage</bold> <dark_gray>» <red>/r [message]");
+            ChatUtils.chat(player, plugin.getSettingsManager().getMessage(Message.REPLY_USAGE));
             return true;
         }
 
@@ -77,7 +78,7 @@ public class ReplyCMD implements CommandExecutor {
 
         // Make sure there is a target.
         if(target == null) {
-            ChatUtils.chat(player, "<red><bold>Error</bold> &8» <red>You have no one to reply to!");
+            ChatUtils.chat(player, plugin.getSettingsManager().getMessage(Message.REPLY_NOT_ONLINE));
             return true;
         }
 

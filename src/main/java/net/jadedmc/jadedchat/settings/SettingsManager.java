@@ -22,8 +22,9 @@
  *  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  *  SOFTWARE.
  */
-package net.jadedmc.jadedchat;
+package net.jadedmc.jadedchat.settings;
 
+import net.jadedmc.jadedchat.JadedChat;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 
@@ -37,6 +38,8 @@ public class SettingsManager {
     private final File configFile;
     private FileConfiguration emotes;
     private final File emotesFile;
+    private FileConfiguration messages;
+    private File messagesFile;
 
     /**
      * Loads or Creates configuration files.
@@ -59,6 +62,12 @@ public class SettingsManager {
             plugin.saveResource("emotes.yml", false);
         }
         emotes = YamlConfiguration.loadConfiguration(emotesFile);
+
+        messagesFile = new File(plugin.getDataFolder(), "messages.yml");
+        if(!messagesFile.exists()) {
+            plugin.saveResource("messages.yml", false);
+        }
+        messages = YamlConfiguration.loadConfiguration(messagesFile);
     }
 
     /**
@@ -78,10 +87,24 @@ public class SettingsManager {
     }
 
     /**
+     * Get a configurable message based off it's Message enum.
+     * @param message Message num to get message of.
+     * @return Resulting configured message.
+     */
+    public String getMessage(Message message) {
+        if(messages.isSet(message.getMessagePath())) {
+            return messages.getString(message.getMessagePath());
+        }
+
+        return message.getDefaultMessage();
+    }
+
+    /**
      * Update the configuration files.
      */
     public void reload() {
         config = YamlConfiguration.loadConfiguration(configFile);
         emotes = YamlConfiguration.loadConfiguration(emotesFile);
+        messages = YamlConfiguration.loadConfiguration(messagesFile);
     }
 }

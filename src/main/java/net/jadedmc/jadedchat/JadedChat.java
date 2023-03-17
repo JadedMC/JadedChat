@@ -24,8 +24,6 @@
  */
 package net.jadedmc.jadedchat;
 
-import com.google.common.io.ByteArrayDataInput;
-import com.google.common.io.ByteStreams;
 import net.jadedmc.jadedchat.commands.JadedChatCMD;
 import net.jadedmc.jadedchat.features.channels.Channel;
 import net.jadedmc.jadedchat.features.channels.ChannelManager;
@@ -37,6 +35,7 @@ import net.jadedmc.jadedchat.listeners.AsyncChatListener;
 import net.jadedmc.jadedchat.listeners.PlayerJoinListener;
 import net.jadedmc.jadedchat.listeners.PlayerQuitListener;
 import net.jadedmc.jadedchat.features.messaging.MessageManager;
+import net.jadedmc.jadedchat.settings.SettingsManager;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;

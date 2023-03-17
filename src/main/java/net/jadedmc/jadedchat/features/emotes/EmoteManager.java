@@ -25,7 +25,7 @@
 package net.jadedmc.jadedchat.features.emotes;
 
 import net.jadedmc.jadedchat.JadedChat;
-import net.jadedmc.jadedchat.SettingsManager;
+import net.jadedmc.jadedchat.settings.SettingsManager;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.TextReplacementConfig;
 import net.kyori.adventure.text.minimessage.MiniMessage;

@@ -1,0 +1,17 @@
+Channel:
+  DoesNotExist: "<red><bold>Error</bold> <dark_gray>» <red>That channel does not exist!"
+  NoPermission: "<red><bold>Error</bold> <dark_gray>» <red>You do not have access to that channel."
+  Switch: "<green><bold>Chat</bold> <dark_gray>» <green>Channel set to <gray><channel><green>."
+  Usage: "<red><bold>Usage</bold> <dark_gray>» <red>/chat [channel] <message>"
+
+Message:
+  Usage: "<red><bold>Usage</bold> <dark_gray>» <red>/msg [player] [message]"
+  NotOnline: "<red><bold>Error</bold> <dark_gray>» <red>That player isn't online!"
+  Self: "<red><bold>Error</bold> <dark_gray>» <red>You cannot message yourself!"
+
+Reply:
+  Usage: "<red><bold>Usage</bold> <dark_gray>» <red>/r [message]"
+  NotOnline: "<red><bold>Error</bold> &8» <red>You have no one to reply to!"
+
+JadedChat:
+  NoPermission: "<red><bold>Error</bold> <dark_gray>» <red>You do not have access to that command."

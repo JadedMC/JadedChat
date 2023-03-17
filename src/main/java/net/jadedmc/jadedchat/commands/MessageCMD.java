@@ -25,6 +25,7 @@
 package net.jadedmc.jadedchat.commands;
 
 import net.jadedmc.jadedchat.JadedChat;
+import net.jadedmc.jadedchat.settings.Message;
 import net.jadedmc.jadedchat.utils.ChatUtils;
 import net.jadedmc.jadedchat.utils.StringUtils;
 import org.bukkit.command.Command;
@@ -73,7 +74,7 @@ public class MessageCMD implements CommandExecutor {
 
         // Make sure they're using the command properly.
         if(args.length < 2) {
-            ChatUtils.chat(player, "<red><bold>Usage</bold> <dark_gray>» <red>/msg [player] [message]");
+            ChatUtils.chat(player, plugin.getSettingsManager().getMessage(Message.MESSAGE_USAGE));
             return true;
         }
 
@@ -82,13 +83,13 @@ public class MessageCMD implements CommandExecutor {
 
         // Make sure they're online.
         if(target == null) {
-            ChatUtils.chat(player, "<red><bold>Error</bold> <dark_gray>» <red>That player isn't online!");
+            ChatUtils.chat(player, plugin.getSettingsManager().getMessage(Message.MESSAGE_NOT_ONLINE));
             return true;
         }
 
         // Make sure the target isn't the player.
         if(target.equals(player)) {
-            ChatUtils.chat(player, "<red><bold>Error</bold> <dark_gray>» <red>You cannot message yourself!");
+            ChatUtils.chat(player, plugin.getSettingsManager().getMessage(Message.MESSAGE_SELF));
             return true;
         }
 
