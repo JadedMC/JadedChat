@@ -7,17 +7,22 @@ aliases:
   - ALL
   - MAIN
 
-# Whether this is the default channel being used.
-# Only set this to true in one channel.
-default: true
-
 # The permission node required to use the channel.
 # Should be empty for the default channel.
 permission: ""
 
-# Whether the channel should broadcast messages to bungeecord.
-# For this to work the receiving servers must have the same channel.
-bungeecord: false
+settings:
+  # Whether this is the default channel being used.
+  # Only set this to true in one channel.
+  default: true
+
+  # Whether the channel should broadcast messages to bungeecord.
+  # For this to work the receiving servers must have the same channel.
+  bungeecord: false
+
+  # Set if messages sent in this channel should be broadcasted through DiscordSRV.
+  # Requires Hooks.DiscordSRV to be enabled in config.yml
+  DiscordSRV: true
 
 # The available formats in the channel.
 # accessed via the permission formats.[format]

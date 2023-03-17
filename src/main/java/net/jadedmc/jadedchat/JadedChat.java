@@ -33,6 +33,7 @@ import net.jadedmc.jadedchat.listeners.AsyncChatListener;
 import net.jadedmc.jadedchat.listeners.PlayerJoinListener;
 import net.jadedmc.jadedchat.listeners.PlayerQuitListener;
 import net.jadedmc.jadedchat.features.messaging.MessageManager;
+import net.jadedmc.jadedchat.settings.HookManager;
 import net.jadedmc.jadedchat.settings.SettingsManager;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
@@ -52,6 +53,7 @@ public final class JadedChat extends JavaPlugin implements PluginMessageListener
     private ChannelManager channelManager;
     private EmoteManager emoteManager;
     private FilterManager filterManager;
+    private HookManager hookManager;
     private MessageManager messageManager;
     private SettingsManager settingsManager;
 
@@ -68,6 +70,7 @@ public final class JadedChat extends JavaPlugin implements PluginMessageListener
         emoteManager = new EmoteManager(this);
         filterManager = new FilterManager(this);
         messageManager = new MessageManager(this);
+        hookManager = new HookManager(this);
 
         // Registers the listeners used by the plugin.
         Bukkit.getPluginManager().registerEvents(new AsyncChatListener(this), this);
@@ -140,6 +143,14 @@ public final class JadedChat extends JavaPlugin implements PluginMessageListener
      */
     public FilterManager getFilterManager() {
         return filterManager;
+    }
+
+    /**
+     * Gets the current hook manager instance.
+     * @return Hook manager.
+     */
+    public HookManager getHookManager() {
+        return hookManager;
     }
 
     /**

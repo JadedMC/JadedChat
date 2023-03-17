@@ -12,8 +12,13 @@
 # Sets the name of the server. Used in logging chat.
 server: "server"
 
+# Toggles various hooks into other plugins JadedChat can use.
+Hooks:
+  DiscordSRV: true
+
 # Connects to the MySQL Database
 MySQL:
+  enabled: false
   host: localhost
   port: 3306
   database: database

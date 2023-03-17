@@ -26,8 +26,10 @@ package net.jadedmc.jadedchat.features.channels;
 
 import com.google.common.io.ByteArrayDataOutput;
 import com.google.common.io.ByteStreams;
+import github.scarsz.discordsrv.DiscordSRV;
 import net.jadedmc.jadedchat.JadedChat;
 import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.TextComponent;
 import net.kyori.adventure.text.minimessage.MiniMessage;
 import org.bukkit.Bukkit;
 import org.bukkit.configuration.ConfigurationSection;
@@ -48,6 +50,7 @@ public class Channel {
     private final String permission;
     private final boolean defaultChannel;
     private final boolean useBungeecord;
+    private final boolean useDiscordSRV;
     private final FileConfiguration rawConfig;
     private final Map<String, Format> formats = new LinkedHashMap<>();
 
@@ -62,8 +65,30 @@ public class Channel {
         // Loads channel settings.
         this.name = rawConfig.getString("name").toUpperCase();
         this.permission = rawConfig.getString("permission");
-        this.defaultChannel = rawConfig.getBoolean("default");
-        this.useBungeecord = rawConfig.getBoolean("bungeecord");
+
+        // Sets if the channel should be the default channel.
+        if(!rawConfig.isSet("settings.default")) {
+            this.defaultChannel = true;
+        }
+        else {
+            this.defaultChannel = rawConfig.getBoolean("settings.default");
+        }
+
+        // Sets if the channel should use BungeeCord.
+        if(!rawConfig.isSet("settings.bungeecord")) {
+            this.useBungeecord = false;
+        }
+        else {
+            this.useBungeecord = rawConfig.getBoolean("settings.bungeecord");
+        }
+
+        // Sets if the channel should use DiscordSRV.
+        if(!rawConfig.isSet("settings.DiscordSRV")) {
+            this.useDiscordSRV = false;
+        }
+        else {
+            this.useDiscordSRV = rawConfig.getBoolean("settings.DiscordSRV");
+        }
 
         // Add the aliases.
         for(String alias : rawConfig.getStringList("aliases")) {
@@ -203,8 +228,6 @@ public class Channel {
         // Send the message to the console as well
         Bukkit.getServer().getConsoleSender().sendMessage(Component.text().content("[" + name + "] ").append(messageComponent).build());
 
-        // TODO: DiscordSRV Support
-
         // Sends the message through bungeecord if bungeecord is enabled for the channel.
         if(useBungeecord) {
             ByteArrayDataOutput out = ByteStreams.newDataOutput();
@@ -215,6 +238,11 @@ public class Channel {
 
             // Sends the message to bungeecord, to send back to all online servers.
             player.sendPluginMessage(plugin, "BungeeCord", out.toByteArray());
+        }
+
+        // Sends the message through DiscordSRV if enabled.
+        if(plugin.getHookManager().useDiscordSRV() && useDiscordSRV) {
+            DiscordSRV.getPlugin().getMainTextChannel().sendMessage(MiniMessage.miniMessage().stripTags(MiniMessage.miniMessage().serialize(messageComponent)));
         }
     }
 
