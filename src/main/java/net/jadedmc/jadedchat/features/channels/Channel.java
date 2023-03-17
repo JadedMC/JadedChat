@@ -170,7 +170,7 @@ public class Channel {
         // Send the message to all players online.
         for(Player target : Bukkit.getServer().getOnlinePlayers()) {
             // Makes sure the player should be able to see the channel.
-            if(!target.hasPermission(getPermissionNode())) {
+            if(!target.hasPermission(getPermissionNode()) && !permission.equalsIgnoreCase("")) {
                 continue;
             }
 
