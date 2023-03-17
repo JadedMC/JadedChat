@@ -26,6 +26,7 @@ package net.jadedmc.jadedchat;
 
 import com.google.common.io.ByteArrayDataInput;
 import com.google.common.io.ByteStreams;
+import net.jadedmc.jadedchat.commands.JadedChatCMD;
 import net.jadedmc.jadedchat.features.channels.Channel;
 import net.jadedmc.jadedchat.features.channels.ChannelManager;
 import net.jadedmc.jadedchat.commands.ChannelCMD;
@@ -75,6 +76,7 @@ public final class JadedChat extends JavaPlugin implements PluginMessageListener
         Bukkit.getPluginManager().registerEvents(new PlayerQuitListener(this), this);
 
         // Registers the commands created by the plugin.
+        getCommand("jadedchat").setExecutor(new JadedChatCMD(this));
         getCommand("channel").setExecutor(new ChannelCMD(this));
         getCommand("message").setExecutor(new MessageCMD(this));
         getCommand("reply").setExecutor(new ReplyCMD(this));

@@ -36,6 +36,7 @@ import java.util.UUID;
  * Manages the creation and use of chat channels.
  */
 public class ChannelManager {
+    private final JadedChat plugin;
     private final Map<String, Channel> allChannels = new HashMap<>();
     private final Map<UUID, String> playerChannels = new HashMap<>();
     private Channel defaultChannel;
@@ -45,6 +46,18 @@ public class ChannelManager {
      * @param plugin Instance of the plugin.
      */
     public ChannelManager(JadedChat plugin) {
+        this.plugin = plugin;
+        loadChannels();
+    }
+
+    /**
+     * Loads all channels set up in the 'channels' folder.
+     */
+    public void loadChannels() {
+        // Makes sure the loaded channels are empty.
+        allChannels.clear();
+
+        // Grabs all channel configuration files.
         File[] formatFiles = new File(plugin.getDataFolder(), "channels").listFiles();
         if(formatFiles == null) {
             return;
@@ -55,6 +68,7 @@ public class ChannelManager {
             Channel channel = new Channel(plugin, file);
             allChannels.put(channel.getName(), channel);
 
+            // Adds the aliases of the channel to the map to speed up lookups.
             for(String alias : channel.getAliases()) {
                 allChannels.put(alias, channel);
             }

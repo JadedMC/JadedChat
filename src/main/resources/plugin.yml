@@ -12,6 +12,9 @@ commands:
   channel:
     description: Change the current channel being used.
     aliases: [chat,ch]
+  jadedchat:
+    description: Main command for JadedChat.
+    aliases: [jc]
   message:
     description: Send a private message to a player.
     aliases: [msg,tell,whisper,w,pm,dm]
