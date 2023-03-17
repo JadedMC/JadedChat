@@ -21,3 +21,6 @@ commands:
   reply:
     description: Reply to a private message.
     aliases: [r,respond]
+  socialspy:
+    description: Spy on private messages.
+    aliases: [spy, ss]

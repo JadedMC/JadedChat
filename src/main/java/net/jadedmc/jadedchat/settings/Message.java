@@ -42,7 +42,11 @@ public enum Message {
     REPLY_NOT_ONLINE("Reply.NotOnline", "<red><bold>Error</bold> &8» <red>You have no one to reply to!"),
     JADEDCHAT_NO_PERMISSION("JadedChat.NoPermission", "<red><bold>Error</bold> <dark_gray>» <red>You do not have access to that command."),
     FILTER_REGEX("Filter.Regex", "<red><bold>Error</bold> <dark_gray>» <red>You cannot say that!"),
-    FILTER_REPEAT_MESSAGE("Filter.RepeatMessage", "<red><bold>Error</bold> <dark_gray>» <red>You cannot say the same message twice!");
+    FILTER_REPEAT_MESSAGE("Filter.RepeatMessage", "<red><bold>Error</bold> <dark_gray>» <red>You cannot say the same message twice!"),
+    SOCIAL_SPY_DISABLED("SocialSpy.Disabled", "<green><bold>Chat</bold> <dark_gray>» <green>You have disabled social spy."),
+    SOCIAL_SPY_ENABLED("SocialSpy.Enabled", "<green><bold>Chat</bold> <dark_gray>» <green>You have enabled social spy."),
+    SOCIAL_SPY_NOT_A_PLAYER("SocialSpy.NotAPlayer", "<red><bold>Error</bold> <dark_gray>» <red>Only players can use that command!"),
+    SOCIAL_SPY_NO_PERMISSION("SocialSpy.NoPermission", "<red><bold>Error</bold> <dark_gray>» <red>You do not have access to that command.");
 
     private final String messagePath;
     private final String defaultMessage;

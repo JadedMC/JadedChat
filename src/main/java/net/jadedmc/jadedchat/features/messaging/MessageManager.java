@@ -123,6 +123,12 @@ public class MessageManager {
         }
 
         for(Player stalker : plugin.getMessageManager().getSpying()) {
+
+            // Skips the "stalker" if they are part of the message to prevent double-sending.
+            if(stalker.equals(sender) || stalker.equals(receiver)) {
+                continue;
+            }
+
             stalker.sendMessage(toSpy);
 
             {

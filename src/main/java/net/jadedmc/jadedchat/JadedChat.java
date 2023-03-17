@@ -24,12 +24,9 @@
  */
 package net.jadedmc.jadedchat;
 
-import net.jadedmc.jadedchat.commands.JadedChatCMD;
+import net.jadedmc.jadedchat.commands.*;
 import net.jadedmc.jadedchat.features.channels.Channel;
 import net.jadedmc.jadedchat.features.channels.ChannelManager;
-import net.jadedmc.jadedchat.commands.ChannelCMD;
-import net.jadedmc.jadedchat.commands.MessageCMD;
-import net.jadedmc.jadedchat.commands.ReplyCMD;
 import net.jadedmc.jadedchat.features.emotes.EmoteManager;
 import net.jadedmc.jadedchat.features.filter.FilterManager;
 import net.jadedmc.jadedchat.listeners.AsyncChatListener;
@@ -82,6 +79,7 @@ public final class JadedChat extends JavaPlugin implements PluginMessageListener
         getCommand("channel").setExecutor(new ChannelCMD(this));
         getCommand("message").setExecutor(new MessageCMD(this));
         getCommand("reply").setExecutor(new ReplyCMD(this));
+        getCommand("socialspy").setExecutor(new SocialSpyCMD(this));
 
         // Enables bStats statistics tracking.
         new Metrics(this, 17832);
