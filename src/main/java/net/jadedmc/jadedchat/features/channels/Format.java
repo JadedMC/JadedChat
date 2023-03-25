@@ -26,6 +26,7 @@ package net.jadedmc.jadedchat.features.channels;
 
 import me.clip.placeholderapi.PlaceholderAPI;
 import net.jadedmc.jadedchat.JadedChat;
+import net.jadedmc.jadedchat.utils.ChatUtils;
 import net.jadedmc.jadedchat.utils.ConfigUtils;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.TextComponent;
@@ -118,7 +119,7 @@ public class Format {
                 itemComponent.append(MiniMessage.miniMessage().deserialize(miniMessageString, Placeholder.component("name", itemStack.displayName())));
             }
             else {
-                itemComponent.content("[Air]");
+                itemComponent.append(ChatUtils.translate("<hover:show_text:Air><white>[Air]</white></hover>"));
             }
         }
         else {
