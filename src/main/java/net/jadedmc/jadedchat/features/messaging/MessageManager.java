@@ -29,6 +29,8 @@ import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.TextComponent;
 import net.kyori.adventure.text.minimessage.MiniMessage;
 import net.kyori.adventure.text.minimessage.tag.resolver.Placeholder;
+import net.kyori.adventure.text.minimessage.tag.resolver.TagResolver;
+import net.kyori.adventure.text.minimessage.tag.standard.StandardTags;
 import org.bukkit.Sound;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.FileConfiguration;
@@ -43,11 +45,9 @@ public class MessageManager {
     private final JadedChat plugin;
     private final Map<Player, Player> conversations = new HashMap<>();
     private final Set<Player> spying = new HashSet<>();
-    private final MiniMessage miniMessage;
 
     public MessageManager(JadedChat plugin) {
         this.plugin = plugin;
-        miniMessage = MiniMessage.builder().build();
     }
 
     /**
@@ -192,6 +192,26 @@ public class MessageManager {
             return null;
         }
 
+        // Checks which tags we should process in a sender's message.
+        TagResolver.Builder tagsResolverBuilder = TagResolver.builder();
+        if(sender.hasPermission("jadedchat.message.colors")) {
+            tagsResolverBuilder.resolver(StandardTags.color())
+                    .resolver(StandardTags.rainbow())
+                    .resolver(StandardTags.gradient());
+        }
+        if(sender.hasPermission("jadedchat.message.decorations")) {
+            tagsResolverBuilder.resolver(StandardTags.decorations())
+                    .resolver(StandardTags.font());
+        }
+        if(sender.hasPermission("jadedchat.message.events")) {
+            tagsResolverBuilder.resolver(StandardTags.clickEvent())
+                    .resolver(StandardTags.hoverEvent())
+                    .resolver(StandardTags.insertion())
+                    .resolver(StandardTags.selector());
+        }
+        MiniMessage miniMessage = MiniMessage.builder().tags(tagsResolverBuilder.build()).build();
+
+        // Creates the component.
         TextComponent.Builder output = Component.text();
 
         for(String section : config.getKeys(false)) {
