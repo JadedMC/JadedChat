@@ -24,3 +24,41 @@ commands:
   socialspy:
     description: Spy on private messages.
     aliases: [spy, ss]
+
+permissions:
+  jadedchat.admin:
+    description: Gives access to admin commands.
+    default: op
+  jadedchat.bypass.regexfilter:
+    description: Allows the player to bypass the regex filter.
+    default: op
+  jadedchat.bypass.repeatfilter:
+    description: Allows the player to bypass the repeat message filter.
+    default: op
+  jadedchat.bypass.*:
+    description: Allows the player to bypass all filters.
+    default: false
+    children:
+      jadedchat.bypass.regexfilter: true
+      jadedchat.bypass.repeatfilter: true
+  jadedchat.filter.view:
+    description: Allows the player to view filtered chat messages.
+    default: op
+  jadedchat.message.colors:
+    description: Allows the player to use colors in private messages.
+    default: op
+  jadedchat.message.decorations:
+    description: Allows the player to use decorations in private messages.
+    default: op
+  jadedchat.message.events:
+    description: Allows the player to use events in private messages.
+    default: op
+  jadedchat.message.*:
+    default: false
+    children:
+      jadedchat.message.colors: true
+      jadedchat.message.decorations: true
+      jadedchat.message.events: true
+  jadedchat.showitem:
+    description: Allows the player to use <item> to display the item in their hand.
+    default: op
