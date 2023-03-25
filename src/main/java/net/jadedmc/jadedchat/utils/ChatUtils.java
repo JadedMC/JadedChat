@@ -24,9 +24,11 @@
  */
 package net.jadedmc.jadedchat.utils;
 
+import me.clip.placeholderapi.PlaceholderAPI;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.minimessage.MiniMessage;
 import org.bukkit.command.CommandSender;
+import org.bukkit.entity.Player;
 
 /**
  * Some methods to make sending chat messages easier.
@@ -49,5 +51,9 @@ public class ChatUtils {
      */
     public static Component translate(String message) {
         return MiniMessage.miniMessage().deserialize(message);
+    }
+
+    public static Component translateWithPlaceholders(String message, Player player) {
+        return translate(PlaceholderAPI.setPlaceholders(player, message));
     }
 }

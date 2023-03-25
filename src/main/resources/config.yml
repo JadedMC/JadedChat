@@ -27,14 +27,20 @@ MySQL:
   password: password
   useSSL: true
 
+# Modifies the vanilla join message.
 JoinMessage:
   override: false
   message: "<green>%player_name% joined the game."
 
+# Modifies the vanilla quit message.
 QuitMessage:
   override: false
   message: "<red>%player_name% left the game."
 
+# Sends a message in chat if the player is joining for the first time.
+FirstJoinMessage:
+  enabled: false
+  message: "<light_purple>%player_name% joined the server for the first time!"
 
 PrivateMessages:
   SenderMessage:

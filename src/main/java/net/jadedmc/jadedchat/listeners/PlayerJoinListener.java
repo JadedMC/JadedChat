@@ -26,8 +26,10 @@ package net.jadedmc.jadedchat.listeners;
 
 import me.clip.placeholderapi.PlaceholderAPI;
 import net.jadedmc.jadedchat.JadedChat;
+import net.jadedmc.jadedchat.utils.ChatUtils;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.minimessage.MiniMessage;
+import org.bukkit.Bukkit;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
@@ -55,6 +57,11 @@ public class PlayerJoinListener implements Listener {
      */
     @EventHandler(priority = EventPriority.HIGHEST)
     public void onJoin(PlayerJoinEvent event) {
+
+        // If this is the player's first time playing, displays the first join message if enabled.
+        if(!event.getPlayer().hasPlayedBefore() && plugin.getSettingsManager().getConfig().isSet("FirstJoinMessage.enabled")) {
+            Bukkit.broadcast(ChatUtils.translateWithPlaceholders(plugin.getSettingsManager().getConfig().getString("FirstJoinMessage.message"), event.getPlayer()));
+        }
 
         // We only want to modify the join message if the plugin is configured to.
         if(!plugin.getSettingsManager().getConfig().getBoolean("JoinMessage.override")) {
