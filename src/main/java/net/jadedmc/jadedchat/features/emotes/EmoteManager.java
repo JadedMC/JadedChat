@@ -64,6 +64,8 @@ public class EmoteManager {
      * Loops through config to create emote objects.
      */
     public void registerEmotes() {
+        emotes.clear();
+
         SettingsManager settings = plugin.getSettingsManager();
         ConfigurationSection section = settings.getEmotes().getConfigurationSection("emotes");
 

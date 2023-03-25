@@ -80,6 +80,7 @@ public class JadedChatCMD implements CommandExecutor {
             case "reload" -> {
                 plugin.getSettingsManager().reload();
                 plugin.getChannelManager().loadChannels();
+                plugin.getEmoteManager().registerEmotes();
                 ChatUtils.chat(sender, "<green><bold>JadedChat</bold> <dark_gray>» <green>Configuration files reloaded successfully!");
             }
             // Displays all currently loaded channels.
