@@ -25,16 +25,19 @@
 package net.jadedmc.jadedchat.features.messaging;
 
 import net.jadedmc.jadedchat.JadedChat;
+import net.jadedmc.jadedchat.utils.ChatUtils;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.TextComponent;
 import net.kyori.adventure.text.minimessage.MiniMessage;
 import net.kyori.adventure.text.minimessage.tag.resolver.Placeholder;
 import net.kyori.adventure.text.minimessage.tag.resolver.TagResolver;
 import net.kyori.adventure.text.minimessage.tag.standard.StandardTags;
+import org.bukkit.Material;
 import org.bukkit.Sound;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
+import org.bukkit.inventory.ItemStack;
 
 import java.util.*;
 
@@ -192,6 +195,29 @@ public class MessageManager {
             return null;
         }
 
+        TextComponent.Builder itemComponent = Component.text();
+        // Enables displaying the held item in chat if the player has permission.
+        if(sender.hasPermission("jadedchat.showitem")) {
+            if(sender.getInventory().getItemInHand().getType() != Material.AIR) {
+                ItemStack itemStack = sender.getInventory().getItemInHand();
+
+                String nbtString = "";
+                if(itemStack.getItemMeta() != null) {
+                    nbtString += itemStack.getItemMeta().getAsString();
+                }
+
+                String miniMessageString = "<hover:show_item:" + itemStack.getType().toString().toLowerCase() + ":" + itemStack.getAmount() + ": '" + nbtString + "'>";
+                miniMessageString += "<name></hover>";
+                itemComponent.append(MiniMessage.miniMessage().deserialize(miniMessageString, Placeholder.component("name", itemStack.displayName())));
+            }
+            else {
+                itemComponent.append(ChatUtils.translate("<hover:show_text:Air><white>[Air]</white></hover>"));
+            }
+        }
+        else {
+            itemComponent.content("<item>");
+        }
+
         // Checks which tags we should process in a sender's message.
         TagResolver.Builder tagsResolverBuilder = TagResolver.builder();
         if(sender.hasPermission("jadedchat.message.colors")) {
@@ -226,7 +252,7 @@ public class MessageManager {
 
             message = plugin.getEmoteManager().replaceEmotes(message, sender);
 
-            Component component = MiniMessage.miniMessage().deserialize(value, Placeholder.component("message", miniMessage.deserialize(message)));
+            Component component = MiniMessage.miniMessage().deserialize(value, Placeholder.component("message", miniMessage.deserialize(message, Placeholder.component("item", itemComponent.build()))));
             output.append(component);
         }
 
