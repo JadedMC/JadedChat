@@ -42,6 +42,7 @@ import java.util.List;
 public class EmoteManager {
     private final JadedChat plugin;
     private final List<Emote> emotes = new ArrayList<>();
+    private boolean enableEmotes;
 
     /**
      * Creates the emote manager.
@@ -67,6 +68,13 @@ public class EmoteManager {
         emotes.clear();
 
         SettingsManager settings = plugin.getSettingsManager();
+
+        // Set if emotes should be enabled.
+        if(!settings.getEmotes().isSet("enable")) {
+            enableEmotes = true;
+        }
+        enableEmotes = settings.getEmotes().getBoolean("enabled");
+
         ConfigurationSection section = settings.getEmotes().getConfigurationSection("emotes");
 
         for(String str : section.getKeys(false)) {

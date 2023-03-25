@@ -1,3 +1,5 @@
+enabled: false
+
 emotes:
   1:
     identifier: ":shrug:"
