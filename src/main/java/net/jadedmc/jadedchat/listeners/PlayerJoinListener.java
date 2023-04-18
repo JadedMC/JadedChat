@@ -59,7 +59,7 @@ public class PlayerJoinListener implements Listener {
     public void onJoin(PlayerJoinEvent event) {
 
         // If this is the player's first time playing, displays the first join message if enabled.
-        if(!event.getPlayer().hasPlayedBefore() && plugin.getSettingsManager().getConfig().isSet("FirstJoinMessage.enabled")) {
+        if(!event.getPlayer().hasPlayedBefore() && plugin.getSettingsManager().getConfig().isSet("FirstJoinMessage.enabled") && plugin.getSettingsManager().getConfig().getBoolean("FirstJoinMessage.enabled")) {
             Bukkit.broadcast(ChatUtils.translateWithPlaceholders(plugin.getSettingsManager().getConfig().getString("FirstJoinMessage.message"), event.getPlayer()));
         }
 
