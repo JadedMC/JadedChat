@@ -101,6 +101,12 @@ public class Format {
      * @return Component of the message applied to the format.
      */
     public Component processMessage(Player player, String message) {
+
+        // Replace legacy chat colors.
+        if(color || decorations) {
+            message = ChatUtils.replaceLegacy(message);
+        }
+
         TextComponent.Builder component = Component.text();
         TextComponent.Builder itemComponent = Component.text();
 
