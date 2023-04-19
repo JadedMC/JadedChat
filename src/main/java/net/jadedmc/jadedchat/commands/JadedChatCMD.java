@@ -88,7 +88,7 @@ public class JadedChatCMD implements CommandExecutor {
                 ChatUtils.chat(sender, "<green><bold>JadedChat</bold> <dark_gray>» <green>Currently Loaded Channels:");
 
                 for(Channel channel : plugin.getChannelManager().getLoadedChannels()) {
-                    ChatUtils.chat(sender, "  <dark_gray>➤ <gray><hover:show_text:\"<green>Click to switch channels</green>\"><click:suggest_command:/channel " + channel.getName() + ">" + channel.getName() + "</click></hover>");
+                    ChatUtils.chat(sender, "  <dark_gray>➤ <gray><hover:show_text:\"<green>Click to switch channels</green>\"><click:suggest_command:/channel " + channel.getName() + ">" + channel.getDisplayName() + "</click></hover>");
                 }
             }
             // Displays the plugin's current version.

@@ -58,6 +58,8 @@ public class Channel {
     private final Map<String, Format> formats = new LinkedHashMap<>();
     private int range = -1;
 
+    private final String displayName;
+
     /**
      * Creates the channel object.
      * @param file Configuration file of the channel.
@@ -98,6 +100,13 @@ public class Channel {
             this.range = rawConfig.getInt("settings.range");
         }
 
+        if(rawConfig.isSet("displayName")) {
+            this.displayName = rawConfig.getString("displayName");
+        }
+        else {
+            this.displayName = name;
+        }
+
         // Add the aliases.
         for(String alias : rawConfig.getStringList("aliases")) {
             aliases.add(alias.toUpperCase());
@@ -127,6 +136,15 @@ public class Channel {
      */
     public Collection<String> getAliases() {
         return aliases;
+    }
+
+    /**
+     * Get the display name of the channel.
+     * Returns just the channel name if not set.
+     * @return Set display name.
+     */
+    public String getDisplayName() {
+        return displayName;
     }
 
     /**

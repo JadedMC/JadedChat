@@ -94,7 +94,7 @@ public class ChannelCMD implements CommandExecutor {
         if(args.length == 1) {
             // Toggles the channel being used.
             plugin.getChannelManager().setChannel(player, plugin.getChannelManager().getChannel(args[0]));
-            ChatUtils.chat(player, plugin.getSettingsManager().getMessage(Message.CHANNEL_SWITCH).replace("<channel>", channel.getName()));
+            ChatUtils.chat(player, plugin.getSettingsManager().getMessage(Message.CHANNEL_SWITCH).replace("<channel>", channel.getDisplayName()));
         }
         else {
             // Gets the message from the arguments by creating a new array ignoring the username and turning it into a list.
