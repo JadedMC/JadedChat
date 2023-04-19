@@ -70,10 +70,16 @@ public class EmoteManager {
         SettingsManager settings = plugin.getSettingsManager();
 
         // Set if emotes should be enabled.
-        if(!settings.getEmotes().isSet("enable")) {
+        if(!settings.getEmotes().isSet("enabled")) {
             enableEmotes = true;
         }
-        enableEmotes = settings.getEmotes().getBoolean("enabled");
+        else {
+            enableEmotes = settings.getEmotes().getBoolean("enabled");
+        }
+
+        if(!enableEmotes) {
+            return;
+        }
 
         ConfigurationSection section = settings.getEmotes().getConfigurationSection("emotes");
 
