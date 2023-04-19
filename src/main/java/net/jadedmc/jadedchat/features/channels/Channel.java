@@ -37,6 +37,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
+import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 
 import java.io.File;
@@ -55,6 +56,7 @@ public class Channel {
     private final boolean useDiscordSRV;
     private final FileConfiguration rawConfig;
     private final Map<String, Format> formats = new LinkedHashMap<>();
+    private int range = -1;
 
     /**
      * Creates the channel object.
@@ -90,6 +92,10 @@ public class Channel {
         }
         else {
             this.useDiscordSRV = rawConfig.getBoolean("settings.DiscordSRV");
+        }
+
+        if(rawConfig.isSet("settings.range")) {
+            this.range = rawConfig.getInt("settings.range");
         }
 
         // Add the aliases.
@@ -195,23 +201,39 @@ public class Channel {
      * @return All players who can see that message.
      */
     public Collection<Player> getViewers(Player sender) {
-        Collection<Player> viewers = new ArrayList<>();
+        Collection<Player> hasPermission = new ArrayList<>();
 
         // If the permission is empty, return all online players.
         if(permission.equalsIgnoreCase("")) {
-            viewers.addAll(Bukkit.getOnlinePlayers());
-            return viewers;
+            hasPermission.addAll(Bukkit.getOnlinePlayers());
         }
-
-        // Checks each player to see if they have the proper permission.
-        for(Player player : Bukkit.getOnlinePlayers()) {
-            // If so, add them as a viewer.
-            if(player.hasPermission(permission)) {
-                viewers.add(player);
+        else {
+            // Checks each player to see if they have the proper permission.
+            for(Player player : Bukkit.getOnlinePlayers()) {
+                // If so, add them as a viewer.
+                if(player.hasPermission(permission)) {
+                    hasPermission.add(player);
+                }
             }
         }
 
-        return viewers;
+
+        Collection<Player> inRange = new ArrayList<>();
+
+        // If the range is less than one, add all players with permission.
+        if(range < 1) {
+            inRange.addAll(hasPermission);
+        }
+        else {
+            // If not, loop through all players with permission and check if they are in range.
+            for(Player player : hasPermission) {
+                if(player.getLocation().distance(sender.getLocation()) <= range) {
+                    inRange.add(player);
+                }
+            }
+        }
+
+        return inRange;
     }
 
     /**

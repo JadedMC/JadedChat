@@ -24,6 +24,11 @@ settings:
   # Requires Hooks.DiscordSRV to be enabled in config.yml
   DiscordSRV: true
 
+  # Sets the range (in blocks) that chat messages should travel.
+  # Any players outside this distance wont see messages, even if they have permission.
+  # set to -1 to disable.
+  range: -1
+
 # The available formats in the channel.
 # accessed via the permission formats.[format]
 formats:
