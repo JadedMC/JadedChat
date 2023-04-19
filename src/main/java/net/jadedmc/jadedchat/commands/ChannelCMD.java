@@ -32,10 +32,14 @@ import net.jadedmc.jadedchat.utils.StringUtils;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
+import org.bukkit.command.TabCompleter;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
 
 /**
  * This class runs the /channel command, which allows a player to switch chat channels.
@@ -43,7 +47,7 @@ import java.util.Arrays;
  * - chat
  * - ch
  */
-public class ChannelCMD implements CommandExecutor {
+public class ChannelCMD implements CommandExecutor, TabCompleter {
     private final JadedChat plugin;
 
     /**
@@ -103,5 +107,49 @@ public class ChannelCMD implements CommandExecutor {
         }
 
         return true;
+    }
+
+    /**
+     * Processes command tab completion.
+     * @param sender Command sender.
+     * @param cmd Command.
+     * @param label Command label.
+     * @param args Arguments of the command.
+     * @return Tab completion.
+     */
+    @Override
+    public List<String> onTabComplete(@NotNull CommandSender sender, @NotNull Command cmd, @NotNull String label, String[] args) {
+
+        // Lists all channels if the player hasn't picked one yet.
+        if(args.length == 0) {
+            List<String> channels = new ArrayList<>();
+
+            // Find all channels the player has permission to use.
+            for(Channel channel : plugin.getChannelManager().getLoadedChannels()) {
+                if(sender.hasPermission(channel.getPermissionNode())) {
+                    channels.add(channel.getName());
+                }
+            }
+
+            // Returns those channels.
+            return channels;
+        }
+
+        // Only list channels that start with the first argument.
+        if(args.length == 1) {
+            List<String> channels = new ArrayList<>();
+            String start = args[0];
+
+            for(Channel channel : plugin.getChannelManager().getLoadedChannels()) {
+                if(sender.hasPermission(channel.getPermissionNode()) && channel.getName().toLowerCase().startsWith(start.toLowerCase())) {
+                    channels.add(channel.getName());
+                }
+            }
+
+            return channels;
+        }
+
+        // Otherwise, send an empty list.
+        return Collections.emptyList();
     }
 }

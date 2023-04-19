@@ -31,14 +31,19 @@ import net.jadedmc.jadedchat.utils.ChatUtils;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
+import org.bukkit.command.TabCompleter;
 import org.jetbrains.annotations.NotNull;
+
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
 
 /**
  * This class runs the /jadedchat command, which is the main admin command for the plugin.
  * aliases:
  * - jc
  */
-public class JadedChatCMD implements CommandExecutor {
+public class JadedChatCMD implements CommandExecutor, TabCompleter {
     private final JadedChat plugin;
 
     /**
@@ -105,5 +110,25 @@ public class JadedChatCMD implements CommandExecutor {
         }
 
         return true;
+    }
+
+    /**
+     * Processes command tab completion.
+     * @param sender Command sender.
+     * @param cmd Command.
+     * @param label Command label.
+     * @param args Arguments of the command.
+     * @return Tab completion.
+     */
+    @Override
+    public List<String> onTabComplete(@NotNull CommandSender sender, @NotNull Command cmd, @NotNull String label, String[] args) {
+
+        // Lists all subcommands if the player hasn't picked one yet.
+        if(args.length < 2) {
+            return Arrays.asList("channels", "help", "reload", "version");
+        }
+
+        // Otherwise, send an empty list.
+        return Collections.emptyList();
     }
 }
