@@ -82,31 +82,34 @@ public class JadedChatCMD implements CommandExecutor, TabCompleter {
         // Runs the used sub command.
         switch (subCommand) {
             // Reloads all plugin configuration files.
-            case "reload" -> {
+            case "reload":
                 plugin.getSettingsManager().reload();
                 plugin.getChannelManager().loadChannels();
                 plugin.getEmoteManager().registerEmotes();
                 ChatUtils.chat(sender, "<green><bold>JadedChat</bold> <dark_gray>» <green>Configuration files reloaded successfully!");
-            }
+                break;
+
             // Displays all currently loaded channels.
-            case "channels" -> {
+            case "channels":
                 ChatUtils.chat(sender, "<green><bold>JadedChat</bold> <dark_gray>» <green>Currently Loaded Channels:");
 
                 for(Channel channel : plugin.getChannelManager().getLoadedChannels()) {
                     ChatUtils.chat(sender, "  <dark_gray>➤ <gray><hover:show_text:\"<green>Click to switch channels</green>\"><click:suggest_command:/channel " + channel.getName() + ">" + channel.getDisplayName() + "</click></hover>");
                 }
-            }
+                break;
+
             // Displays the plugin's current version.
-            case "version" -> {
+            case "version":
                 ChatUtils.chat(sender, "<green><bold>JadedChat</bold> <dark_gray>» <green>Current version: <white>" + plugin.getDescription().getVersion());
-            }
+                break;
+
             // Displays the help menu.
-            default -> {
+            default:
                 ChatUtils.chat(sender, "<green><bold>JadedChat Commands");
                 ChatUtils.chat(sender, "<green>/jc channels <dark_gray>» <white>Lists all loaded channels.");
                 ChatUtils.chat(sender, "<green>/jc reload <dark_gray>» <white>Reloads all configuration files.");
                 ChatUtils.chat(sender, "<green>/jc version <dark_gray>» <white>Displays the plugin version.");
-            }
+                break;
         }
 
         return true;

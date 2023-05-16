@@ -15,7 +15,7 @@ JadedChat is a feature-rich JSON chat plugin for [Paper](http://www.papermc.io) 
 * Cross-server chat using BungeeCord
 
 ## Requirements
-* Java 17 or newer
+* Java 8 or newer
 * Server Software with Paper API.
 * Minecraft 1.19 or later
 * PlaceholderAPI

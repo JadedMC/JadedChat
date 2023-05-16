@@ -70,9 +70,11 @@ public class ChannelCMD implements CommandExecutor, TabCompleter {
     public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, @NotNull String[] args) {
 
         // Only players should be able to use chat channels.
-        if(!(sender instanceof Player player)) {
+        if(!(sender instanceof Player)) {
             return true;
         }
+
+        Player player = (Player) sender;
 
         // Make sure they're using the command properly.
         if(args.length < 1) {
