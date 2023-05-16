@@ -197,7 +197,7 @@ public class MessageManager {
 
         TextComponent.Builder itemComponent = Component.text();
         // Enables displaying the held item in chat if the player has permission.
-        if(sender.hasPermission("jadedchat.showitem")) {
+        if(sender.hasPermission("jadedchat.showitem") && plugin.isPaper()) {
             if(sender.getInventory().getItemInHand().getType() != Material.AIR) {
                 ItemStack itemStack = sender.getInventory().getItemInHand();
 

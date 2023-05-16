@@ -29,12 +29,14 @@ import net.jadedmc.jadedchat.features.channels.Channel;
 import net.jadedmc.jadedchat.features.channels.ChannelManager;
 import net.jadedmc.jadedchat.features.emotes.EmoteManager;
 import net.jadedmc.jadedchat.features.filter.FilterManager;
-import net.jadedmc.jadedchat.listeners.AsyncChatListener;
+import net.jadedmc.jadedchat.listeners.AsyncPlayerChatListener;
 import net.jadedmc.jadedchat.listeners.PlayerJoinListener;
 import net.jadedmc.jadedchat.listeners.PlayerQuitListener;
 import net.jadedmc.jadedchat.features.messaging.MessageManager;
 import net.jadedmc.jadedchat.settings.HookManager;
 import net.jadedmc.jadedchat.settings.SettingsManager;
+import net.jadedmc.jadedchat.utils.ChatUtils;
+import net.kyori.adventure.platform.bukkit.BukkitAudiences;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -50,18 +52,33 @@ import java.io.IOException;
  * It links all parts together and registers them with the server.
  */
 public final class JadedChat extends JavaPlugin implements PluginMessageListener {
+    private BukkitAudiences adventure;
     private ChannelManager channelManager;
     private EmoteManager emoteManager;
     private FilterManager filterManager;
     private HookManager hookManager;
     private MessageManager messageManager;
     private SettingsManager settingsManager;
+    private boolean isPaper;
 
     /**
      * Runs when the server is started.
      */
     @Override
     public void onEnable() {
+        // Initialize an audiences instance for the plugin
+        this.adventure = BukkitAudiences.create(this);
+        new ChatUtils(this);
+
+        isPaper = false;
+        try {
+            // Any other works, just the shortest I could find.
+            Class.forName("com.destroystokyo.paper.ParticleBuilder");
+            isPaper = true;
+            Bukkit.getLogger().info("Paper Detected. Enabling Paper-Only Features.");
+        }
+        catch (ClassNotFoundException ignored) {}
+
         // Load configuration files first.
         settingsManager = new SettingsManager(this);
 
@@ -73,7 +90,7 @@ public final class JadedChat extends JavaPlugin implements PluginMessageListener
         hookManager = new HookManager(this);
 
         // Registers the listeners used by the plugin.
-        Bukkit.getPluginManager().registerEvents(new AsyncChatListener(this), this);
+        Bukkit.getPluginManager().registerEvents(new AsyncPlayerChatListener(this), this);
         Bukkit.getPluginManager().registerEvents(new PlayerJoinListener(this), this);
         Bukkit.getPluginManager().registerEvents(new PlayerQuitListener(this), this);
 
@@ -89,6 +106,13 @@ public final class JadedChat extends JavaPlugin implements PluginMessageListener
 
         getServer().getMessenger().registerOutgoingPluginChannel(this, "BungeeCord");
         getServer().getMessenger().registerIncomingPluginChannel(this, "BungeeCord", this);
+    }
+
+    public BukkitAudiences adventure() {
+        if(this.adventure == null) {
+            throw new IllegalStateException("Tried to access Adventure when the plugin was disabled!");
+        }
+        return this.adventure;
     }
 
     @Override
@@ -167,5 +191,9 @@ public final class JadedChat extends JavaPlugin implements PluginMessageListener
      */
     public SettingsManager getSettingsManager() {
         return settingsManager;
+    }
+
+    public boolean isPaper() {
+        return isPaper;
     }
 }

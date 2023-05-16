@@ -26,8 +26,10 @@ package net.jadedmc.jadedchat.listeners;
 
 import me.clip.placeholderapi.PlaceholderAPI;
 import net.jadedmc.jadedchat.JadedChat;
+import net.jadedmc.jadedchat.utils.ChatUtils;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.minimessage.MiniMessage;
+import org.bukkit.Bukkit;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
@@ -66,12 +68,12 @@ public class PlayerQuitListener implements Listener {
 
         // Makes sure there is no quit message if that is what the plugin is configured for.
         if(!plugin.getSettingsManager().getConfig().isSet("QuitMessage.message")) {
-            event.quitMessage(null);
+            event.setQuitMessage(null);
             return;
         }
 
         // Prevents conflict with over plugins by not overwriting quit messages when they are null.
-        if(event.quitMessage() == null) {
+        if(event.getQuitMessage() == null) {
             return;
         }
 
@@ -80,7 +82,7 @@ public class PlayerQuitListener implements Listener {
 
         // Another check to make sure there is no quit message if that is what is set up.
         if(messageString == null || messageString.equals("null")) {
-            event.quitMessage(null);
+            event.setQuitMessage(null);
             return;
         }
 
@@ -88,6 +90,7 @@ public class PlayerQuitListener implements Listener {
         messageString = PlaceholderAPI.setPlaceholders(event.getPlayer(), messageString);
         messageString = plugin.getEmoteManager().replaceEmotes(messageString);
         Component messageComponent = MiniMessage.miniMessage().deserialize(messageString);
-        event.quitMessage(messageComponent);
+        event.setQuitMessage(null);
+        Bukkit.spigot().broadcast(ChatUtils.translateToBaseComponent(messageComponent));
     }
 }

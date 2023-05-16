@@ -111,7 +111,7 @@ public class Format {
         TextComponent.Builder itemComponent = Component.text();
 
         // Enables displaying the held item in chat if the player has permission.
-        if(player.hasPermission("jadedchat.showitem")) {
+        if(player.hasPermission("jadedchat.showitem") && plugin.isPaper()) {
             if(player.getInventory().getItemInHand().getType() != Material.AIR) {
                 ItemStack itemStack = player.getInventory().getItemInHand();
 

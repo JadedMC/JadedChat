@@ -25,8 +25,11 @@
 package net.jadedmc.jadedchat.utils;
 
 import me.clip.placeholderapi.PlaceholderAPI;
+import net.jadedmc.jadedchat.JadedChat;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.minimessage.MiniMessage;
+import net.kyori.adventure.text.serializer.bungeecord.BungeeComponentSerializer;
+import net.md_5.bungee.api.chat.BaseComponent;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
@@ -34,6 +37,11 @@ import org.bukkit.entity.Player;
  * Some methods to make sending chat messages easier.
  */
 public class ChatUtils {
+    private static JadedChat plugin;
+
+    public ChatUtils(JadedChat pl) {
+        plugin = pl;
+    }
 
     /**
      * A quick way to send a CommandSender a colored message.
@@ -41,7 +49,24 @@ public class ChatUtils {
      * @param message The message being sent.
      */
     public static void chat(CommandSender sender, String message) {
-        sender.sendMessage(translate(message));
+        plugin.adventure().sender(sender).sendMessage(translate(message));
+    }
+
+    public static void chat(CommandSender sender, Component message) {
+        plugin.adventure().sender(sender).sendMessage(message);
+    }
+
+    /**
+     * Translates a String to a colorful String using methods in the BungeeCord API.
+     * @param message Message to translate.
+     * @return Translated Message.
+     */
+    public static BaseComponent[] translateToBaseComponent(String message) {
+        return BungeeComponentSerializer.get().serialize(translate(message));
+    }
+
+    public static BaseComponent[] translateToBaseComponent(Component component) {
+        return BungeeComponentSerializer.get().serialize(component);
     }
 
     /**

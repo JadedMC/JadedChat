@@ -28,6 +28,7 @@ import com.google.common.io.ByteArrayDataOutput;
 import com.google.common.io.ByteStreams;
 import github.scarsz.discordsrv.DiscordSRV;
 import net.jadedmc.jadedchat.JadedChat;
+import net.jadedmc.jadedchat.utils.ChatUtils;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.TextComponent;
 import net.kyori.adventure.text.minimessage.MiniMessage;
@@ -277,10 +278,10 @@ public class Channel {
         Component messageComponent = getFormat(player).processMessage(player, message);
 
         // Send the message to all channel viewers.
-        getViewers(player).forEach(viewer -> viewer.sendMessage(messageComponent));
+        getViewers(player).forEach(viewer -> ChatUtils.chat(viewer, messageComponent));
 
         // Send the message to the console as well
-        Bukkit.getServer().getConsoleSender().sendMessage(Component.text().content("[" + name + "] ").append(messageComponent).build());
+        ChatUtils.chat(Bukkit.getConsoleSender(), Component.text().content("[" + name + "] ").append(messageComponent).build());
 
         // Sends the message through bungeecord if bungeecord is enabled for the channel.
         if(useBungeecord) {
@@ -310,9 +311,9 @@ public class Channel {
         Component component = MiniMessage.miniMessage().deserialize(message);
 
         // Send the message to all channel viewers.
-        getViewers(null).forEach(viewer -> viewer.sendMessage(component));
+        getViewers(null).forEach(viewer -> ChatUtils.chat(viewer, component));
 
         // Send the message to the console as well
-        Bukkit.getServer().getConsoleSender().sendMessage(Component.text().content("(Bungee) [" + name + "] ").append(component).build());
+        ChatUtils.chat(Bukkit.getConsoleSender(), Component.text().content("(Bungee) [" + name + "] ").append(component).build());
     }
 }

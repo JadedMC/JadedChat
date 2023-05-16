@@ -60,7 +60,8 @@ public class PlayerJoinListener implements Listener {
 
         // If this is the player's first time playing, displays the first join message if enabled.
         if(!event.getPlayer().hasPlayedBefore() && plugin.getSettingsManager().getConfig().isSet("FirstJoinMessage.enabled") && plugin.getSettingsManager().getConfig().getBoolean("FirstJoinMessage.enabled")) {
-            Bukkit.broadcast(ChatUtils.translateWithPlaceholders(plugin.getSettingsManager().getConfig().getString("FirstJoinMessage.message"), event.getPlayer()));
+            Component joinMessage = ChatUtils.translateWithPlaceholders(plugin.getSettingsManager().getConfig().getString("FirstJoinMessage.message"), event.getPlayer());
+            Bukkit.spigot().broadcast(ChatUtils.translateToBaseComponent(joinMessage));
         }
 
         // We only want to modify the join message if the plugin is configured to.
@@ -70,12 +71,12 @@ public class PlayerJoinListener implements Listener {
 
         // Makes sure there is no join message if that is what the plugin is configured for.
         if(!plugin.getSettingsManager().getConfig().isSet("JoinMessage.message")) {
-            event.joinMessage(null);
+            event.setJoinMessage(null);
             return;
         }
 
         // Prevents conflict with over plugins by not overwriting join messages when they are null.
-        if(event.joinMessage() == null) {
+        if(event.getJoinMessage() == null) {
             return;
         }
 
@@ -84,7 +85,7 @@ public class PlayerJoinListener implements Listener {
 
         // Another check to make sure there is no join message if that is what is set up.
         if(messageString == null || messageString.equals("null")) {
-            event.joinMessage(null);
+            event.setJoinMessage(null);
             return;
         }
 
@@ -92,6 +93,7 @@ public class PlayerJoinListener implements Listener {
         messageString = PlaceholderAPI.setPlaceholders(event.getPlayer(), messageString);
         messageString = plugin.getEmoteManager().replaceEmotes(messageString);
         Component messageComponent = MiniMessage.miniMessage().deserialize(messageString);
-        event.joinMessage(messageComponent);
+        event.setJoinMessage(null);
+        Bukkit.spigot().broadcast(ChatUtils.translateToBaseComponent(messageComponent));
     }
 }
