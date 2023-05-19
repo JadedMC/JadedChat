@@ -2,7 +2,7 @@
 name: "GLOBAL"
 
 # The display name of the channel. Can use color codes.
-displayName: "<gray>STAFF</gray>"
+displayName: "<gray>GLOBAL</gray>"
 
 # Aliases for the channel name. Used when switching channels.
 aliases:
