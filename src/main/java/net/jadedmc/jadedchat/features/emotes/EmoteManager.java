@@ -24,7 +24,7 @@
  */
 package net.jadedmc.jadedchat.features.emotes;
 
-import net.jadedmc.jadedchat.JadedChat;
+import net.jadedmc.jadedchat.JadedChatPlugin;
 import net.jadedmc.jadedchat.settings.SettingsManager;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.TextReplacementConfig;
@@ -40,7 +40,7 @@ import java.util.List;
  * and stores them for future use.
  */
 public class EmoteManager {
-    private final JadedChat plugin;
+    private final JadedChatPlugin plugin;
     private final List<Emote> emotes = new ArrayList<>();
     private boolean enableEmotes;
 
@@ -48,7 +48,7 @@ public class EmoteManager {
      * Creates the emote manager.
      * @param plugin Instance of the plugin.
      */
-    public EmoteManager(JadedChat plugin) {
+    public EmoteManager(JadedChatPlugin plugin) {
         this.plugin = plugin;
         registerEmotes();
     }
@@ -67,7 +67,7 @@ public class EmoteManager {
     public void registerEmotes() {
         emotes.clear();
 
-        SettingsManager settings = plugin.getSettingsManager();
+        SettingsManager settings = plugin.settingsManager();
 
         // Set if emotes should be enabled.
         if(!settings.getEmotes().isSet("enabled")) {
@@ -117,7 +117,7 @@ public class EmoteManager {
 
         for(Emote emote : emotes) {
             if(!player.hasPermission(emote.getPermissionNode())) {
-               continue;
+                continue;
             }
 
             output = output.replaceText(TextReplacementConfig.builder().match(emote.getIdentifier()).replacement(MiniMessage.miniMessage().deserialize(emote.getEmote())).build());

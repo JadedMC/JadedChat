@@ -1,31 +1,7 @@
-/*
- * This file is part of JadedChat, licensed under the MIT License.
- *
- *  Copyright (c) JadedMC
- *  Copyright (c) contributors
- *
- *  Permission is hereby granted, free of charge, to any person obtaining a copy
- *  of this software and associated documentation files (the "Software"), to deal
- *  in the Software without restriction, including without limitation the rights
- *  to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
- *  copies of the Software, and to permit persons to whom the Software is
- *  furnished to do so, subject to the following conditions:
- *
- *  The above copyright notice and this permission notice shall be included in all
- *  copies or substantial portions of the Software.
- *
- *  THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
- *  IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
- *  FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
- *  AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
- *  LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
- *  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
- *  SOFTWARE.
- */
 package net.jadedmc.jadedchat.commands;
 
-import net.jadedmc.jadedchat.JadedChat;
-import net.jadedmc.jadedchat.features.channels.Channel;
+import net.jadedmc.jadedchat.JadedChatPlugin;
+import net.jadedmc.jadedchat.features.channels.channel.ChatChannel;
 import net.jadedmc.jadedchat.settings.Message;
 import net.jadedmc.jadedchat.utils.ChatUtils;
 import org.bukkit.command.Command;
@@ -44,13 +20,13 @@ import java.util.List;
  * - jc
  */
 public class JadedChatCMD implements CommandExecutor, TabCompleter {
-    private final JadedChat plugin;
+    private final JadedChatPlugin plugin;
 
     /**
      * To be able to access the configuration files, we need to pass an instance of the plugin to our listener.
      * @param plugin Instance of the plugin.
      */
-    public JadedChatCMD(JadedChat plugin) {
+    public JadedChatCMD(JadedChatPlugin plugin) {
         this.plugin = plugin;
     }
 
@@ -67,7 +43,7 @@ public class JadedChatCMD implements CommandExecutor, TabCompleter {
 
         // Makes sure the sender has permission to use the command.
         if(!sender.hasPermission("jadedchat.admin")) {
-            ChatUtils.chat(sender, plugin.getSettingsManager().getMessage(Message.JADEDCHAT_NO_PERMISSION));
+            ChatUtils.chat(sender, plugin.settingsManager().getMessage(Message.JADEDCHAT_NO_PERMISSION));
             return true;
         }
 
@@ -83,9 +59,9 @@ public class JadedChatCMD implements CommandExecutor, TabCompleter {
         switch (subCommand) {
             // Reloads all plugin configuration files.
             case "reload":
-                plugin.getSettingsManager().reload();
-                plugin.getChannelManager().loadChannels();
-                plugin.getEmoteManager().registerEmotes();
+                plugin.settingsManager().reload();
+                plugin.channelManager().loadChannels();
+                plugin.emoteManager().registerEmotes();
                 ChatUtils.chat(sender, "<green><bold>JadedChat</bold> <dark_gray>» <green>Configuration files reloaded successfully!");
                 break;
 
@@ -93,8 +69,8 @@ public class JadedChatCMD implements CommandExecutor, TabCompleter {
             case "channels":
                 ChatUtils.chat(sender, "<green><bold>JadedChat</bold> <dark_gray>» <green>Currently Loaded Channels:");
 
-                for(Channel channel : plugin.getChannelManager().getLoadedChannels()) {
-                    ChatUtils.chat(sender, "  <dark_gray>➤ <gray><hover:show_text:\"<green>Click to switch channels</green>\"><click:suggest_command:/channel " + channel.getName() + ">" + channel.getDisplayName() + "</click></hover>");
+                for(ChatChannel channel : plugin.channelManager().getLoadedChannels()) {
+                    ChatUtils.chat(sender, "  <dark_gray>➤ <gray><hover:show_text:\"<green>Click to switch channels</green>\"><click:suggest_command:/channel " + channel.name() + ">" + channel.displayName() + "</click></hover>");
                 }
                 break;
 

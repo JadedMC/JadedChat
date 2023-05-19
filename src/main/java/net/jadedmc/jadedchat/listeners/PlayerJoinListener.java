@@ -25,7 +25,7 @@
 package net.jadedmc.jadedchat.listeners;
 
 import me.clip.placeholderapi.PlaceholderAPI;
-import net.jadedmc.jadedchat.JadedChat;
+import net.jadedmc.jadedchat.JadedChatPlugin;
 import net.jadedmc.jadedchat.utils.ChatUtils;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.minimessage.MiniMessage;
@@ -40,13 +40,13 @@ import org.bukkit.event.player.PlayerJoinEvent;
  * We use this to modify the format of join messages.
  */
 public class PlayerJoinListener implements Listener {
-    private final JadedChat plugin;
+    private final JadedChatPlugin plugin;
 
     /**
      * To be able to access the configuration files, we need to pass an instance of the plugin to our listener.
      * @param plugin Instance of the plugin.
      */
-    public PlayerJoinListener(JadedChat plugin) {
+    public PlayerJoinListener(JadedChatPlugin plugin) {
         this.plugin = plugin;
     }
 
@@ -59,18 +59,18 @@ public class PlayerJoinListener implements Listener {
     public void onJoin(PlayerJoinEvent event) {
 
         // If this is the player's first time playing, displays the first join message if enabled.
-        if(!event.getPlayer().hasPlayedBefore() && plugin.getSettingsManager().getConfig().isSet("FirstJoinMessage.enabled") && plugin.getSettingsManager().getConfig().getBoolean("FirstJoinMessage.enabled")) {
-            Component joinMessage = ChatUtils.translateWithPlaceholders(plugin.getSettingsManager().getConfig().getString("FirstJoinMessage.message"), event.getPlayer());
+        if(!event.getPlayer().hasPlayedBefore() && plugin.settingsManager().getConfig().isSet("FirstJoinMessage.enabled") && plugin.settingsManager().getConfig().getBoolean("FirstJoinMessage.enabled")) {
+            Component joinMessage = ChatUtils.translateWithPlaceholders(plugin.settingsManager().getConfig().getString("FirstJoinMessage.message"), event.getPlayer());
             Bukkit.spigot().broadcast(ChatUtils.translateToBaseComponent(joinMessage));
         }
 
         // We only want to modify the join message if the plugin is configured to.
-        if(!plugin.getSettingsManager().getConfig().getBoolean("JoinMessage.override")) {
+        if(!plugin.settingsManager().getConfig().getBoolean("JoinMessage.override")) {
             return;
         }
 
         // Makes sure there is no join message if that is what the plugin is configured for.
-        if(!plugin.getSettingsManager().getConfig().isSet("JoinMessage.message")) {
+        if(!plugin.settingsManager().getConfig().isSet("JoinMessage.message")) {
             event.setJoinMessage(null);
             return;
         }
@@ -81,7 +81,7 @@ public class PlayerJoinListener implements Listener {
         }
 
         // Grabs the configured join message.
-        String messageString = plugin.getSettingsManager().getConfig().getString("JoinMessage.message");
+        String messageString = plugin.settingsManager().getConfig().getString("JoinMessage.message");
 
         // Another check to make sure there is no join message if that is what is set up.
         if(messageString == null || messageString.equals("null")) {
@@ -91,7 +91,7 @@ public class PlayerJoinListener implements Listener {
 
         // Formats the join message and applies it.
         messageString = PlaceholderAPI.setPlaceholders(event.getPlayer(), messageString);
-        messageString = plugin.getEmoteManager().replaceEmotes(messageString);
+        messageString = plugin.emoteManager().replaceEmotes(messageString);
         Component messageComponent = MiniMessage.miniMessage().deserialize(messageString);
         event.setJoinMessage(null);
         Bukkit.spigot().broadcast(ChatUtils.translateToBaseComponent(messageComponent));

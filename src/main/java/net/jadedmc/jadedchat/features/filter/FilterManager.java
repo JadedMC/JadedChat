@@ -24,8 +24,8 @@
  */
 package net.jadedmc.jadedchat.features.filter;
 
-import net.jadedmc.jadedchat.JadedChat;
-import net.jadedmc.jadedchat.features.channels.Channel;
+import net.jadedmc.jadedchat.JadedChatPlugin;
+import net.jadedmc.jadedchat.features.channels.channel.ChatChannel;
 import net.jadedmc.jadedchat.features.filter.filters.RegexFilter;
 import net.jadedmc.jadedchat.features.filter.filters.RepeatMessageFilter;
 import net.jadedmc.jadedchat.utils.ChatUtils;
@@ -42,14 +42,14 @@ import java.util.Objects;
  * Manages filter objects.
  */
 public class FilterManager {
-    private final JadedChat plugin;
+    private final JadedChatPlugin plugin;
     private final List<Filter> filters = new ArrayList<>();
 
     /**
      * Creates the filter manager.
      * @param plugin Instance of the plugin.
      */
-    public FilterManager(JadedChat plugin) {
+    public FilterManager(JadedChatPlugin plugin) {
         this.plugin = plugin;
 
         filters.add(new RegexFilter(plugin));
@@ -63,7 +63,7 @@ public class FilterManager {
      * @param message Message to check.
      * @return Whether the message passes the filter.
      */
-    public boolean passesFilter(Player player, Channel channel, String message) {
+    public boolean passesFilter(Player player, ChatChannel channel, String message) {
         boolean passes = true;
 
         // Loops through each loaded filter.
@@ -84,13 +84,13 @@ public class FilterManager {
         if(!passes) {
             // Sends the player their own message.
             // Checks for permissions to prevent sending the player the same message twice.
-            Component playerMessage = channel.getFormat(player).processMessage(player, message);
+            Component playerMessage = channel.format(player).processMessage(plugin, player, message);
             if(!player.hasPermission("jadedchat.filter.view")) {
                 player.sendMessage(playerMessage);
             }
 
             // Sends staff the filtered message.
-            Component staffMessage = MiniMessage.miniMessage().deserialize(Objects.requireNonNull(plugin.getSettingsManager().getFilter().getString("FilteredPrefix"))).append(playerMessage);
+            Component staffMessage = MiniMessage.miniMessage().deserialize(Objects.requireNonNull(plugin.settingsManager().getFilter().getString("FilteredPrefix"))).append(playerMessage);
             for(Player viewer : Bukkit.getOnlinePlayers()) {
                 if(viewer.hasPermission("jadedchat.filter.view")) {
                     viewer.sendMessage(staffMessage);
@@ -98,7 +98,7 @@ public class FilterManager {
             }
 
             // Send the message to the console as well
-            Bukkit.getServer().getConsoleSender().sendMessage(Component.text().content("(filtered) [" + channel.getName() + "] ").append(playerMessage).build());
+            Bukkit.getServer().getConsoleSender().sendMessage(Component.text().content("(filtered) [" + channel.name() + "] ").append(playerMessage).build());
         }
 
         return passes;

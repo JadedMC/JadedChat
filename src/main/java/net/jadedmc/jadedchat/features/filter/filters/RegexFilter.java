@@ -24,8 +24,8 @@
  */
 package net.jadedmc.jadedchat.features.filter.filters;
 
-import net.jadedmc.jadedchat.JadedChat;
 import net.jadedmc.jadedchat.features.filter.Filter;
+import net.jadedmc.jadedchat.JadedChatPlugin;
 import net.jadedmc.jadedchat.settings.Message;
 import org.bukkit.entity.Player;
 
@@ -36,16 +36,16 @@ import java.util.regex.Pattern;
  * Filters chat based off configured regex statements.
  */
 public class RegexFilter extends Filter {
-    private final JadedChat plugin;
+    private final JadedChatPlugin plugin;
 
     /**
      * Creates the filter.
      * @param plugin Instance of the plugin.
      */
-    public RegexFilter(JadedChat plugin) {
+    public RegexFilter(JadedChatPlugin plugin) {
         this.plugin = plugin;
-        setSilentFail(plugin.getSettingsManager().getFilter().getBoolean("RegexFilter.silent"));
-        setFailMessage(plugin.getSettingsManager().getMessage(Message.FILTER_REGEX));
+        setSilentFail(plugin.settingsManager().getFilter().getBoolean("RegexFilter.silent"));
+        setFailMessage(plugin.settingsManager().getMessage(Message.FILTER_REGEX));
     }
 
     /**
@@ -57,7 +57,7 @@ public class RegexFilter extends Filter {
     @Override
     public boolean passesFilter(Player player, String message) {
         // Exit if the filter is disabled.
-        if(!plugin.getSettingsManager().getFilter().getBoolean("RegexFilter.enabled")) {
+        if(!plugin.settingsManager().getFilter().getBoolean("RegexFilter.enabled")) {
             return true;
         }
 
@@ -68,12 +68,12 @@ public class RegexFilter extends Filter {
 
         // Remove misc characters before filtering.
         String toFilter = message;
-        for(String toRemove : plugin.getSettingsManager().getFilter().getStringList("MiscCharacters.characters")) {
+        for(String toRemove : plugin.settingsManager().getFilter().getStringList("MiscCharacters.characters")) {
             toFilter = toFilter.replace(toRemove, "");
         }
 
         // Loops through each regex statement in the configured list.
-        for(String filter : plugin.getSettingsManager().getFilter().getStringList("RegexFilter.filter")) {
+        for(String filter : plugin.settingsManager().getFilter().getStringList("RegexFilter.filter")) {
             Pattern pattern = Pattern.compile(filter);
             Matcher matcher = pattern.matcher(toFilter);
 

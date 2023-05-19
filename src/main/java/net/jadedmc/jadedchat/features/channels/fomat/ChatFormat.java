@@ -22,12 +22,12 @@
  *  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  *  SOFTWARE.
  */
-package net.jadedmc.jadedchat.features.channels;
+package net.jadedmc.jadedchat.features.channels.fomat;
 
 import me.clip.placeholderapi.PlaceholderAPI;
 import net.jadedmc.jadedchat.JadedChat;
+import net.jadedmc.jadedchat.JadedChatPlugin;
 import net.jadedmc.jadedchat.utils.ChatUtils;
-import net.jadedmc.jadedchat.utils.ConfigUtils;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.TextComponent;
 import net.kyori.adventure.text.minimessage.MiniMessage;
@@ -35,7 +35,6 @@ import net.kyori.adventure.text.minimessage.tag.resolver.Placeholder;
 import net.kyori.adventure.text.minimessage.tag.resolver.TagResolver;
 import net.kyori.adventure.text.minimessage.tag.standard.StandardTags;
 import org.bukkit.Material;
-import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
@@ -45,53 +44,104 @@ import java.util.List;
 /**
  * Represents a format used in a channel.
  */
-public class Format {
-    private final JadedChat plugin;
+public class ChatFormat {
     private final List<String> sections = new ArrayList<>();
-    private final MiniMessage miniMessage;
-
-    private final boolean color;
-    private final boolean decorations;
-    private final boolean events;
+    private MiniMessage miniMessage;
+    private boolean color = false;
+    private boolean decorations = false;
+    private boolean events = false;
+    private final String id;
 
     /**
-     * Creates the Format object.
-     * @param section Configuration Section of the format.
+     * Creates the ChatFormat.
+     * @param id Id of the chat format.
      */
-    public Format(JadedChat plugin, ConfigurationSection section) {
-        this.plugin = plugin;
+    public ChatFormat(String id) {
+        this.id = id;
+        updateMiniMessage();
+    }
 
-        // Load format settings
-        color = ConfigUtils.getBoolean(section, "settings.color", false);
-        decorations = ConfigUtils.getBoolean(section, "settings.decorations", false);
-        events = ConfigUtils.getBoolean(section, "settings.events", false);
+    /**
+     * Add a section to the chat format.
+     * @param section Section to add.
+     */
+    public void addSection(String section) {
+        sections.add(section);
+    }
 
-        // Load the sections for the format.
-        ConfigurationSection formatSections = section.getConfigurationSection("segments");
-        if(formatSections != null) {
-            for(String sectionName : formatSections.getKeys(false)) {
-                sections.add(formatSections.getString(sectionName));
-            }
-        }
+    /**
+     * Get if the chat format should be able to use colors.
+     * @return Whether colors should be usable.
+     */
+    public boolean color() {
+        return color;
+    }
 
-        TagResolver.Builder tagsResolverBuilder = TagResolver.builder();
-        if(color) {
-            tagsResolverBuilder.resolver(StandardTags.color())
-                    .resolver(StandardTags.rainbow())
-                    .resolver(StandardTags.gradient());
-        }
-        if(decorations) {
-            tagsResolverBuilder.resolver(StandardTags.decorations())
-                    .resolver(StandardTags.font());
-        }
-        if(events) {
-            tagsResolverBuilder.resolver(StandardTags.clickEvent())
-                    .resolver(StandardTags.hoverEvent())
-                    .resolver(StandardTags.insertion())
-                    .resolver(StandardTags.selector());
-        }
+    /**
+     * Set if the chat format should be able to use colors.
+     * @param color Whether colors should be usable.
+     */
+    public void color(boolean color) {
+        this.color = color;
+        updateMiniMessage();
+    }
 
-        miniMessage = MiniMessage.builder().tags(tagsResolverBuilder.build()).build();
+    /**
+     * Get if the chat format should be able to use decorations.
+     * @return Whether decorations should be usable.
+     */
+    public boolean decorations() {
+        return decorations;
+    }
+
+    /**
+     * Set if the chat format should be able to use decorations.
+     * @param decorations Whether decorations should be usable.
+     */
+    public void decorations(boolean decorations) {
+        this.decorations = decorations;
+        updateMiniMessage();
+    }
+
+    /**
+     * Get if the chat format should be able to use events.
+     * @return Whether events should be usable.
+     */
+    public boolean events() {
+        return events;
+    }
+
+    /**
+     * Set if the chat format should be able to use events.
+     * @param events Whether events should be usable.
+     */
+    public void events(boolean events) {
+        this.events = events;
+        updateMiniMessage();
+    }
+
+    /**
+     * Gets the id of the ChatFormat.
+     * @return ChatFormat id.
+     */
+    public String id() {
+        return id;
+    }
+
+    /**
+     * Get the MiniMessage object of the format.
+     * @return MiniMessage object.
+     */
+    public MiniMessage miniMessage() {
+        return miniMessage;
+    }
+
+    /**
+     * Get the sections of the format.
+     * @return All sections.
+     */
+    public List<String> sections() {
+        return sections;
     }
 
     /**
@@ -100,7 +150,7 @@ public class Format {
      * @param message The message sent.
      * @return Component of the message applied to the format.
      */
-    public Component processMessage(Player player, String message) {
+    public Component processMessage(JadedChatPlugin plugin, Player player, String message) {
 
         // Replace legacy chat colors.
         if(color || decorations) {
@@ -111,7 +161,7 @@ public class Format {
         TextComponent.Builder itemComponent = Component.text();
 
         // Enables displaying the held item in chat if the player has permission.
-        if(player.hasPermission("jadedchat.showitem") && plugin.isPaper()) {
+        if(player.hasPermission("jadedchat.showitem") && JadedChat.isPaper()) {
             if(player.getInventory().getItemInHand().getType() != Material.AIR) {
                 ItemStack itemStack = player.getInventory().getItemInHand();
 
@@ -137,16 +187,41 @@ public class Format {
             // Makes sure we don't process placeholders sent in the chat message.
             if(section.contains("<message>")) {
                 section = section.replace("<message_raw>", message);
-                message = plugin.getEmoteManager().replaceEmotes(message, player);
+                message = plugin.emoteManager().replaceEmotes(message, player);
                 component.append(MiniMessage.miniMessage().deserialize(section, Placeholder.component("message", miniMessage.deserialize(message, Placeholder.component("item", itemComponent.build())))));
             }
             else {
                 // Processes placeholders for the section.
-                component.append(plugin.getEmoteManager().replaceEmotes(MiniMessage.miniMessage().deserialize(PlaceholderAPI.setPlaceholders(player, section))));
+                component.append(plugin.emoteManager().replaceEmotes(MiniMessage.miniMessage().deserialize(PlaceholderAPI.setPlaceholders(player, section))));
             }
         }
 
         // Returns the final component.
         return component.build();
+    }
+
+    /**
+     * Updates the format MiniMessage object.
+     */
+    public void updateMiniMessage() {
+        TagResolver.Builder tagsResolverBuilder = TagResolver.builder();
+
+        if(color) {
+            tagsResolverBuilder.resolver(StandardTags.color())
+                    .resolver(StandardTags.rainbow())
+                    .resolver(StandardTags.gradient());
+        }
+        if(decorations) {
+            tagsResolverBuilder.resolver(StandardTags.decorations())
+                    .resolver(StandardTags.font());
+        }
+        if(events) {
+            tagsResolverBuilder.resolver(StandardTags.clickEvent())
+                    .resolver(StandardTags.hoverEvent())
+                    .resolver(StandardTags.insertion())
+                    .resolver(StandardTags.selector());
+        }
+
+        miniMessage = MiniMessage.builder().tags(tagsResolverBuilder.build()).build();
     }
 }

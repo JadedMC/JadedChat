@@ -1,6 +1,6 @@
 package net.jadedmc.jadedchat.commands;
 
-import net.jadedmc.jadedchat.JadedChat;
+import net.jadedmc.jadedchat.JadedChatPlugin;
 import net.jadedmc.jadedchat.settings.Message;
 import net.jadedmc.jadedchat.utils.ChatUtils;
 import org.bukkit.command.Command;
@@ -10,9 +10,9 @@ import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 
 public class SocialSpyCMD implements CommandExecutor {
-    private final JadedChat plugin;
+    private final JadedChatPlugin plugin;
 
-    public SocialSpyCMD(JadedChat plugin) {
+    public SocialSpyCMD(JadedChatPlugin plugin) {
         this.plugin = plugin;
     }
 
@@ -20,7 +20,7 @@ public class SocialSpyCMD implements CommandExecutor {
     public boolean onCommand(@NotNull CommandSender sender, @NotNull Command cmd, @NotNull String label, @NotNull String[] args) {
         // Makes sure the sender is a player, and not the console.
         if(!(sender instanceof Player)) {
-            ChatUtils.chat(sender, plugin.getSettingsManager().getMessage(Message.SOCIAL_SPY_NOT_A_PLAYER));
+            ChatUtils.chat(sender, plugin.settingsManager().getMessage(Message.SOCIAL_SPY_NOT_A_PLAYER));
             return true;
         }
 
@@ -28,19 +28,19 @@ public class SocialSpyCMD implements CommandExecutor {
 
         // Makes sure the player has permission to use the command.
         if(!player.hasPermission("jadedchat.socialspy")) {
-            ChatUtils.chat(player, plugin.getSettingsManager().getMessage(Message.SOCIAL_SPY_NO_PERMISSION));
+            ChatUtils.chat(player, plugin.settingsManager().getMessage(Message.SOCIAL_SPY_NO_PERMISSION));
             return true;
         }
 
         // Toggles social spy for the player.
-        plugin.getMessageManager().toggleSocialSpy(player);
+        plugin.messageManager().toggleSocialSpy(player);
 
         // Sends a message to the player telling them what they did.
-        if(plugin.getMessageManager().isSpying(player)) {
-            ChatUtils.chat(player, plugin.getSettingsManager().getMessage(Message.SOCIAL_SPY_ENABLED));
+        if(plugin.messageManager().isSpying(player)) {
+            ChatUtils.chat(player, plugin.settingsManager().getMessage(Message.SOCIAL_SPY_ENABLED));
         }
         else {
-            ChatUtils.chat(player, plugin.getSettingsManager().getMessage(Message.SOCIAL_SPY_DISABLED));
+            ChatUtils.chat(player, plugin.settingsManager().getMessage(Message.SOCIAL_SPY_DISABLED));
         }
 
         return true;

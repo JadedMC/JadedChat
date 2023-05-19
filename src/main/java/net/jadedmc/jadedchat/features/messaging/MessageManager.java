@@ -25,6 +25,7 @@
 package net.jadedmc.jadedchat.features.messaging;
 
 import net.jadedmc.jadedchat.JadedChat;
+import net.jadedmc.jadedchat.JadedChatPlugin;
 import net.jadedmc.jadedchat.utils.ChatUtils;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.TextComponent;
@@ -45,11 +46,11 @@ import java.util.*;
  * This class manages all active conversations. This allows /reply to work.
  */
 public class MessageManager {
-    private final JadedChat plugin;
+    private final JadedChatPlugin plugin;
     private final Map<Player, Player> conversations = new HashMap<>();
     private final Set<Player> spying = new HashSet<>();
 
-    public MessageManager(JadedChat plugin) {
+    public MessageManager(JadedChatPlugin plugin) {
         this.plugin = plugin;
     }
 
@@ -96,10 +97,10 @@ public class MessageManager {
      * @param message The message being sent.
      */
     public void processMessage(Player sender, Player receiver, String message) {
-        FileConfiguration configuration = plugin.getSettingsManager().getConfig();
-        Component toSender = plugin.getMessageManager().generateComponent(configuration.getConfigurationSection("PrivateMessages.SenderMessage.segments"), sender, receiver, message);
-        Component toReceiver = plugin.getMessageManager().generateComponent(configuration.getConfigurationSection("PrivateMessages.ReceiverMessage.segments"), sender, receiver, message);
-        Component toSpy = plugin.getMessageManager().generateComponent(configuration.getConfigurationSection("PrivateMessages.SpyMessage.segments"), sender, receiver, message);
+        FileConfiguration configuration = plugin.settingsManager().getConfig();
+        Component toSender = generateComponent(configuration.getConfigurationSection("PrivateMessages.SenderMessage.segments"), sender, receiver, message);
+        Component toReceiver = generateComponent(configuration.getConfigurationSection("PrivateMessages.ReceiverMessage.segments"), sender, receiver, message);
+        Component toSpy = generateComponent(configuration.getConfigurationSection("PrivateMessages.SpyMessage.segments"), sender, receiver, message);
 
         sender.sendMessage(toSender);
         {
@@ -125,7 +126,7 @@ public class MessageManager {
             }
         }
 
-        for(Player stalker : plugin.getMessageManager().getSpying()) {
+        for(Player stalker : getSpying()) {
 
             // Skips the "stalker" if they are part of the message to prevent double-sending.
             if(stalker.equals(sender) || stalker.equals(receiver)) {
@@ -147,7 +148,7 @@ public class MessageManager {
         }
 
         // Creates a conversation between the two players so /reply works.
-        plugin.getMessageManager().setReplyTarget(sender, receiver);
+        setReplyTarget(sender, receiver);
     }
 
     /**
@@ -197,7 +198,7 @@ public class MessageManager {
 
         TextComponent.Builder itemComponent = Component.text();
         // Enables displaying the held item in chat if the player has permission.
-        if(sender.hasPermission("jadedchat.showitem") && plugin.isPaper()) {
+        if(sender.hasPermission("jadedchat.showitem") && JadedChat.isPaper()) {
             if(sender.getInventory().getItemInHand().getType() != Material.AIR) {
                 ItemStack itemStack = sender.getInventory().getItemInHand();
 
@@ -248,9 +249,9 @@ public class MessageManager {
             }
 
             value = value.replace("<sender>", sender.getName()).replace("<receiver>", receiver.getName());
-            value = plugin.getEmoteManager().replaceEmotes(value);
+            value = plugin.emoteManager().replaceEmotes(value);
 
-            message = plugin.getEmoteManager().replaceEmotes(message, sender);
+            message = plugin.emoteManager().replaceEmotes(message, sender);
 
             Component component = MiniMessage.miniMessage().deserialize(value, Placeholder.component("message", miniMessage.deserialize(message, Placeholder.component("item", itemComponent.build()))));
             output.append(component);

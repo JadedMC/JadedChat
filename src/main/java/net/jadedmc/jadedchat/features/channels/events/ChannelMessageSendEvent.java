@@ -22,23 +22,7 @@
  *  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  *  SOFTWARE.
  */
-package net.jadedmc.jadedchat;
+package net.jadedmc.jadedchat.features.channels.events;
 
-public class JadedChat {
-
-    public static boolean useLuckPerms() {
-        return true;
-    }
-
-    public static boolean isPaper() {
-
-        try {
-            Class.forName("com.destroystokyo.paper.ParticleBuilder");
-        }
-        catch (ClassNotFoundException ignored) {
-            return false;
-        }
-
-        return true;
-    }
+public class ChannelMessageSendEvent {
 }

@@ -24,27 +24,22 @@
  */
 package net.jadedmc.jadedchat.features.channels;
 
-import net.jadedmc.jadedchat.JadedChat;
+import net.jadedmc.jadedchat.JadedChatPlugin;
+import net.jadedmc.jadedchat.features.channels.channel.ChatChannel;
+import net.jadedmc.jadedchat.features.channels.channel.ChatChannelBuilder;
 import org.bukkit.entity.Player;
 
 import java.io.File;
 import java.util.*;
 
-/**
- * Manages the creation and use of chat channels.
- */
-public class ChannelManager {
-    private final JadedChat plugin;
-    private final Map<String, Channel> channelIDs = new HashMap<>();
-    private final Collection<Channel> loadedChannels = new HashSet<>();
+public class ChatChannelManager {
+    private final JadedChatPlugin plugin;
+    private final Map<String, ChatChannel> channelIDs = new HashMap<>();
+    private final Collection<ChatChannel> loadedChannels = new HashSet<>();
     private final Map<UUID, String> playerChannels = new HashMap<>();
-    private Channel defaultChannel;
+    private ChatChannel defaultChannel;
 
-    /**
-     * Creates the Channel Manager.
-     * @param plugin Instance of the plugin.
-     */
-    public ChannelManager(JadedChat plugin) {
+    public ChatChannelManager(JadedChatPlugin plugin) {
         this.plugin = plugin;
         loadChannels();
     }
@@ -65,12 +60,12 @@ public class ChannelManager {
 
         // Loop through each file an load it's channel.
         for(File file : formatFiles) {
-            Channel channel = new Channel(plugin, file);
+            ChatChannel channel = new ChatChannelBuilder(file).build();
             loadedChannels.add(channel);
-            channelIDs.put(channel.getName(), channel);
+            channelIDs.put(channel.name(), channel);
 
             // Adds the aliases of the channel to the map to speed up lookups.
-            for(String alias : channel.getAliases()) {
+            for(String alias : channel.aliases()) {
                 channelIDs.put(alias, channel);
             }
 
@@ -85,7 +80,7 @@ public class ChannelManager {
      * @param name Name (or alias) of the channel.
      * @return Corresponding channel.
      */
-    public Channel getChannel(String name) {
+    public ChatChannel getChannel(String name) {
         name = name.toUpperCase();
 
         if(!channelIDs.containsKey(name)) {
@@ -100,7 +95,7 @@ public class ChannelManager {
      * @param player Player to get the channel of.
      * @return The channel they are currently using. Returns the default channel if not saved.
      */
-    public Channel getChannel(Player player) {
+    public ChatChannel getChannel(Player player) {
         if(playerChannels.containsKey(player.getUniqueId())) {
             return getChannel(playerChannels.get(player.getUniqueId()));
         }
@@ -112,7 +107,7 @@ public class ChannelManager {
      * Gets a collection of all currently loaded channels.
      * @return All currently loaded channels.
      */
-    public Collection<Channel> getLoadedChannels() {
+    public Collection<ChatChannel> getLoadedChannels() {
         return loadedChannels;
     }
 
@@ -130,7 +125,7 @@ public class ChannelManager {
      * @param player Player to change the channel of.
      * @param channel Channel to change them to.
      */
-    public void setChannel(Player player, Channel channel) {
-        playerChannels.put(player.getUniqueId(), channel.getName());
+    public void setChannel(Player player, ChatChannel channel) {
+        playerChannels.put(player.getUniqueId(), channel.name());
     }
 }

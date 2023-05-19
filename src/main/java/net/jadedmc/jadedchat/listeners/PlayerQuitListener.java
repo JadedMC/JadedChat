@@ -25,7 +25,7 @@
 package net.jadedmc.jadedchat.listeners;
 
 import me.clip.placeholderapi.PlaceholderAPI;
-import net.jadedmc.jadedchat.JadedChat;
+import net.jadedmc.jadedchat.JadedChatPlugin;
 import net.jadedmc.jadedchat.utils.ChatUtils;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.minimessage.MiniMessage;
@@ -40,13 +40,13 @@ import org.bukkit.event.player.PlayerQuitEvent;
  * We use this to modify the format of quit messages and prevent memory leaks.
  */
 public class PlayerQuitListener implements Listener {
-    private final JadedChat plugin;
+    private final JadedChatPlugin plugin;
 
     /**
      * To be able to access the configuration files, we need to pass an instance of the plugin to our listener.
      * @param plugin Instance of the plugin.
      */
-    public PlayerQuitListener(JadedChat plugin) {
+    public PlayerQuitListener(JadedChatPlugin plugin) {
         this.plugin = plugin;
     }
 
@@ -57,17 +57,17 @@ public class PlayerQuitListener implements Listener {
     @EventHandler(priority = EventPriority.HIGHEST)
     public void onQuit(PlayerQuitEvent event) {
         // Prevent memory leaks by removing players from lists when they are no longer needed.
-        plugin.getChannelManager().removePlayer(event.getPlayer());
-        plugin.getMessageManager().removePlayer(event.getPlayer());
-        plugin.getFilterManager().removePlayer(event.getPlayer());
+        plugin.channelManager().removePlayer(event.getPlayer());
+        plugin.messageManager().removePlayer(event.getPlayer());
+        plugin.filterManager().removePlayer(event.getPlayer());
 
         // We only want to modify the quit message if the plugin is configured to.
-        if(!plugin.getSettingsManager().getConfig().getBoolean("QuitMessage.override")) {
+        if(!plugin.settingsManager().getConfig().getBoolean("QuitMessage.override")) {
             return;
         }
 
         // Makes sure there is no quit message if that is what the plugin is configured for.
-        if(!plugin.getSettingsManager().getConfig().isSet("QuitMessage.message")) {
+        if(!plugin.settingsManager().getConfig().isSet("QuitMessage.message")) {
             event.setQuitMessage(null);
             return;
         }
@@ -78,7 +78,7 @@ public class PlayerQuitListener implements Listener {
         }
 
         // Grabs the configured quit message.
-        String messageString = plugin.getSettingsManager().getConfig().getString("QuitMessage.message");
+        String messageString = plugin.settingsManager().getConfig().getString("QuitMessage.message");
 
         // Another check to make sure there is no quit message if that is what is set up.
         if(messageString == null || messageString.equals("null")) {
@@ -88,7 +88,7 @@ public class PlayerQuitListener implements Listener {
 
         // Formats the join message and applies it.
         messageString = PlaceholderAPI.setPlaceholders(event.getPlayer(), messageString);
-        messageString = plugin.getEmoteManager().replaceEmotes(messageString);
+        messageString = plugin.emoteManager().replaceEmotes(messageString);
         Component messageComponent = MiniMessage.miniMessage().deserialize(messageString);
         event.setQuitMessage(null);
         Bukkit.spigot().broadcast(ChatUtils.translateToBaseComponent(messageComponent));

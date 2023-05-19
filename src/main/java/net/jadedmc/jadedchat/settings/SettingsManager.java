@@ -24,7 +24,7 @@
  */
 package net.jadedmc.jadedchat.settings;
 
-import net.jadedmc.jadedchat.JadedChat;
+import net.jadedmc.jadedchat.JadedChatPlugin;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 
@@ -47,7 +47,7 @@ public class SettingsManager {
      * Loads or Creates configuration files.
      * @param plugin Instance of the plugin.
      */
-    public SettingsManager(JadedChat plugin) {
+    public SettingsManager(JadedChatPlugin plugin) {
         configFile = new File(plugin.getDataFolder(), "config.yml");
         if(!configFile.exists()) {
             plugin.saveResource("config.yml", false);

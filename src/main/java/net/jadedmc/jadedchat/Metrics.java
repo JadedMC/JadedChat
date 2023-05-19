@@ -1,35 +1,17 @@
-/*
- * This Metrics class was auto-generated and can be copied into your project if you are
- * not using a build tool like Gradle or Maven for dependency management.
- *
- * IMPORTANT: You are not allowed to modify this class, except changing the package.
- *
- * Disallowed modifications include but are not limited to:
- *  - Remove the option for users to opt-out
- *  - Change the frequency for data submission
- *  - Obfuscate the code (every obfuscator should allow you to make an exception for specific files)
- *  - Reformat the code (if you use a linter, add an exception)
- *
- * Violations will result in a ban of your plugin and account from bStats.
- */
 package net.jadedmc.jadedchat;
 
-import java.io.BufferedReader;
-import java.io.ByteArrayOutputStream;
-import java.io.DataOutputStream;
-import java.io.File;
-import java.io.IOException;
-import java.io.InputStreamReader;
+import org.bukkit.Bukkit;
+import org.bukkit.configuration.file.YamlConfiguration;
+import org.bukkit.entity.Player;
+import org.bukkit.plugin.Plugin;
+import org.bukkit.plugin.java.JavaPlugin;
+
+import javax.net.ssl.HttpsURLConnection;
+import java.io.*;
 import java.lang.reflect.Method;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.HashSet;
-import java.util.Map;
-import java.util.Objects;
-import java.util.Set;
-import java.util.UUID;
+import java.util.*;
 import java.util.concurrent.Callable;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
@@ -40,18 +22,12 @@ import java.util.function.Supplier;
 import java.util.logging.Level;
 import java.util.stream.Collectors;
 import java.util.zip.GZIPOutputStream;
-import javax.net.ssl.HttpsURLConnection;
-import org.bukkit.Bukkit;
-import org.bukkit.configuration.file.YamlConfiguration;
-import org.bukkit.entity.Player;
-import org.bukkit.plugin.Plugin;
-import org.bukkit.plugin.java.JavaPlugin;
 
 public class Metrics {
 
     private final Plugin plugin;
 
-    private final MetricsBase metricsBase;
+    private final net.jadedmc.jadedchat.Metrics.MetricsBase metricsBase;
 
     /**
      * Creates a new Metrics instance.
@@ -94,7 +70,7 @@ public class Metrics {
         boolean logSentData = config.getBoolean("logSentData", false);
         boolean logResponseStatusText = config.getBoolean("logResponseStatusText", false);
         metricsBase =
-                new MetricsBase(
+                new net.jadedmc.jadedchat.Metrics.MetricsBase(
                         "bukkit",
                         serverUUID,
                         serviceId,
@@ -120,11 +96,11 @@ public class Metrics {
      *
      * @param chart The chart to add.
      */
-    public void addCustomChart(CustomChart chart) {
+    public void addCustomChart(net.jadedmc.jadedchat.Metrics.CustomChart chart) {
         metricsBase.addCustomChart(chart);
     }
 
-    private void appendPlatformData(JsonObjectBuilder builder) {
+    private void appendPlatformData(net.jadedmc.jadedchat.Metrics.JsonObjectBuilder builder) {
         builder.appendField("playerAmount", getPlayerAmount());
         builder.appendField("onlineMode", Bukkit.getOnlineMode() ? 1 : 0);
         builder.appendField("bukkitVersion", Bukkit.getVersion());
@@ -136,7 +112,7 @@ public class Metrics {
         builder.appendField("coreCount", Runtime.getRuntime().availableProcessors());
     }
 
-    private void appendServiceData(JsonObjectBuilder builder) {
+    private void appendServiceData(net.jadedmc.jadedchat.Metrics.JsonObjectBuilder builder) {
         builder.appendField("pluginVersion", plugin.getDescription().getVersion());
     }
 
@@ -171,9 +147,9 @@ public class Metrics {
 
         private final int serviceId;
 
-        private final Consumer<JsonObjectBuilder> appendPlatformDataConsumer;
+        private final Consumer<net.jadedmc.jadedchat.Metrics.JsonObjectBuilder> appendPlatformDataConsumer;
 
-        private final Consumer<JsonObjectBuilder> appendServiceDataConsumer;
+        private final Consumer<net.jadedmc.jadedchat.Metrics.JsonObjectBuilder> appendServiceDataConsumer;
 
         private final Consumer<Runnable> submitTaskConsumer;
 
@@ -189,7 +165,7 @@ public class Metrics {
 
         private final boolean logResponseStatusText;
 
-        private final Set<CustomChart> customCharts = new HashSet<>();
+        private final Set<net.jadedmc.jadedchat.Metrics.CustomChart> customCharts = new HashSet<>();
 
         private final boolean enabled;
 
@@ -219,8 +195,8 @@ public class Metrics {
                 String serverUuid,
                 int serviceId,
                 boolean enabled,
-                Consumer<JsonObjectBuilder> appendPlatformDataConsumer,
-                Consumer<JsonObjectBuilder> appendServiceDataConsumer,
+                Consumer<net.jadedmc.jadedchat.Metrics.JsonObjectBuilder> appendPlatformDataConsumer,
+                Consumer<net.jadedmc.jadedchat.Metrics.JsonObjectBuilder> appendServiceDataConsumer,
                 Consumer<Runnable> submitTaskConsumer,
                 Supplier<Boolean> checkServiceEnabledSupplier,
                 BiConsumer<String, Throwable> errorLogger,
@@ -248,7 +224,7 @@ public class Metrics {
             }
         }
 
-        public void addCustomChart(CustomChart chart) {
+        public void addCustomChart(net.jadedmc.jadedchat.Metrics.CustomChart chart) {
             this.customCharts.add(chart);
         }
 
@@ -285,21 +261,21 @@ public class Metrics {
         }
 
         private void submitData() {
-            final JsonObjectBuilder baseJsonBuilder = new JsonObjectBuilder();
+            final net.jadedmc.jadedchat.Metrics.JsonObjectBuilder baseJsonBuilder = new net.jadedmc.jadedchat.Metrics.JsonObjectBuilder();
             appendPlatformDataConsumer.accept(baseJsonBuilder);
-            final JsonObjectBuilder serviceJsonBuilder = new JsonObjectBuilder();
+            final net.jadedmc.jadedchat.Metrics.JsonObjectBuilder serviceJsonBuilder = new net.jadedmc.jadedchat.Metrics.JsonObjectBuilder();
             appendServiceDataConsumer.accept(serviceJsonBuilder);
-            JsonObjectBuilder.JsonObject[] chartData =
+            net.jadedmc.jadedchat.Metrics.JsonObjectBuilder.JsonObject[] chartData =
                     customCharts.stream()
                             .map(customChart -> customChart.getRequestJsonObject(errorLogger, logErrors))
                             .filter(Objects::nonNull)
-                            .toArray(JsonObjectBuilder.JsonObject[]::new);
+                            .toArray(net.jadedmc.jadedchat.Metrics.JsonObjectBuilder.JsonObject[]::new);
             serviceJsonBuilder.appendField("id", serviceId);
             serviceJsonBuilder.appendField("customCharts", chartData);
             baseJsonBuilder.appendField("service", serviceJsonBuilder.build());
             baseJsonBuilder.appendField("serverUUID", serverUuid);
             baseJsonBuilder.appendField("metricsVersion", METRICS_VERSION);
-            JsonObjectBuilder.JsonObject data = baseJsonBuilder.build();
+            net.jadedmc.jadedchat.Metrics.JsonObjectBuilder.JsonObject data = baseJsonBuilder.build();
             scheduler.execute(
                     () -> {
                         try {
@@ -314,7 +290,7 @@ public class Metrics {
                     });
         }
 
-        private void sendData(JsonObjectBuilder.JsonObject data) throws Exception {
+        private void sendData(net.jadedmc.jadedchat.Metrics.JsonObjectBuilder.JsonObject data) throws Exception {
             if (logSentData) {
                 infoLogger.accept("Sent bStats metrics data: " + data.toString());
             }
@@ -359,8 +335,8 @@ public class Metrics {
                         new String(new byte[] {'y', 'o', 'u', 'r', '.', 'p', 'a', 'c', 'k', 'a', 'g', 'e'});
                 // We want to make sure no one just copy & pastes the example and uses the wrong package
                 // names
-                if (MetricsBase.class.getPackage().getName().startsWith(defaultPackage)
-                        || MetricsBase.class.getPackage().getName().startsWith(examplePackage)) {
+                if (net.jadedmc.jadedchat.Metrics.MetricsBase.class.getPackage().getName().startsWith(defaultPackage)
+                        || net.jadedmc.jadedchat.Metrics.MetricsBase.class.getPackage().getName().startsWith(examplePackage)) {
                     throw new IllegalStateException("bStats Metrics class has not been relocated correctly!");
                 }
             }
@@ -384,7 +360,7 @@ public class Metrics {
         }
     }
 
-    public static class SimpleBarChart extends CustomChart {
+    public static class SimpleBarChart extends net.jadedmc.jadedchat.Metrics.CustomChart {
 
         private final Callable<Map<String, Integer>> callable;
 
@@ -400,8 +376,8 @@ public class Metrics {
         }
 
         @Override
-        protected JsonObjectBuilder.JsonObject getChartData() throws Exception {
-            JsonObjectBuilder valuesBuilder = new JsonObjectBuilder();
+        protected net.jadedmc.jadedchat.Metrics.JsonObjectBuilder.JsonObject getChartData() throws Exception {
+            net.jadedmc.jadedchat.Metrics.JsonObjectBuilder valuesBuilder = new net.jadedmc.jadedchat.Metrics.JsonObjectBuilder();
             Map<String, Integer> map = callable.call();
             if (map == null || map.isEmpty()) {
                 // Null = skip the chart
@@ -410,7 +386,7 @@ public class Metrics {
             for (Map.Entry<String, Integer> entry : map.entrySet()) {
                 valuesBuilder.appendField(entry.getKey(), new int[] {entry.getValue()});
             }
-            return new JsonObjectBuilder().appendField("values", valuesBuilder.build()).build();
+            return new net.jadedmc.jadedchat.Metrics.JsonObjectBuilder().appendField("values", valuesBuilder.build()).build();
         }
     }
 
@@ -425,12 +401,12 @@ public class Metrics {
             this.chartId = chartId;
         }
 
-        public JsonObjectBuilder.JsonObject getRequestJsonObject(
+        public net.jadedmc.jadedchat.Metrics.JsonObjectBuilder.JsonObject getRequestJsonObject(
                 BiConsumer<String, Throwable> errorLogger, boolean logErrors) {
-            JsonObjectBuilder builder = new JsonObjectBuilder();
+            net.jadedmc.jadedchat.Metrics.JsonObjectBuilder builder = new net.jadedmc.jadedchat.Metrics.JsonObjectBuilder();
             builder.appendField("chartId", chartId);
             try {
-                JsonObjectBuilder.JsonObject data = getChartData();
+                net.jadedmc.jadedchat.Metrics.JsonObjectBuilder.JsonObject data = getChartData();
                 if (data == null) {
                     // If the data is null we don't send the chart.
                     return null;
@@ -445,10 +421,10 @@ public class Metrics {
             return builder.build();
         }
 
-        protected abstract JsonObjectBuilder.JsonObject getChartData() throws Exception;
+        protected abstract net.jadedmc.jadedchat.Metrics.JsonObjectBuilder.JsonObject getChartData() throws Exception;
     }
 
-    public static class SingleLineChart extends CustomChart {
+    public static class SingleLineChart extends net.jadedmc.jadedchat.Metrics.CustomChart {
 
         private final Callable<Integer> callable;
 
@@ -464,17 +440,17 @@ public class Metrics {
         }
 
         @Override
-        protected JsonObjectBuilder.JsonObject getChartData() throws Exception {
+        protected net.jadedmc.jadedchat.Metrics.JsonObjectBuilder.JsonObject getChartData() throws Exception {
             int value = callable.call();
             if (value == 0) {
                 // Null = skip the chart
                 return null;
             }
-            return new JsonObjectBuilder().appendField("value", value).build();
+            return new net.jadedmc.jadedchat.Metrics.JsonObjectBuilder().appendField("value", value).build();
         }
     }
 
-    public static class AdvancedPie extends CustomChart {
+    public static class AdvancedPie extends net.jadedmc.jadedchat.Metrics.CustomChart {
 
         private final Callable<Map<String, Integer>> callable;
 
@@ -490,8 +466,8 @@ public class Metrics {
         }
 
         @Override
-        protected JsonObjectBuilder.JsonObject getChartData() throws Exception {
-            JsonObjectBuilder valuesBuilder = new JsonObjectBuilder();
+        protected net.jadedmc.jadedchat.Metrics.JsonObjectBuilder.JsonObject getChartData() throws Exception {
+            net.jadedmc.jadedchat.Metrics.JsonObjectBuilder valuesBuilder = new net.jadedmc.jadedchat.Metrics.JsonObjectBuilder();
             Map<String, Integer> map = callable.call();
             if (map == null || map.isEmpty()) {
                 // Null = skip the chart
@@ -510,11 +486,11 @@ public class Metrics {
                 // Null = skip the chart
                 return null;
             }
-            return new JsonObjectBuilder().appendField("values", valuesBuilder.build()).build();
+            return new net.jadedmc.jadedchat.Metrics.JsonObjectBuilder().appendField("values", valuesBuilder.build()).build();
         }
     }
 
-    public static class DrilldownPie extends CustomChart {
+    public static class DrilldownPie extends net.jadedmc.jadedchat.Metrics.CustomChart {
 
         private final Callable<Map<String, Map<String, Integer>>> callable;
 
@@ -530,8 +506,8 @@ public class Metrics {
         }
 
         @Override
-        public JsonObjectBuilder.JsonObject getChartData() throws Exception {
-            JsonObjectBuilder valuesBuilder = new JsonObjectBuilder();
+        public net.jadedmc.jadedchat.Metrics.JsonObjectBuilder.JsonObject getChartData() throws Exception {
+            net.jadedmc.jadedchat.Metrics.JsonObjectBuilder valuesBuilder = new net.jadedmc.jadedchat.Metrics.JsonObjectBuilder();
             Map<String, Map<String, Integer>> map = callable.call();
             if (map == null || map.isEmpty()) {
                 // Null = skip the chart
@@ -539,7 +515,7 @@ public class Metrics {
             }
             boolean reallyAllSkipped = true;
             for (Map.Entry<String, Map<String, Integer>> entryValues : map.entrySet()) {
-                JsonObjectBuilder valueBuilder = new JsonObjectBuilder();
+                net.jadedmc.jadedchat.Metrics.JsonObjectBuilder valueBuilder = new net.jadedmc.jadedchat.Metrics.JsonObjectBuilder();
                 boolean allSkipped = true;
                 for (Map.Entry<String, Integer> valueEntry : map.get(entryValues.getKey()).entrySet()) {
                     valueBuilder.appendField(valueEntry.getKey(), valueEntry.getValue());
@@ -554,11 +530,11 @@ public class Metrics {
                 // Null = skip the chart
                 return null;
             }
-            return new JsonObjectBuilder().appendField("values", valuesBuilder.build()).build();
+            return new net.jadedmc.jadedchat.Metrics.JsonObjectBuilder().appendField("values", valuesBuilder.build()).build();
         }
     }
 
-    public static class MultiLineChart extends CustomChart {
+    public static class MultiLineChart extends net.jadedmc.jadedchat.Metrics.CustomChart {
 
         private final Callable<Map<String, Integer>> callable;
 
@@ -574,8 +550,8 @@ public class Metrics {
         }
 
         @Override
-        protected JsonObjectBuilder.JsonObject getChartData() throws Exception {
-            JsonObjectBuilder valuesBuilder = new JsonObjectBuilder();
+        protected net.jadedmc.jadedchat.Metrics.JsonObjectBuilder.JsonObject getChartData() throws Exception {
+            net.jadedmc.jadedchat.Metrics.JsonObjectBuilder valuesBuilder = new net.jadedmc.jadedchat.Metrics.JsonObjectBuilder();
             Map<String, Integer> map = callable.call();
             if (map == null || map.isEmpty()) {
                 // Null = skip the chart
@@ -594,11 +570,11 @@ public class Metrics {
                 // Null = skip the chart
                 return null;
             }
-            return new JsonObjectBuilder().appendField("values", valuesBuilder.build()).build();
+            return new net.jadedmc.jadedchat.Metrics.JsonObjectBuilder().appendField("values", valuesBuilder.build()).build();
         }
     }
 
-    public static class AdvancedBarChart extends CustomChart {
+    public static class AdvancedBarChart extends net.jadedmc.jadedchat.Metrics.CustomChart {
 
         private final Callable<Map<String, int[]>> callable;
 
@@ -614,8 +590,8 @@ public class Metrics {
         }
 
         @Override
-        protected JsonObjectBuilder.JsonObject getChartData() throws Exception {
-            JsonObjectBuilder valuesBuilder = new JsonObjectBuilder();
+        protected net.jadedmc.jadedchat.Metrics.JsonObjectBuilder.JsonObject getChartData() throws Exception {
+            net.jadedmc.jadedchat.Metrics.JsonObjectBuilder valuesBuilder = new net.jadedmc.jadedchat.Metrics.JsonObjectBuilder();
             Map<String, int[]> map = callable.call();
             if (map == null || map.isEmpty()) {
                 // Null = skip the chart
@@ -634,11 +610,11 @@ public class Metrics {
                 // Null = skip the chart
                 return null;
             }
-            return new JsonObjectBuilder().appendField("values", valuesBuilder.build()).build();
+            return new net.jadedmc.jadedchat.Metrics.JsonObjectBuilder().appendField("values", valuesBuilder.build()).build();
         }
     }
 
-    public static class SimplePie extends CustomChart {
+    public static class SimplePie extends net.jadedmc.jadedchat.Metrics.CustomChart {
 
         private final Callable<String> callable;
 
@@ -654,13 +630,13 @@ public class Metrics {
         }
 
         @Override
-        protected JsonObjectBuilder.JsonObject getChartData() throws Exception {
+        protected net.jadedmc.jadedchat.Metrics.JsonObjectBuilder.JsonObject getChartData() throws Exception {
             String value = callable.call();
             if (value == null || value.isEmpty()) {
                 // Null = skip the chart
                 return null;
             }
-            return new JsonObjectBuilder().appendField("value", value).build();
+            return new net.jadedmc.jadedchat.Metrics.JsonObjectBuilder().appendField("value", value).build();
         }
     }
 
@@ -686,7 +662,7 @@ public class Metrics {
          * @param key The key of the field.
          * @return A reference to this object.
          */
-        public JsonObjectBuilder appendNull(String key) {
+        public Metrics.JsonObjectBuilder appendNull(String key) {
             appendFieldUnescaped(key, "null");
             return this;
         }
@@ -698,7 +674,7 @@ public class Metrics {
          * @param value The value of the field.
          * @return A reference to this object.
          */
-        public JsonObjectBuilder appendField(String key, String value) {
+        public Metrics.JsonObjectBuilder appendField(String key, String value) {
             if (value == null) {
                 throw new IllegalArgumentException("JSON value must not be null");
             }
@@ -713,7 +689,7 @@ public class Metrics {
          * @param value The value of the field.
          * @return A reference to this object.
          */
-        public JsonObjectBuilder appendField(String key, int value) {
+        public Metrics.JsonObjectBuilder appendField(String key, int value) {
             appendFieldUnescaped(key, String.valueOf(value));
             return this;
         }
@@ -725,7 +701,7 @@ public class Metrics {
          * @param object The object.
          * @return A reference to this object.
          */
-        public JsonObjectBuilder appendField(String key, JsonObject object) {
+        public Metrics.JsonObjectBuilder appendField(String key, net.jadedmc.jadedchat.Metrics.JsonObjectBuilder.JsonObject object) {
             if (object == null) {
                 throw new IllegalArgumentException("JSON object must not be null");
             }
@@ -740,7 +716,7 @@ public class Metrics {
          * @param values The string array.
          * @return A reference to this object.
          */
-        public JsonObjectBuilder appendField(String key, String[] values) {
+        public Metrics.JsonObjectBuilder appendField(String key, String[] values) {
             if (values == null) {
                 throw new IllegalArgumentException("JSON values must not be null");
             }
@@ -759,7 +735,7 @@ public class Metrics {
          * @param values The integer array.
          * @return A reference to this object.
          */
-        public JsonObjectBuilder appendField(String key, int[] values) {
+        public Metrics.JsonObjectBuilder appendField(String key, int[] values) {
             if (values == null) {
                 throw new IllegalArgumentException("JSON values must not be null");
             }
@@ -776,12 +752,12 @@ public class Metrics {
          * @param values The integer array.
          * @return A reference to this object.
          */
-        public JsonObjectBuilder appendField(String key, JsonObject[] values) {
+        public Metrics.JsonObjectBuilder appendField(String key, net.jadedmc.jadedchat.Metrics.JsonObjectBuilder.JsonObject[] values) {
             if (values == null) {
                 throw new IllegalArgumentException("JSON values must not be null");
             }
             String escapedValues =
-                    Arrays.stream(values).map(JsonObject::toString).collect(Collectors.joining(","));
+                    Arrays.stream(values).map(net.jadedmc.jadedchat.Metrics.JsonObjectBuilder.JsonObject::toString).collect(Collectors.joining(","));
             appendFieldUnescaped(key, "[" + escapedValues + "]");
             return this;
         }
@@ -811,11 +787,11 @@ public class Metrics {
          *
          * @return The built JSON string.
          */
-        public JsonObject build() {
+        public Metrics.JsonObjectBuilder.JsonObject build() {
             if (builder == null) {
                 throw new IllegalStateException("JSON has already been built");
             }
-            JsonObject object = new JsonObject(builder.append("}").toString());
+            Metrics.JsonObjectBuilder.JsonObject object = new Metrics.JsonObjectBuilder.JsonObject(builder.append("}").toString());
             builder = null;
             return object;
         }
@@ -851,9 +827,9 @@ public class Metrics {
         /**
          * A super simple representation of a JSON object.
          *
-         * <p>This class only exists to make methods of the {@link JsonObjectBuilder} type-safe and not
-         * allow a raw string inputs for methods like {@link JsonObjectBuilder#appendField(String,
-         * JsonObject)}.
+         * <p>This class only exists to make methods of the {@link net.jadedmc.jadedchat.Metrics.JsonObjectBuilder} type-safe and not
+         * allow a raw string inputs for methods like {@link net.jadedmc.jadedchat.Metrics.JsonObjectBuilder#appendField(String,
+         * net.jadedmc.jadedchat.Metrics.JsonObjectBuilder.JsonObject)}.
          */
         public static class JsonObject {
 

@@ -1,31 +1,7 @@
-/*
- * This file is part of JadedChat, licensed under the MIT License.
- *
- *  Copyright (c) JadedMC
- *  Copyright (c) contributors
- *
- *  Permission is hereby granted, free of charge, to any person obtaining a copy
- *  of this software and associated documentation files (the "Software"), to deal
- *  in the Software without restriction, including without limitation the rights
- *  to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
- *  copies of the Software, and to permit persons to whom the Software is
- *  furnished to do so, subject to the following conditions:
- *
- *  The above copyright notice and this permission notice shall be included in all
- *  copies or substantial portions of the Software.
- *
- *  THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
- *  IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
- *  FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
- *  AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
- *  LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
- *  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
- *  SOFTWARE.
- */
 package net.jadedmc.jadedchat.commands;
 
-import net.jadedmc.jadedchat.JadedChat;
-import net.jadedmc.jadedchat.features.channels.Channel;
+import net.jadedmc.jadedchat.JadedChatPlugin;
+import net.jadedmc.jadedchat.features.channels.channel.ChatChannel;
 import net.jadedmc.jadedchat.settings.Message;
 import net.jadedmc.jadedchat.utils.ChatUtils;
 import net.jadedmc.jadedchat.utils.StringUtils;
@@ -48,13 +24,13 @@ import java.util.List;
  * - ch
  */
 public class ChannelCMD implements CommandExecutor, TabCompleter {
-    private final JadedChat plugin;
+    private final JadedChatPlugin plugin;
 
     /**
      * To be able to access the configuration files, we need to pass an instance of the plugin to our listener.
      * @param plugin Instance of the plugin.
      */
-    public ChannelCMD(JadedChat plugin) {
+    public ChannelCMD(JadedChatPlugin plugin) {
         this.plugin = plugin;
     }
 
@@ -78,34 +54,34 @@ public class ChannelCMD implements CommandExecutor, TabCompleter {
 
         // Make sure they're using the command properly.
         if(args.length < 1) {
-            ChatUtils.chat(player, plugin.getSettingsManager().getMessage(Message.CHANNEL_USAGE));
+            ChatUtils.chat(player, plugin.settingsManager().getMessage(Message.CHANNEL_USAGE));
             return true;
         }
 
         // Makes sure the channel exists.
-        if(plugin.getChannelManager().getChannel(args[0]) == null) {
-            ChatUtils.chat(player, plugin.getSettingsManager().getMessage(Message.CHANNEL_DOES_NOT_EXIST));
+        if(plugin.channelManager().getChannel(args[0]) == null) {
+            ChatUtils.chat(player, plugin.settingsManager().getMessage(Message.CHANNEL_DOES_NOT_EXIST));
             return true;
         }
 
-        Channel channel = plugin.getChannelManager().getChannel(args[0]);
+        ChatChannel channel = plugin.channelManager().getChannel(args[0]);
 
         // Makes sure the player has access to the channel.
-        if(!player.hasPermission(channel.getPermissionNode()) && !channel.getPermissionNode().equalsIgnoreCase("")) {
-            ChatUtils.chat(player, plugin.getSettingsManager().getMessage(Message.CHANNEL_NO_PERMISSION));
+        if(!player.hasPermission(channel.permission()) && !channel.permission().equalsIgnoreCase("")) {
+            ChatUtils.chat(player, plugin.settingsManager().getMessage(Message.CHANNEL_NO_PERMISSION));
             return true;
         }
 
         // Checks if the channel should be toggled or used.
         if(args.length == 1) {
             // Toggles the channel being used.
-            plugin.getChannelManager().setChannel(player, plugin.getChannelManager().getChannel(args[0]));
-            ChatUtils.chat(player, plugin.getSettingsManager().getMessage(Message.CHANNEL_SWITCH).replace("<channel>", channel.getDisplayName()));
+            plugin.channelManager().setChannel(player, plugin.channelManager().getChannel(args[0]));
+            ChatUtils.chat(player, plugin.settingsManager().getMessage(Message.CHANNEL_SWITCH).replace("<channel>", channel.displayName()));
         }
         else {
             // Gets the message from the arguments by creating a new array ignoring the username and turning it into a list.
             String message = StringUtils.join(Arrays.asList(Arrays.copyOfRange(args, 1, args.length)), " ");
-            plugin.getChannelManager().getChannel(args[0]).sendMessage(player, message);
+            plugin.channelManager().getChannel(args[0]).sendMessage(plugin, player, message);
         }
 
         return true;
@@ -127,9 +103,9 @@ public class ChannelCMD implements CommandExecutor, TabCompleter {
             List<String> channels = new ArrayList<>();
 
             // Find all channels the player has permission to use.
-            for(Channel channel : plugin.getChannelManager().getLoadedChannels()) {
-                if(sender.hasPermission(channel.getPermissionNode())) {
-                    channels.add(channel.getName());
+            for(ChatChannel channel : plugin.channelManager().getLoadedChannels()) {
+                if(sender.hasPermission(channel.permission())) {
+                    channels.add(channel.name());
                 }
             }
 
@@ -142,9 +118,9 @@ public class ChannelCMD implements CommandExecutor, TabCompleter {
             List<String> channels = new ArrayList<>();
             String start = args[0];
 
-            for(Channel channel : plugin.getChannelManager().getLoadedChannels()) {
-                if(sender.hasPermission(channel.getPermissionNode()) && channel.getName().toLowerCase().startsWith(start.toLowerCase())) {
-                    channels.add(channel.getName());
+            for(ChatChannel channel : plugin.channelManager().getLoadedChannels()) {
+                if(sender.hasPermission(channel.permission()) && channel.name().toLowerCase().startsWith(start.toLowerCase())) {
+                    channels.add(channel.name());
                 }
             }
 

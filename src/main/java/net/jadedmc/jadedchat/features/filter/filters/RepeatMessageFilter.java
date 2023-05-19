@@ -24,7 +24,7 @@
  */
 package net.jadedmc.jadedchat.features.filter.filters;
 
-import net.jadedmc.jadedchat.JadedChat;
+import net.jadedmc.jadedchat.JadedChatPlugin;
 import net.jadedmc.jadedchat.features.filter.Filter;
 import net.jadedmc.jadedchat.settings.Message;
 import org.bukkit.entity.Player;
@@ -36,17 +36,17 @@ import java.util.Map;
  * Filters messages that are sent multiple times in a row.
  */
 public class RepeatMessageFilter extends Filter {
-    private final JadedChat plugin;
+    private final JadedChatPlugin plugin;
     private final Map<Player, String> lastMessage = new HashMap<>();
 
     /**
      * Creates the filter.
      * @param plugin Instance of the plugin.
      */
-    public RepeatMessageFilter(JadedChat plugin) {
+    public RepeatMessageFilter(JadedChatPlugin plugin) {
         this.plugin = plugin;
         setSilentFail(false);
-        setFailMessage(plugin.getSettingsManager().getMessage(Message.FILTER_REPEAT_MESSAGE));
+        setFailMessage(plugin.settingsManager().getMessage(Message.FILTER_REPEAT_MESSAGE));
     }
 
     /**
@@ -58,7 +58,7 @@ public class RepeatMessageFilter extends Filter {
     @Override
     public boolean passesFilter(Player player, String message) {
         // Exit if the filter is disabled.
-        if(!plugin.getSettingsManager().getFilter().getBoolean("RepeatMessageFilter.enabled")) {
+        if(!plugin.settingsManager().getFilter().getBoolean("RepeatMessageFilter.enabled")) {
             return true;
         }
 

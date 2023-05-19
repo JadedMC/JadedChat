@@ -25,7 +25,7 @@
 package net.jadedmc.jadedchat.utils;
 
 import me.clip.placeholderapi.PlaceholderAPI;
-import net.jadedmc.jadedchat.JadedChat;
+import net.jadedmc.jadedchat.JadedChatPlugin;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.minimessage.MiniMessage;
 import net.kyori.adventure.text.serializer.bungeecord.BungeeComponentSerializer;
@@ -37,9 +37,9 @@ import org.bukkit.entity.Player;
  * Some methods to make sending chat messages easier.
  */
 public class ChatUtils {
-    private static JadedChat plugin;
+    private static JadedChatPlugin plugin;
 
-    public ChatUtils(JadedChat pl) {
+    public ChatUtils(JadedChatPlugin pl) {
         plugin = pl;
     }
 
