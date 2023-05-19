@@ -26,8 +26,6 @@ package net.jadedmc.jadedchat.features.channels.fomat;
 
 import org.bukkit.configuration.ConfigurationSection;
 
-import java.util.Collection;
-
 public class ChatFormatBuilder {
     private final ChatFormat chatFormat;
 
@@ -48,7 +46,7 @@ public class ChatFormatBuilder {
         }
 
         for(String section : sections.getKeys(false)) {
-            addSection(config.getString("segments." + section));
+            addSection(section, config.getString("segments." + section));
         }
     }
 
@@ -56,13 +54,8 @@ public class ChatFormatBuilder {
         return chatFormat;
     }
 
-    public ChatFormatBuilder addSection(String section) {
-        chatFormat.addSection(section);
-        return this;
-    }
-
-    public ChatFormatBuilder addSection(Collection<String> sections) {
-        sections.forEach(chatFormat::addSection);
+    public ChatFormatBuilder addSection(String sectionID, String section) {
+        chatFormat.addSection(sectionID, section);
         return this;
     }
 

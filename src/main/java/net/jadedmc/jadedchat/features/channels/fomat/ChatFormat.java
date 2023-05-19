@@ -39,13 +39,15 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 
 /**
  * Represents a format used in a channel.
  */
 public class ChatFormat {
-    private final List<String> sections = new ArrayList<>();
+    private final HashMap<String, String> sections = new LinkedHashMap<>();
     private MiniMessage miniMessage;
     private boolean color = false;
     private boolean decorations = false;
@@ -65,8 +67,8 @@ public class ChatFormat {
      * Add a section to the chat format.
      * @param section Section to add.
      */
-    public void addSection(String section) {
-        sections.add(section);
+    public void addSection(String id, String section) {
+        sections.put(id, section);
     }
 
     /**
@@ -140,7 +142,7 @@ public class ChatFormat {
      * Get the sections of the format.
      * @return All sections.
      */
-    public List<String> sections() {
+    public HashMap<String, String> sections() {
         return sections;
     }
 
@@ -183,7 +185,9 @@ public class ChatFormat {
         }
 
         // Loop through each section of the format.
-        for(String section : sections) {
+        for(String sectionID : sections.keySet()) {
+            String section = sections.get(sectionID);
+
             // Makes sure we don't process placeholders sent in the chat message.
             if(section.contains("<message>")) {
                 section = section.replace("<message_raw>", message);
