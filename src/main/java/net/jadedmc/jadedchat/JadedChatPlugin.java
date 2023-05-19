@@ -66,6 +66,7 @@ public class JadedChatPlugin extends JavaPlugin implements PluginMessageListener
         // Initialize an audiences instance for the plugin
         this.adventure = BukkitAudiences.create(this);
         new ChatUtils(this);
+        JadedChat.setPlugin(this);
 
         if(JadedChat.isPaper()) {
             Bukkit.getLogger().info("Paper Detected. Enabling Paper-Only Features.");

@@ -24,7 +24,12 @@
  */
 package net.jadedmc.jadedchat;
 
+import net.jadedmc.jadedchat.features.channels.channel.ChatChannel;
+
+import java.io.File;
+
 public class JadedChat {
+    private static JadedChatPlugin plugin;
 
     public static boolean useLuckPerms() {
         return true;
@@ -40,5 +45,21 @@ public class JadedChat {
         }
 
         return true;
+    }
+
+    public static void setPlugin(JadedChatPlugin pl) {
+        plugin = pl;
+    }
+
+    public static File getDataFolder() {
+        return plugin.getDataFolder();
+    }
+
+    public static void loadChannel(ChatChannel channel) {
+        plugin.channelManager().loadChannel(channel);
+    }
+
+    public static boolean channelExists(String channel) {
+        return (plugin.channelManager().getChannel(channel) != null);
     }
 }

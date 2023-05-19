@@ -44,6 +44,20 @@ public class ChatChannelManager {
         loadChannels();
     }
 
+    public void loadChannel(ChatChannel channel) {
+        loadedChannels.add(channel);
+        channelIDs.put(channel.name(), channel);
+
+        // Adds the aliases of the channel to the map to speed up lookups.
+        for(String alias : channel.aliases()) {
+            channelIDs.put(alias, channel);
+        }
+
+        if(channel.isDefaultChannel()) {
+            defaultChannel = channel;
+        }
+    }
+
     /**
      * Loads all channels set up in the 'channels' folder.
      */
@@ -61,17 +75,7 @@ public class ChatChannelManager {
         // Loop through each file an load it's channel.
         for(File file : formatFiles) {
             ChatChannel channel = new ChatChannelBuilder(file).build();
-            loadedChannels.add(channel);
-            channelIDs.put(channel.name(), channel);
-
-            // Adds the aliases of the channel to the map to speed up lookups.
-            for(String alias : channel.aliases()) {
-                channelIDs.put(alias, channel);
-            }
-
-            if(channel.isDefaultChannel()) {
-                defaultChannel = channel;
-            }
+            loadChannel(channel);
         }
     }
 

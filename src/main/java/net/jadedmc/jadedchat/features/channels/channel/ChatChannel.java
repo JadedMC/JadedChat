@@ -37,8 +37,11 @@ import net.kyori.adventure.text.minimessage.MiniMessage;
 import net.luckperms.api.LuckPerms;
 import net.luckperms.api.LuckPermsProvider;
 import org.bukkit.Bukkit;
+import org.bukkit.configuration.file.FileConfiguration;
+import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.LinkedHashMap;
@@ -213,6 +216,46 @@ public class ChatChannel {
         this.permission = permission;
     }
 
+    public void saveToFile(String filePath) {
+        try {
+            File file = new File(JadedChat.getDataFolder(), "/channels/" + filePath);
+            if(file.exists()) {
+                file.delete();
+            }
+
+            file.createNewFile();
+
+            FileConfiguration configuration = YamlConfiguration.loadConfiguration(file);
+            configuration.set("name", name);
+            configuration.set("displayName", displayName);
+            configuration.set("aliases", aliases);
+            configuration.set("permission", permission);
+
+            configuration.set("settings.default", isDefaultChannel);
+            configuration.set("settings.bungeecord", useBungeecord);
+            configuration.set("settings.DiscordSRV", useDiscordSRV);
+            configuration.set("settings.range", chatRange);
+
+            for(String chatFormatID : chatFormats.keySet()) {
+                ChatFormat chatFormat = chatFormats.get(chatFormatID);
+
+                configuration.set("formats." + chatFormatID + ".settings.color", chatFormat.color());
+                configuration.set("formats." + chatFormatID + ".settings.decorations", chatFormat.decorations());
+                configuration.set("formats." + chatFormatID + ".settings.events", chatFormat.events());
+
+                for(String sectionID : chatFormat.sections().keySet()) {
+                    String section = chatFormat.sections().get(sectionID);
+                    configuration.set("formats." + chatFormatID + ".segments." + sectionID, section);
+                }
+            }
+
+            configuration.save(file);
+        }
+        catch (Exception exception) {
+            exception.printStackTrace();
+        }
+    }
+
     /**
      * Sends a message to the channel.
      * @param player Player who sent the message.
@@ -240,21 +283,23 @@ public class ChatChannel {
 
         // Sends the message through bungeecord if bungeecord is enabled for the channel.
         if(useBungeecord) {
-            ChannelBungeeSendEvent event = new ChannelBungeeSendEvent(this, player, message);
-            Bukkit.getPluginManager().callEvent(event);
+            plugin.getServer().getScheduler().scheduleSyncDelayedTask(plugin, ()-> {
+                ChannelBungeeSendEvent event = new ChannelBungeeSendEvent(this, player, message);
+                Bukkit.getPluginManager().callEvent(event);
 
-            if(event.isCancelled()) {
-                return;
-            }
+                if(event.isCancelled()) {
+                    return;
+                }
 
-            ByteArrayDataOutput out = ByteStreams.newDataOutput();
-            out.writeUTF("Forward");
-            out.writeUTF("ALL");
-            out.writeUTF("jadedchat");
-            out.writeUTF(name.toLowerCase() + "~~" + event.getData() + MiniMessage.miniMessage().serialize(messageComponent));
+                ByteArrayDataOutput out = ByteStreams.newDataOutput();
+                out.writeUTF("Forward");
+                out.writeUTF("ALL");
+                out.writeUTF("jadedchat");
+                out.writeUTF(name.toLowerCase() + "~~" + event.getData() + "~~" + MiniMessage.miniMessage().serialize(messageComponent));
 
-            // Sends the message to bungeecord, to send back to all online servers.
-            player.sendPluginMessage(plugin, "BungeeCord", out.toByteArray());
+                // Sends the message to bungeecord, to send back to all online servers.
+                player.sendPluginMessage(plugin, "BungeeCord", out.toByteArray());
+            }, 0);
         }
     }
 
