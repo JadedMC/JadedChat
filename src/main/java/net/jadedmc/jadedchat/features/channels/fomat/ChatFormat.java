@@ -196,7 +196,7 @@ public class ChatFormat {
             }
             else {
                 // Processes placeholders for the section.
-                component.append(plugin.emoteManager().replaceEmotes(MiniMessage.miniMessage().deserialize(PlaceholderAPI.setPlaceholders(player, section))));
+                component.append(plugin.emoteManager().replaceEmotes(MiniMessage.miniMessage().deserialize(ChatUtils.replaceLegacy(PlaceholderAPI.setPlaceholders(player, section)))));
             }
         }
 
