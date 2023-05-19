@@ -1,7 +1,7 @@
 name: JadedChat
 version: '${project.version}'
 main: net.jadedmc.jadedchat.JadedChatPlugin
-api-version: 1.19
+api-version: 1.13
 depend: [ PlaceholderAPI ]
 softdepend: [ DiscordSRV, LuckPerms ]
 authors: [ JadedMC ]
