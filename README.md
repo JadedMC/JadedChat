@@ -10,19 +10,21 @@ JadedChat is a feature-rich JSON chat plugin for [Paper](http://www.papermc.io) 
 * Ability to toggle using colors, decorations (bold, italics, etc) per chat format.
 * Configurable text replacements with the "emote" system.
 * Custom Join/Quit Messages
-* Private Messages
+* Private Messages with Social Spy
 * Regex filtering
 * Cross-server chat using BungeeCord
+* DiscordSRV support
+* LuckPerms support
+* Display held items in chat using <item>
 
 ## Requirements
-* Java 8 or newer
-* Server Software with Paper API.
-* Minecraft 1.19 or later
+* Java 17 or newer
+* Server Software with Bukkit API.
+* Minecraft 1.8 or later
 * PlaceholderAPI
 
 ## Planned Features
 * Per-channel chat cooldowns
-* DiscordSRV support
 * Logging Chat to MySQL
 * MOTD when joining the server
 * Automated announcements
