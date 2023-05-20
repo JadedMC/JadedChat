@@ -84,7 +84,7 @@ public class ChannelCMD implements CommandExecutor, TabCompleter {
 
             // Toggles the channel being used.
             plugin.channelManager().setChannel(player, event.getToChannel());
-            ChatUtils.chat(player, plugin.settingsManager().getMessage(Message.CHANNEL_SWITCH).replace("<channel>", channel.displayName()));
+            ChatUtils.chat(player, plugin.settingsManager().getMessage(Message.CHANNEL_SWITCH).replace("<channel>", event.getToChannel().displayName()));
         }
         else {
             // Gets the message from the arguments by creating a new array ignoring the username and turning it into a list.
