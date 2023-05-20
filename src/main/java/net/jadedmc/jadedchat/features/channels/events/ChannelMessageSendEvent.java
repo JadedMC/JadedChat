@@ -30,6 +30,8 @@ import org.bukkit.event.Cancellable;
 import org.bukkit.event.Event;
 import org.bukkit.event.HandlerList;
 
+import java.util.Collection;
+
 public class ChannelMessageSendEvent  extends Event implements Cancellable {
 
     private static final HandlerList HANDLERS = new HandlerList();
@@ -42,11 +44,14 @@ public class ChannelMessageSendEvent  extends Event implements Cancellable {
     private final Player player;
     private final ChatChannel channel;
     private final String message;
+    private Collection<Player> viewers;
 
     public ChannelMessageSendEvent(Player player, ChatChannel channel, String message) {
         this.player = player;
         this.channel = channel;
         this.message = message;
+
+        viewers = channel.viewers(player);
     }
 
     public ChatChannel getChannel() {
@@ -66,6 +71,10 @@ public class ChannelMessageSendEvent  extends Event implements Cancellable {
         return player;
     }
 
+    public Collection<Player> getViewers() {
+        return viewers;
+    }
+
     @Override
     public boolean isCancelled() {
         return cancelled;
@@ -74,5 +83,9 @@ public class ChannelMessageSendEvent  extends Event implements Cancellable {
     @Override
     public void setCancelled(boolean cancelled) {
         this.cancelled = cancelled;
+    }
+
+    public void setViewers(Collection<Player> viewers) {
+        this.viewers = viewers;
     }
 }
