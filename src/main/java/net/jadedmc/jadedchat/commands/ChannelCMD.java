@@ -2,9 +2,11 @@ package net.jadedmc.jadedchat.commands;
 
 import net.jadedmc.jadedchat.JadedChatPlugin;
 import net.jadedmc.jadedchat.features.channels.channel.ChatChannel;
+import net.jadedmc.jadedchat.features.channels.events.ChannelSwitchEvent;
 import net.jadedmc.jadedchat.settings.Message;
 import net.jadedmc.jadedchat.utils.ChatUtils;
 import net.jadedmc.jadedchat.utils.StringUtils;
+import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -46,11 +48,9 @@ public class ChannelCMD implements CommandExecutor, TabCompleter {
     public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, @NotNull String[] args) {
 
         // Only players should be able to use chat channels.
-        if(!(sender instanceof Player)) {
+        if(!(sender instanceof Player player)) {
             return true;
         }
-
-        Player player = (Player) sender;
 
         // Make sure they're using the command properly.
         if(args.length < 1) {
@@ -74,8 +74,16 @@ public class ChannelCMD implements CommandExecutor, TabCompleter {
 
         // Checks if the channel should be toggled or used.
         if(args.length == 1) {
+            ChannelSwitchEvent event = new ChannelSwitchEvent(player, plugin.channelManager().getChannel(player), plugin.channelManager().getChannel(args[0]));
+            Bukkit.getPluginManager().callEvent(event);
+
+            // Exit if the even is cancelled.
+            if(event.isCancelled()) {
+                return true;
+            }
+
             // Toggles the channel being used.
-            plugin.channelManager().setChannel(player, plugin.channelManager().getChannel(args[0]));
+            plugin.channelManager().setChannel(player, event.getToChannel());
             ChatUtils.chat(player, plugin.settingsManager().getMessage(Message.CHANNEL_SWITCH).replace("<channel>", channel.displayName()));
         }
         else {
