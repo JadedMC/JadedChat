@@ -24,5 +24,55 @@
  */
 package net.jadedmc.jadedchat.features.channels.events;
 
-public class ChannelMessageSendEvent {
+import net.jadedmc.jadedchat.features.channels.channel.ChatChannel;
+import org.bukkit.entity.Player;
+import org.bukkit.event.Cancellable;
+import org.bukkit.event.Event;
+import org.bukkit.event.HandlerList;
+
+public class ChannelMessageSendEvent  extends Event implements Cancellable {
+
+    private static final HandlerList HANDLERS = new HandlerList();
+
+    public static HandlerList getHandlerList() {
+        return HANDLERS;
+    }
+
+    private boolean cancelled = false;
+    private final Player player;
+    private final ChatChannel channel;
+    private final String message;
+
+    public ChannelMessageSendEvent(Player player, ChatChannel channel, String message) {
+        this.player = player;
+        this.channel = channel;
+        this.message = message;
+    }
+
+    public ChatChannel getChannel() {
+        return channel;
+    }
+
+    @Override
+    public HandlerList getHandlers() {
+        return HANDLERS;
+    }
+
+    public String getMessage() {
+        return message;
+    }
+
+    public Player getPlayer() {
+        return player;
+    }
+
+    @Override
+    public boolean isCancelled() {
+        return cancelled;
+    }
+
+    @Override
+    public void setCancelled(boolean cancelled) {
+        this.cancelled = cancelled;
+    }
 }

@@ -30,6 +30,7 @@ import github.scarsz.discordsrv.DiscordSRV;
 import net.jadedmc.jadedchat.JadedChat;
 import net.jadedmc.jadedchat.JadedChatPlugin;
 import net.jadedmc.jadedchat.features.channels.events.ChannelBungeeSendEvent;
+import net.jadedmc.jadedchat.features.channels.events.ChannelMessageSendEvent;
 import net.jadedmc.jadedchat.features.channels.fomat.ChatFormat;
 import net.jadedmc.jadedchat.utils.ChatUtils;
 import net.kyori.adventure.text.Component;
@@ -267,6 +268,14 @@ public class ChatChannel {
             return;
         }
 
+        ChannelMessageSendEvent messageEvent = new ChannelMessageSendEvent(player, this, message);
+        Bukkit.getPluginManager().callEvent(messageEvent);
+
+        // Exit if the message sent event is cancelled.
+        if(messageEvent.isCancelled()) {
+            return;
+        }
+
         // Creates the formatted component of the message.
         Component messageComponent = format(player).processMessage(plugin, player, message);
 
@@ -284,10 +293,10 @@ public class ChatChannel {
         // Sends the message through bungeecord if bungeecord is enabled for the channel.
         if(useBungeecord) {
             plugin.getServer().getScheduler().scheduleSyncDelayedTask(plugin, ()-> {
-                ChannelBungeeSendEvent event = new ChannelBungeeSendEvent(this, player, message);
-                Bukkit.getPluginManager().callEvent(event);
+                ChannelBungeeSendEvent bungeeEvent = new ChannelBungeeSendEvent(this, player, message);
+                Bukkit.getPluginManager().callEvent(bungeeEvent);
 
-                if(event.isCancelled()) {
+                if(bungeeEvent.isCancelled()) {
                     return;
                 }
 
@@ -295,7 +304,7 @@ public class ChatChannel {
                 out.writeUTF("Forward");
                 out.writeUTF("ALL");
                 out.writeUTF("jadedchat");
-                out.writeUTF(name.toLowerCase() + "~~" + event.getData() + "~~" + MiniMessage.miniMessage().serialize(messageComponent));
+                out.writeUTF(name.toLowerCase() + "~~" + bungeeEvent.getData() + "~~" + MiniMessage.miniMessage().serialize(messageComponent));
 
                 // Sends the message to bungeecord, to send back to all online servers.
                 player.sendPluginMessage(plugin, "BungeeCord", out.toByteArray());
