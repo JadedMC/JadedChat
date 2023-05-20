@@ -108,6 +108,14 @@ public class ChatChannelManager {
     }
 
     /**
+     * Get the default channel chat should use.
+     * @return Default chat channel.
+     */
+    public ChatChannel getDefaultChannel() {
+        return defaultChannel;
+    }
+
+    /**
      * Gets a collection of all currently loaded channels.
      * @return All currently loaded channels.
      */

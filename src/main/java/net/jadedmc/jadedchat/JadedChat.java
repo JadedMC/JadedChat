@@ -25,16 +25,71 @@
 package net.jadedmc.jadedchat;
 
 import net.jadedmc.jadedchat.features.channels.channel.ChatChannel;
+import org.bukkit.entity.Player;
 
 import java.io.File;
+import java.util.Collection;
 
 public class JadedChat {
     private static JadedChatPlugin plugin;
 
-    public static boolean useLuckPerms() {
-        return true;
+    /**
+     * Check if a channel exists.
+     * @param channel Channel name to check if it exists.
+     * @return Whether the channel exists.
+     */
+    public static boolean channelExists(String channel) {
+        return (plugin.channelManager().getChannel(channel) != null);
     }
 
+    /**
+     * Get a channel based on its name.
+     * @param channelName Name of the channel.
+     * @return ChatChannel object.
+     */
+    public static ChatChannel getChannel(String channelName) {
+        return plugin.channelManager().getChannel(channelName);
+    }
+
+    /**
+     * Get the channel a player is currently in.
+     * @param player Player to get channel of.
+     * @return The ChatChannel they are in.
+     */
+    public static ChatChannel getChannel(Player player) {
+        return plugin.channelManager().getChannel(player);
+    }
+
+    /**
+     * Get the JadedChat data folder. Used for saving channel config files.
+     * <b>Internal Use Only</b>
+     * @return Plugin data folder.
+     */
+    public static File getDataFolder() {
+        return plugin.getDataFolder();
+    }
+
+    /**
+     * Get the set default channel.
+     * @return Default channel.
+     */
+    public static ChatChannel getDefaultChannel() {
+        return plugin.channelManager().getDefaultChannel();
+    }
+
+    /**
+     * Get a collection of all currently loaded channels.
+     * @return All loaded channels.
+     */
+    public static Collection<ChatChannel> getLoadedChannels() {
+        return plugin.channelManager().getLoadedChannels();
+    }
+
+
+    /**
+     * Check if the server is using paper.
+     * @return Whether the server is using paper.
+     */
     public static boolean isPaper() {
 
         try {
@@ -47,19 +102,38 @@ public class JadedChat {
         return true;
     }
 
-    public static void setPlugin(JadedChatPlugin pl) {
-        plugin = pl;
-    }
-
-    public static File getDataFolder() {
-        return plugin.getDataFolder();
-    }
-
+    /**
+     * Registers a channel with JadedChat.
+     * @param channel Channel to register.
+     */
     public static void loadChannel(ChatChannel channel) {
         plugin.channelManager().loadChannel(channel);
     }
 
-    public static boolean channelExists(String channel) {
-        return (plugin.channelManager().getChannel(channel) != null);
+    /**
+     * Change the player's current channel.
+     * @param player Player to change channel of.
+     * @param channel New channel.
+     */
+    public static void setChannel(Player player, ChatChannel channel) {
+        plugin.channelManager().setChannel(player, channel);
+    }
+
+    /**
+     * Pass the JadedChat JavaPlugin to the API.
+     * <b>Internal Use Only</b>
+     * @param pl JadedChatPlugin instance.
+     */
+    public static void setPlugin(JadedChatPlugin pl) {
+        plugin = pl;
+    }
+
+    /**
+     * Get if the plugin should use LuckPerms.
+     * <b>Internal use only</b>
+     * @return Whether it should use luckperms.
+     */
+    public static boolean useLuckPerms() {
+        return plugin.hookManager().useLuckPerms();
     }
 }
