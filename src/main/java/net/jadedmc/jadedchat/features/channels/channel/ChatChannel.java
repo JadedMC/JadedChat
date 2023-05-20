@@ -280,7 +280,7 @@ public class ChatChannel {
         Component messageComponent = format(player).processMessage(plugin, player, message);
 
         // Send the message to all channel viewers.
-        viewers(player).forEach(viewer -> ChatUtils.chat(viewer, messageComponent));
+        messageEvent.getViewers().forEach(viewer -> ChatUtils.chat(viewer, messageComponent));
 
         // Send the message to the console as well
         ChatUtils.chat(Bukkit.getConsoleSender(), Component.text().content("[" + name + "] ").append(messageComponent).build());
