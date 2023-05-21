@@ -66,6 +66,7 @@ public class JadedChatCMD implements CommandExecutor, TabCompleter {
                 break;
 
             // Displays all currently loaded channels.
+            case "list":
             case "channels":
                 ChatUtils.chat(sender, "<green><bold>JadedChat</bold> <dark_gray>» <green>Currently Loaded Channels:");
 
