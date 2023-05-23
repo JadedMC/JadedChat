@@ -257,6 +257,56 @@ public class ChatChannel {
         }
     }
 
+    public void sendTestMessage(JadedChatPlugin plugin, Player player, ChatFormat format, String message) {
+        // Checks if the message passes the chat filter.
+        if(!plugin.filterManager().passesFilter(player, this, message)) {
+            return;
+        }
+
+        ChannelMessageSendEvent messageEvent = new ChannelMessageSendEvent(player, this, message);
+        Bukkit.getPluginManager().callEvent(messageEvent);
+
+        // Exit if the message sent event is cancelled.
+        if(messageEvent.isCancelled()) {
+            return;
+        }
+
+        // Creates the formatted component of the message.
+        Component messageComponent = format.processMessage(plugin, player, message);
+
+        // Send the message to all channel viewers.
+        messageEvent.getViewers().forEach(viewer -> ChatUtils.chat(viewer, messageComponent));
+
+        // Send the message to the console as well
+        ChatUtils.chat(Bukkit.getConsoleSender(), Component.text().content("[" + name + "] ").append(messageComponent).build());
+
+        // Sends the message through DiscordSRV if enabled.
+        if(plugin.hookManager().useDiscordSRV() && useDiscordSRV) {
+            DiscordSRV.getPlugin().getMainTextChannel().sendMessage(MiniMessage.miniMessage().stripTags(MiniMessage.miniMessage().serialize(messageComponent)));
+        }
+
+        // Sends the message through bungeecord if bungeecord is enabled for the channel.
+        if(useBungeecord) {
+            plugin.getServer().getScheduler().scheduleSyncDelayedTask(plugin, ()-> {
+                ChannelBungeeSendEvent bungeeEvent = new ChannelBungeeSendEvent(this, player, message);
+                Bukkit.getPluginManager().callEvent(bungeeEvent);
+
+                if(bungeeEvent.isCancelled()) {
+                    return;
+                }
+
+                ByteArrayDataOutput out = ByteStreams.newDataOutput();
+                out.writeUTF("Forward");
+                out.writeUTF("ALL");
+                out.writeUTF("jadedchat");
+                out.writeUTF(name.toLowerCase() + "~~" + bungeeEvent.getData() + "~~" + MiniMessage.miniMessage().serialize(messageComponent));
+
+                // Sends the message to bungeecord, to send back to all online servers.
+                player.sendPluginMessage(plugin, "BungeeCord", out.toByteArray());
+            }, 0);
+        }
+    }
+
     /**
      * Sends a message to the channel.
      * @param player Player who sent the message.

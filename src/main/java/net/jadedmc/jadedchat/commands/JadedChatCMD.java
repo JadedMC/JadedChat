@@ -2,12 +2,15 @@ package net.jadedmc.jadedchat.commands;
 
 import net.jadedmc.jadedchat.JadedChatPlugin;
 import net.jadedmc.jadedchat.features.channels.channel.ChatChannel;
+import net.jadedmc.jadedchat.features.channels.fomat.ChatFormat;
 import net.jadedmc.jadedchat.settings.Message;
 import net.jadedmc.jadedchat.utils.ChatUtils;
+import net.jadedmc.jadedchat.utils.StringUtils;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.TabCompleter;
+import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.Arrays;
@@ -58,35 +61,51 @@ public class JadedChatCMD implements CommandExecutor, TabCompleter {
         // Runs the used sub command.
         switch (subCommand) {
             // Reloads all plugin configuration files.
-            case "reload":
+            case "reload" -> {
                 plugin.settingsManager().reload();
                 plugin.channelManager().loadChannels();
                 plugin.emoteManager().registerEmotes();
                 ChatUtils.chat(sender, "<green><bold>JadedChat</bold> <dark_gray>» <green>Configuration files reloaded successfully!");
-                break;
+            }
 
             // Displays all currently loaded channels.
-            case "list":
-            case "channels":
+            case "list", "channels" -> {
                 ChatUtils.chat(sender, "<green><bold>JadedChat</bold> <dark_gray>» <green>Currently Loaded Channels:");
-
-                for(ChatChannel channel : plugin.channelManager().getLoadedChannels()) {
+                for (ChatChannel channel : plugin.channelManager().getLoadedChannels()) {
                     ChatUtils.chat(sender, "  <dark_gray>➤ <gray><hover:show_text:\"<green>Click to switch channels</green>\"><click:suggest_command:/channel " + channel.name() + ">" + channel.displayName() + "</click></hover>");
                 }
-                break;
+            }
 
             // Displays the plugin's current version.
-            case "version":
-                ChatUtils.chat(sender, "<green><bold>JadedChat</bold> <dark_gray>» <green>Current version: <white>" + plugin.getDescription().getVersion());
-                break;
+            case "version" ->
+                    ChatUtils.chat(sender, "<green><bold>JadedChat</bold> <dark_gray>» <green>Current version: <white>" + plugin.getDescription().getVersion());
+            case "test" -> {
+                if (args.length < 4) {
+                    ChatUtils.chat(sender, "<red><bold>Usage</bold> <dark_gray>» <red>/jc test [channel] [format] [message]");
+                    return true;
+                }
+                ChatChannel channel = plugin.channelManager().getChannel(args[1]);
+                if (channel == null) {
+                    ChatUtils.chat(sender, "<red><bold>Error</bold> <dark_gray>» <red>That channel does not exist!");
+                    return true;
+                }
+                ChatFormat format = channel.format(args[2]);
+                if (format == null) {
+                    ChatUtils.chat(sender, "<red><bold>Error</bold> <dark_gray>» <red>That format does not exist!");
+                    return true;
+                }
+                String message = StringUtils.join(Arrays.copyOfRange(args, 3, args.length), " ");
+                channel.sendTestMessage(plugin, (Player) sender, format, message);
+            }
 
             // Displays the help menu.
-            default:
+            default -> {
                 ChatUtils.chat(sender, "<green><bold>JadedChat Commands");
                 ChatUtils.chat(sender, "<green>/jc channels <dark_gray>» <white>Lists all loaded channels.");
                 ChatUtils.chat(sender, "<green>/jc reload <dark_gray>» <white>Reloads all configuration files.");
+                ChatUtils.chat(sender, "<green>/jc test <dark_gray>» <white>Send a message using a specific channel and format.");
                 ChatUtils.chat(sender, "<green>/jc version <dark_gray>» <white>Displays the plugin version.");
-                break;
+            }
         }
 
         return true;
@@ -105,7 +124,7 @@ public class JadedChatCMD implements CommandExecutor, TabCompleter {
 
         // Lists all subcommands if the player hasn't picked one yet.
         if(args.length < 2) {
-            return Arrays.asList("channels", "help", "reload", "version");
+            return Arrays.asList("channels", "help", "reload", "test", "version");
         }
 
         // Otherwise, send an empty list.
