@@ -315,6 +315,7 @@ public class ChatChannel {
     public void sendMessage(JadedChatPlugin plugin, Player player, String message) {
         // Checks if the message passes the chat filter.
         if(!plugin.filterManager().passesFilter(player, this, message)) {
+            plugin.channelManager().logMessage(this, player, message, true);
             return;
         }
 
@@ -325,6 +326,9 @@ public class ChatChannel {
         if(messageEvent.isCancelled()) {
             return;
         }
+
+        // Log the message to MySQL.
+        plugin.channelManager().logMessage(this, player, message, false);
 
         // Creates the formatted component of the message.
         Component messageComponent = format(player).processMessage(plugin, player, message);

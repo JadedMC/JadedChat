@@ -30,6 +30,8 @@ import net.jadedmc.jadedchat.features.channels.channel.ChatChannelBuilder;
 import org.bukkit.entity.Player;
 
 import java.io.File;
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
 import java.util.*;
 
 public class ChatChannelManager {
@@ -77,6 +79,36 @@ public class ChatChannelManager {
             ChatChannel channel = new ChatChannelBuilder(file).build();
             loadChannel(channel);
         }
+    }
+
+    public void logMessage(ChatChannel channel, Player player, String message, boolean filtered) {
+
+        // Exit if mysql is disabled.
+        if(!plugin.getMySQL().isEnabled()) {
+            return;
+        }
+
+        plugin.getServer().getScheduler().runTaskAsynchronously(plugin, () -> {
+            try {
+                PreparedStatement statement = plugin.getMySQL().getConnection().prepareStatement("INSERT INTO chat_logs (server,channel,uuid,username,message) VALUES (?,?,?,?,?)");
+                statement.setString(1, plugin.settingsManager().getConfig().getString("server"));
+                statement.setString(2, channel.name());
+                statement.setString(3, player.getUniqueId().toString());
+                statement.setString(4, player.getName());
+
+                if(filtered) {
+                    statement.setString(5, "(filtered) " + message);
+                }
+                else {
+                    statement.setString(5, message);
+                }
+
+                statement.executeUpdate();
+            }
+            catch (SQLException exception) {
+                exception.printStackTrace();
+            }
+        });
     }
 
     /**

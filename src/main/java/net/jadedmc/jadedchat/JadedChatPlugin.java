@@ -60,6 +60,7 @@ public class JadedChatPlugin extends JavaPlugin implements PluginMessageListener
     private HookManager hookManager;
     private FilterManager filterManager;
     private MessageManager messageManager;
+    private MySQL mySQL;
 
     @Override
     public void onEnable() {
@@ -81,6 +82,11 @@ public class JadedChatPlugin extends JavaPlugin implements PluginMessageListener
         hookManager = new HookManager(this);
         filterManager = new FilterManager(this);
         messageManager = new MessageManager(this);
+        mySQL= new MySQL(this);
+
+        if(mySQL.isEnabled()) {
+            mySQL.openConnection();
+        }
 
         // Registers the listeners used by the plugin.
         Bukkit.getPluginManager().registerEvents(new AsyncPlayerChatListener(this), this);
@@ -185,6 +191,14 @@ public class JadedChatPlugin extends JavaPlugin implements PluginMessageListener
      */
     public MessageManager messageManager() {
         return messageManager;
+    }
+
+    /**
+     * Gets the active mysql settings.
+     * @return MySQL settings.
+     */
+    public MySQL getMySQL() {
+        return mySQL;
     }
 
     /**
