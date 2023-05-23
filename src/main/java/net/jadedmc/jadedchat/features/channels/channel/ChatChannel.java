@@ -297,7 +297,7 @@ public class ChatChannel {
 
                 ByteArrayDataOutput out = ByteStreams.newDataOutput();
                 out.writeUTF("Forward");
-                out.writeUTF("ALL");
+                out.writeUTF("ONLINE");
                 out.writeUTF("jadedchat");
                 out.writeUTF(name.toLowerCase() + "~~" + bungeeEvent.getData() + "~~" + MiniMessage.miniMessage().serialize(messageComponent));
 
