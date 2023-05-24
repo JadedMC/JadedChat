@@ -29,7 +29,14 @@ public class MySQL {
         username = plugin.settingsManager().getConfig().getString("MySQL.username");
         password = plugin.settingsManager().getConfig().getString("MySQL.password");
         port = plugin.settingsManager().getConfig().getInt("MySQL.port");
-        enabled = plugin.settingsManager().getConfig().getBoolean("MySQL.enabled");
+
+        if(plugin.settingsManager().getConfig().isSet("MySQL.enabled")) {
+            enabled = plugin.settingsManager().getConfig().getBoolean("MySQL.enabled");
+        }
+        else {
+            enabled = false;
+        }
+
     }
 
     /**
