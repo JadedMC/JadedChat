@@ -61,6 +61,7 @@ public class ChatChannel {
     private boolean useBungeecord = false;
     private boolean useDiscordSRV = false;
     private int chatRange = -1;
+    private boolean perWorld = false;
 
     /**
      * Creates the ChatChannel.
@@ -215,6 +216,22 @@ public class ChatChannel {
      */
     public void permission(String permission) {
         this.permission = permission;
+    }
+
+    /**
+     * Get if the channel should only broadcast to players in that world.
+     * @return Whether messages should be per world.
+     */
+    public boolean perWorld() {
+        return perWorld;
+    }
+
+    /**
+     * Set if a channel should only broadcast to players in their world.
+     * @param perWorld If the channel should only broadcast to players in that world.
+     */
+    public void perWorld(boolean perWorld) {
+        this.perWorld = perWorld;
     }
 
     public void saveToFile(String filePath) {
@@ -454,6 +471,18 @@ public class ChatChannel {
             }
         }
 
-        return inRange;
+        Collection<Player> inWorld = new ArrayList<>();
+        if(!perWorld) {
+            inWorld.addAll(inRange);
+        }
+        else {
+            for(Player player : inRange) {
+                if(player.getWorld().equals(sender.getWorld())) {
+                    inWorld.add(player);
+                }
+            }
+        }
+
+        return inWorld;
     }
 }

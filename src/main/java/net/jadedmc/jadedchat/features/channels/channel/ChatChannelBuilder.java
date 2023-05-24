@@ -166,6 +166,16 @@ public class ChatChannelBuilder {
     }
 
     /**
+     * Set if the channel messages should only show to players in the same world
+     * @param perWorld If messages should be per-world.
+     * @return
+     */
+    public ChatChannelBuilder perWorld(boolean perWorld) {
+        channel.perWorld(perWorld);
+        return this;
+    }
+
+    /**
      * Set if the channel should be the default channel.
      * Defaults to false.
      * @param isDefaultChannel If the channel should be default.
