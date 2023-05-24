@@ -330,57 +330,60 @@ public class ChatChannel {
      * @param message Message the player is sending.
      */
     public void sendMessage(JadedChatPlugin plugin, Player player, String message) {
-        // Checks if the message passes the chat filter.
-        if(!plugin.filterManager().passesFilter(player, this, message)) {
-            plugin.channelManager().logMessage(this, player, message, true);
-            return;
-        }
 
-        ChannelMessageSendEvent messageEvent = new ChannelMessageSendEvent(player, this, message);
-        Bukkit.getPluginManager().callEvent(messageEvent);
+        plugin.getServer().getScheduler().scheduleSyncDelayedTask(plugin, () -> {
+            // Checks if the message passes the chat filter.
+            if(!plugin.filterManager().passesFilter(player, this, message)) {
+                plugin.channelManager().logMessage(this, player, message, true);
+                return;
+            }
 
-        // Exit if the message sent event is cancelled.
-        if(messageEvent.isCancelled()) {
-            return;
-        }
+            ChannelMessageSendEvent messageEvent = new ChannelMessageSendEvent(player, this, message);
+            Bukkit.getPluginManager().callEvent(messageEvent);
 
-        // Log the message to MySQL.
-        plugin.channelManager().logMessage(this, player, message, false);
+            // Exit if the message sent event is cancelled.
+            if(messageEvent.isCancelled()) {
+                return;
+            }
 
-        // Creates the formatted component of the message.
-        Component messageComponent = format(player).processMessage(plugin, player, message);
+            // Log the message to MySQL.
+            plugin.channelManager().logMessage(this, player, message, false);
 
-        // Send the message to all channel viewers.
-        messageEvent.getViewers().forEach(viewer -> ChatUtils.chat(viewer, messageComponent));
+            // Creates the formatted component of the message.
+            Component messageComponent = format(player).processMessage(plugin, player, message);
 
-        // Send the message to the console as well
-        ChatUtils.chat(Bukkit.getConsoleSender(), Component.text().content("[" + name + "] ").append(messageComponent).build());
+            // Send the message to all channel viewers.
+            messageEvent.getViewers().forEach(viewer -> ChatUtils.chat(viewer, messageComponent));
 
-        // Sends the message through DiscordSRV if enabled.
-        if(plugin.hookManager().useDiscordSRV() && useDiscordSRV) {
-            DiscordSRV.getPlugin().getMainTextChannel().sendMessage(MiniMessage.miniMessage().stripTags(MiniMessage.miniMessage().serialize(messageComponent)));
-        }
+            // Send the message to the console as well
+            ChatUtils.chat(Bukkit.getConsoleSender(), Component.text().content("[" + name + "] ").append(messageComponent).build());
 
-        // Sends the message through bungeecord if bungeecord is enabled for the channel.
-        if(useBungeecord) {
-            plugin.getServer().getScheduler().scheduleSyncDelayedTask(plugin, ()-> {
-                ChannelBungeeSendEvent bungeeEvent = new ChannelBungeeSendEvent(this, player, message);
-                Bukkit.getPluginManager().callEvent(bungeeEvent);
+            // Sends the message through DiscordSRV if enabled.
+            if(plugin.hookManager().useDiscordSRV() && useDiscordSRV) {
+                DiscordSRV.getPlugin().getMainTextChannel().sendMessage(MiniMessage.miniMessage().stripTags(MiniMessage.miniMessage().serialize(messageComponent)));
+            }
 
-                if(bungeeEvent.isCancelled()) {
-                    return;
-                }
+            // Sends the message through bungeecord if bungeecord is enabled for the channel.
+            if(useBungeecord) {
+                plugin.getServer().getScheduler().scheduleSyncDelayedTask(plugin, ()-> {
+                    ChannelBungeeSendEvent bungeeEvent = new ChannelBungeeSendEvent(this, player, message);
+                    Bukkit.getPluginManager().callEvent(bungeeEvent);
 
-                ByteArrayDataOutput out = ByteStreams.newDataOutput();
-                out.writeUTF("Forward");
-                out.writeUTF("ALL");
-                out.writeUTF("jadedchat");
-                out.writeUTF(name.toLowerCase() + "~~" + bungeeEvent.getData() + "~~" + MiniMessage.miniMessage().serialize(messageComponent));
+                    if(bungeeEvent.isCancelled()) {
+                        return;
+                    }
 
-                // Sends the message to bungeecord, to send back to all online servers.
-                player.sendPluginMessage(plugin, "BungeeCord", out.toByteArray());
-            }, 0);
-        }
+                    ByteArrayDataOutput out = ByteStreams.newDataOutput();
+                    out.writeUTF("Forward");
+                    out.writeUTF("ALL");
+                    out.writeUTF("jadedchat");
+                    out.writeUTF(name.toLowerCase() + "~~" + bungeeEvent.getData() + "~~" + MiniMessage.miniMessage().serialize(messageComponent));
+
+                    // Sends the message to bungeecord, to send back to all online servers.
+                    player.sendPluginMessage(plugin, "BungeeCord", out.toByteArray());
+                }, 0);
+            }
+        }, 0);
     }
 
     /**
