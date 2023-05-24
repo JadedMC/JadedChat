@@ -299,7 +299,7 @@ public class ChatChannel {
 
         // Sends the message through DiscordSRV if enabled.
         if(plugin.hookManager().useDiscordSRV() && useDiscordSRV) {
-            DiscordSRV.getPlugin().getMainTextChannel().sendMessage(MiniMessage.miniMessage().stripTags(MiniMessage.miniMessage().serialize(messageComponent)));
+            DiscordSRV.getPlugin().getMainTextChannel().sendMessage(MiniMessage.miniMessage().stripTags(MiniMessage.miniMessage().serialize(messageComponent))).queue();
         }
 
         // Sends the message through bungeecord if bungeecord is enabled for the channel.
@@ -360,7 +360,7 @@ public class ChatChannel {
 
             // Sends the message through DiscordSRV if enabled.
             if(plugin.hookManager().useDiscordSRV() && useDiscordSRV) {
-                DiscordSRV.getPlugin().getMainTextChannel().sendMessage(MiniMessage.miniMessage().stripTags(MiniMessage.miniMessage().serialize(messageComponent)));
+                DiscordSRV.getPlugin().getMainTextChannel().sendMessage(MiniMessage.miniMessage().stripTags(MiniMessage.miniMessage().serialize(messageComponent))).queue();
             }
 
             // Sends the message through bungeecord if bungeecord is enabled for the channel.
