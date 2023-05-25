@@ -65,6 +65,7 @@ public class ChatChannelBuilder {
         if(config.isSet("settings.default")) setDefaultChannel(config.getBoolean("settings.default"));
         if(config.isSet("settings.DiscordSRV")) useDiscordSRV(config.getBoolean("settings.DiscordSRV"));
         if(config.isSet("settings.range")) chatRange(config.getInt("settings.range"));
+        if(config.isSet("settings.perWorld")) perWorld(config.getBoolean("settings.perWorld"));
 
         // Load channel aliases
         if(config.isSet("aliases")) addAliases(config.getStringList("aliases"));
