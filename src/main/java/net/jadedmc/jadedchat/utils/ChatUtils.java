@@ -30,8 +30,12 @@ import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.minimessage.MiniMessage;
 import net.kyori.adventure.text.serializer.bungeecord.BungeeComponentSerializer;
 import net.md_5.bungee.api.chat.BaseComponent;
+import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
+
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
  * Some methods to make sending chat messages easier.
@@ -83,6 +87,23 @@ public class ChatUtils {
     }
 
     public static String replaceLegacy(String message) {
+        // Get the server version.
+        String version = Bukkit.getServer().getClass().getPackage().getName().replace(".", ",").split(",")[3];
+        int subVersion = Integer.parseInt(version.replace("1_", "").replaceAll("_R\\d", "").replace("v", ""));
+
+        // If the version is 1.16 or greater, check for hex color codes.
+        if(subVersion >= 16) {
+            Pattern pattern = Pattern.compile("&#[a-fA-F0-9]{6}");
+            Matcher matcher = pattern.matcher(message);
+
+            while (matcher.find()) {
+                String color = message.substring(matcher.start() + 1, matcher.end());
+                message = message.replace("&" + color, "<reset><color:" + color + ">");
+                matcher = pattern.matcher(message);
+            }
+        }
+
+        // Then replace legacy color codes.
         return message.replace("§", "&")
                 .replace("&0", "<reset><black>")
                 .replace("&1", "<reset><dark_blue>")
