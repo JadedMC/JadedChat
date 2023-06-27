@@ -36,6 +36,7 @@ public class ChatFormatBuilder {
     public ChatFormatBuilder(ConfigurationSection config) {
         chatFormat = new ChatFormat(config.getName());
 
+        if(config.isSet("settings.all")) chatFormat.allTags(config.getBoolean("settings.all"));
         if(config.isSet("settings.color")) chatFormat.color(config.getBoolean("settings.color"));
         if(config.isSet("settings.decorations")) chatFormat.decorations(config.getBoolean("settings.decorations"));
         if(config.isSet("settings.events")) chatFormat.events(config.getBoolean("settings.events"));
@@ -56,6 +57,11 @@ public class ChatFormatBuilder {
 
     public ChatFormatBuilder addSection(String sectionID, String section) {
         chatFormat.addSection(sectionID, section);
+        return this;
+    }
+
+    public ChatFormatBuilder allTags(boolean allTags) {
+        chatFormat.allTags(allTags);
         return this;
     }
 

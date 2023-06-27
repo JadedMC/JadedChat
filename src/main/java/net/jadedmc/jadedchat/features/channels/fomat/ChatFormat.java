@@ -38,10 +38,8 @@ import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
-import java.util.List;
 
 /**
  * Represents a format used in a channel.
@@ -49,10 +47,13 @@ import java.util.List;
 public class ChatFormat {
     private final HashMap<String, String> sections = new LinkedHashMap<>();
     private MiniMessage miniMessage;
+    private final String id;
+
+    // MiniMessage settings
+    private boolean all = false;
     private boolean color = false;
     private boolean decorations = false;
     private boolean events = false;
-    private final String id;
 
     /**
      * Creates the ChatFormat.
@@ -69,6 +70,24 @@ public class ChatFormat {
      */
     public void addSection(String id, String section) {
         sections.put(id, section);
+    }
+
+    /**
+     * Get if the format should be able to use all MiniMessage tags.
+     * Note: This overrides all other tag settings.
+     * @return Whether all tags should be usable.
+     */
+    public boolean allTags() {
+        return all;
+    }
+
+    /**
+     * Get of the format should be able to use all MiniMessage tags.
+     * Note: This will override all other tag settings.
+     * @param all Whether all tags should be usable.
+     */
+    public void allTags(boolean all) {
+        this.all = all;
     }
 
     /**
@@ -155,7 +174,7 @@ public class ChatFormat {
     public Component processMessage(JadedChatPlugin plugin, Player player, String message) {
 
         // Replace legacy chat colors.
-        if(color || decorations) {
+        if(color || decorations || all) {
             message = ChatUtils.replaceLegacy(message);
         }
 
@@ -208,6 +227,11 @@ public class ChatFormat {
      * Updates the format MiniMessage object.
      */
     public void updateMiniMessage() {
+        if(all) {
+            miniMessage = MiniMessage.miniMessage();
+            return;
+        }
+
         TagResolver.Builder tagsResolverBuilder = TagResolver.builder();
 
         if(color) {
