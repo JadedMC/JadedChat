@@ -43,10 +43,7 @@ import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
 
 import java.io.File;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.LinkedHashMap;
-import java.util.Map;
+import java.util.*;
 
 /**
  * Represents a section of chat separated from others.
@@ -173,6 +170,14 @@ public class ChatChannel {
         }
 
         return format(format);
+    }
+
+    /**
+     * Get all formats that the channel has.
+     * @return All channel formats.
+     */
+    public Collection<ChatFormat> formats() {
+        return chatFormats.values();
     }
 
     /**

@@ -1,3 +1,27 @@
+/*
+ * This file is part of JadedChat, licensed under the MIT License.
+ *
+ *  Copyright (c) JadedMC
+ *  Copyright (c) contributors
+ *
+ *  Permission is hereby granted, free of charge, to any person obtaining a copy
+ *  of this software and associated documentation files (the "Software"), to deal
+ *  in the Software without restriction, including without limitation the rights
+ *  to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ *  copies of the Software, and to permit persons to whom the Software is
+ *  furnished to do so, subject to the following conditions:
+ *
+ *  The above copyright notice and this permission notice shall be included in all
+ *  copies or substantial portions of the Software.
+ *
+ *  THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ *  IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ *  FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ *  AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ *  LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ *  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+ *  SOFTWARE.
+ */
 package net.jadedmc.jadedchat.commands;
 
 import net.jadedmc.jadedchat.JadedChatPlugin;
@@ -13,6 +37,7 @@ import org.bukkit.command.TabCompleter;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
@@ -125,6 +150,29 @@ public class JadedChatCMD implements CommandExecutor, TabCompleter {
         // Lists all subcommands if the player hasn't picked one yet.
         if(args.length < 2) {
             return Arrays.asList("channels", "help", "reload", "test", "version");
+        }
+
+        // Runs tab complete for the "test" sub command.
+        if(args[0].equalsIgnoreCase("test")) {
+            // List all available channels to test.
+            if(args.length < 3) {
+                List<String> channels = new ArrayList<>();
+                plugin.channelManager().getLoadedChannels().forEach(channel -> channels.add(channel.name()));
+                return channels;
+            }
+
+            // Display all formats for the selected channel.
+            if(args.length < 4) {
+                ChatChannel channel = plugin.channelManager().getChannel(args[1]);
+
+                if(channel == null) {
+                    return Collections.emptyList();
+                }
+
+                List<String> formats = new ArrayList<>();
+                channel.formats().forEach(format -> formats.add(format.id()));
+                return formats;
+            }
         }
 
         // Otherwise, send an empty list.
