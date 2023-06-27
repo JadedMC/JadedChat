@@ -217,13 +217,17 @@ public class ChatFormat {
         }
         if(decorations) {
             tagsResolverBuilder.resolver(StandardTags.decorations())
-                    .resolver(StandardTags.font());
+                    .resolver(StandardTags.font())
+                    .resolver(StandardTags.reset());
         }
         if(events) {
             tagsResolverBuilder.resolver(StandardTags.clickEvent())
                     .resolver(StandardTags.hoverEvent())
                     .resolver(StandardTags.insertion())
-                    .resolver(StandardTags.selector());
+                    .resolver(StandardTags.selector())
+                    .resolver(StandardTags.translatable())
+                    .resolver(StandardTags.translatableFallback())
+                    .resolver(StandardTags.newline());
         }
 
         miniMessage = MiniMessage.builder().tags(tagsResolverBuilder.build()).build();
