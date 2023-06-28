@@ -250,7 +250,6 @@ public class ChatFormat {
                     .resolver(StandardTags.insertion())
                     .resolver(StandardTags.selector())
                     .resolver(StandardTags.translatable())
-                    .resolver(StandardTags.translatableFallback())
                     .resolver(StandardTags.newline());
         }
 
