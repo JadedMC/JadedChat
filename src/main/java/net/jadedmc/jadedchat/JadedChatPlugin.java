@@ -121,10 +121,16 @@ public class JadedChatPlugin extends JavaPlugin implements PluginMessageListener
                 return;
             }
 
-            String[] receivedMessage = in.readUTF().split("~~", 3);
-            String chatChannel = receivedMessage[0];
-            String data = receivedMessage[1];
-            String chatMessage = receivedMessage[2];
+            String[] receivedMessage = in.readUTF().split("~~", 4);
+            long timeStamp = Long.parseLong(receivedMessage[0]);
+            String chatChannel = receivedMessage[1];
+            String data = receivedMessage[2];
+            String chatMessage = receivedMessage[3];
+
+            // Skip message if it was sent more than a second ago.
+            if(System.currentTimeMillis() - timeStamp > 1000) {
+                return;
+            }
 
             ChatChannel channelObject = channelManager.getChannel(chatChannel);
 

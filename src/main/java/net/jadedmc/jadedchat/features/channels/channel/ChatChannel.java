@@ -321,7 +321,7 @@ public class ChatChannel {
                 out.writeUTF("Forward");
                 out.writeUTF("ONLINE");
                 out.writeUTF("jadedchat");
-                out.writeUTF(name.toLowerCase() + "~~" + bungeeEvent.getData() + "~~" + MiniMessage.miniMessage().serialize(messageComponent));
+                out.writeUTF(System.currentTimeMillis() + "~~" + name.toLowerCase() + "~~" + bungeeEvent.getData() + "~~" + MiniMessage.miniMessage().serialize(messageComponent));
 
                 // Sends the message to bungeecord, to send back to all online servers.
                 player.sendPluginMessage(plugin, "BungeeCord", out.toByteArray());
@@ -382,7 +382,7 @@ public class ChatChannel {
                     out.writeUTF("Forward");
                     out.writeUTF("ALL");
                     out.writeUTF("jadedchat");
-                    out.writeUTF(name.toLowerCase() + "~~" + bungeeEvent.getData() + "~~" + MiniMessage.miniMessage().serialize(messageComponent));
+                    out.writeUTF(System.currentTimeMillis() + "~~" + name.toLowerCase() + "~~" + bungeeEvent.getData() + "~~" + MiniMessage.miniMessage().serialize(messageComponent));
 
                     // Sends the message to bungeecord, to send back to all online servers.
                     player.sendPluginMessage(plugin, "BungeeCord", out.toByteArray());
