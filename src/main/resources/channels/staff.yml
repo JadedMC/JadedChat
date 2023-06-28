@@ -37,13 +37,8 @@ formats:
   owner:
     # Format settings.
     settings:
-      # Whether the format can use colors
-      color: true
-
-      # Whether the format can use decorations (underlines, bold, etc)
-      decorations: true
-
-      events: true
+      # Whether the format can use all tags
+      all: true
 
     # The various segments of the message.
     # They are processed in order.
@@ -51,19 +46,14 @@ formats:
     segments:
       channel: "<bold><dark_red>(<red>Staff<dark_red>) "
       prefix: "<bold><red>Owner "
-      name: "<white>%player_name%"
+      name: "<hover:show_text:\"<green>Server: <white><server>\"><white>%player_name%</hover>"
       suffix: "<dark_gray> \xbb "
       message: "<red><message>"
   admin:
     # Format settings.
     settings:
-      # Whether the format can use colors
-      color: true
-
-      # Whether the format can use decorations (underlines, bold, etc)
-      decorations: true
-
-      events: true
+      # Whether the format can use all tags
+      all: true
 
     # The various segments of the message.
     # They are processed in order.
@@ -71,19 +61,14 @@ formats:
     segments:
       channel: "<bold><dark_red>(<red>Staff<dark_red>) "
       prefix: "<bold><red>Admin "
-      name: "<white>%player_name%"
+      name: "<hover:show_text:\"<green>Server: <white><server>\"><white>%player_name%</hover>"
       suffix: "<dark_gray> \xbb "
       message: "<red><message>"
   mod:
     # Format settings.
     settings:
-      # Whether the format can use colors
-      color: true
-
-      # Whether the format can use decorations (underlines, bold, etc)
-      decorations: true
-
-      events: true
+      # Whether the format can use all tags
+      all: true
 
     # The various segments of the message.
     # They are processed in order.
@@ -91,19 +76,14 @@ formats:
     segments:
       channel: "<bold><dark_red>(<red>Staff<dark_red>) "
       prefix: "<bold><red>Mod "
-      name: "<white>%player_name%"
+      name: "<hover:show_text:\"<green>Server: <white><server>\"><white>%player_name%</hover>"
       suffix: "<dark_gray> \xbb "
       message: "<red><message>"
   trial:
     # Format settings.
     settings:
-      # Whether the format can use colors
-      color: true
-
-      # Whether the format can use decorations (underlines, bold, etc)
-      decorations: true
-
-      events: true
+      # Whether the format can use all tags
+      all: true
 
     # The various segments of the message.
     # They are processed in order.
@@ -111,19 +91,14 @@ formats:
     segments:
       channel: "<bold><dark_red>(<red>Staff<dark_red>) "
       prefix: "<bold><red>Trial "
-      name: "<white>%player_name%"
+      name: "<hover:show_text:\"<green>Server: <white><server>\"><white>%player_name%</hover>"
       suffix: "<dark_gray> \xbb "
       message: "<red><message>"
   builder:
     # Format settings.
     settings:
-      # Whether the format can use colors
-      color: true
-
-      # Whether the format can use decorations (underlines, bold, etc)
-      decorations: true
-
-      events: true
+      # Whether the format can use all tags
+      all: true
 
     # The various segments of the message.
     # They are processed in order.
@@ -131,19 +106,14 @@ formats:
     segments:
       channel: "<bold><dark_red>(<red>Staff<dark_red>) "
       prefix: "<bold><red>Builder "
-      name: "<white>%player_name%"
+      name: "<hover:show_text:\"<green>Server: <white><server>\"><white>%player_name%</hover>"
       suffix: "<dark_gray> \xbb "
       message: "<red><message>"
   developer:
     # Format settings.
     settings:
-      # Whether the format can use colors
-      color: true
-
-      # Whether the format can use decorations (underlines, bold, etc)
-      decorations: true
-
-      events: true
+      # Whether the format can use all tags
+      all: true
 
     # The various segments of the message.
     # They are processed in order.
@@ -151,25 +121,20 @@ formats:
     segments:
       channel: "<bold><dark_red>(<red>Staff<dark_red>) "
       prefix: "<bold><red>Developer "
-      name: "<white>%player_name%"
+      name: "<hover:show_text:\"<green>Server: <white><server>\"><white>%player_name%</hover>"
       suffix: "<dark_gray> \xbb "
       message: "<red><message>"
   default:
     # Format settings.
     settings:
-      # Whether the format can use colors
-      color: true
-
-      # Whether the format can use decorations (underlines, bold, etc)
-      decorations: true
-
-      events: true
+      # Whether the format can use all tags
+      all: true
 
     # The various segments of the message.
     # They are processed in order.
     # You can create/remove as many as you'd like.
     segments:
       prefix: "<bold><dark_red>(<red>Staff<dark_red>) "
-      name: "<white>%player_name%"
+      name: "<hover:show_text:\"<green>Server: <white><server>\"><white>%player_name%</hover>"
       suffix: "<dark_gray> \xbb "
       message: "<red><message>"
