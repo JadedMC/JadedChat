@@ -26,57 +26,139 @@ package net.jadedmc.jadedchat.features.channels.fomat;
 
 import org.bukkit.configuration.ConfigurationSection;
 
+/**
+ * Facilitates the creation of chat formats.
+ */
 public class ChatFormatBuilder {
     private final ChatFormat chatFormat;
 
+    /**
+     * Creates a new Chat Format from scratch.
+     * @param id Id of the format you want to make.
+     */
     public ChatFormatBuilder(String id) {
         chatFormat = new ChatFormat(id);
     }
 
+    /**
+     * Creates a Chat Format from a configuration section.
+     * @param config Configuration section to load the format from.
+     */
     public ChatFormatBuilder(ConfigurationSection config) {
         chatFormat = new ChatFormat(config.getName());
 
+        // Load format settings.
         if(config.isSet("settings.all")) chatFormat.allTags(config.getBoolean("settings.all"));
-        if(config.isSet("settings.color")) chatFormat.color(config.getBoolean("settings.color"));
-        if(config.isSet("settings.decorations")) chatFormat.decorations(config.getBoolean("settings.decorations"));
-        if(config.isSet("settings.events")) chatFormat.events(config.getBoolean("settings.events"));
+        if(config.isSet("settings.color")) chatFormat.colorTags(config.getBoolean("settings.color"));
+        if(config.isSet("settings.decorations")) chatFormat.decorationTags(config.getBoolean("settings.decorations"));
+        if(config.isSet("settings.events")) chatFormat.eventTags(config.getBoolean("settings.events"));
 
+        // Makes sure the format has "sections".
         ConfigurationSection sections = config.getConfigurationSection("segments");
         if(sections == null) {
             return;
         }
 
+        // Loads all "sections".
         for(String section : sections.getKeys(false)) {
             addSection(section, config.getString("segments." + section));
         }
     }
 
+    /**
+     * Retrieve the built chat format.
+     * @return Built Chat Format.
+     */
     public ChatFormat build() {
         return chatFormat;
     }
 
+    /**
+     * Adds a section to the format.
+     * @param sectionID ID of the section.
+     * @param section The section itself.
+     * @return Chat Format Builder.
+     */
     public ChatFormatBuilder addSection(String sectionID, String section) {
         chatFormat.addSection(sectionID, section);
         return this;
     }
 
+    /**
+     * Set if the format should be able to use all MiniMessage tags.
+     * @param allTags Whether the format can use all tags.
+     * @return Chat Format Builder.
+     */
     public ChatFormatBuilder allTags(boolean allTags) {
         chatFormat.allTags(allTags);
         return this;
     }
 
+    /**
+     * Set if the format should be able to use color tags.
+     * Deprecated. Use colorTags() instead.
+     * @param color Whether the format can use color tags.
+     * @return Chat Format Builder.
+     */
+    @Deprecated
     public ChatFormatBuilder color(boolean color) {
-        chatFormat.color(color);
+        chatFormat.colorTags(color);
         return this;
     }
 
+    /**
+     * Set if the format should be able to use color tags.
+     * @param colorTags Whether the format can use color tags.
+     * @return Chat Format Builder.
+     */
+    public ChatFormatBuilder colorTags(boolean colorTags) {
+        chatFormat.colorTags(colorTags);
+        return this;
+    }
+
+    /**
+     * Set if the format should be able to use decoration tags.
+     * Depricated. Use decorationTags() instead.
+     * @param decorations Whether the format can use decoration tags.
+     * @return Chat Format Builder.
+     */
+    @Deprecated
     public ChatFormatBuilder decorations(boolean decorations) {
-        chatFormat.decorations();
+        chatFormat.decorationTags();
         return this;
     }
 
+    /**
+     * Set if the format should be able to use decoration tags.
+     * @param decorationTags Whether the format can use decoration tags.
+     * @return Chat Format Builder.
+     */
+    public ChatFormatBuilder decorationTags(boolean decorationTags) {
+        chatFormat.decorationTags(decorationTags);
+        return this;
+    }
+
+    /**
+     * Set if the format should be able to use event tags.
+     * This includes hover and click events.
+     * Depricated. Use eventTags() instead.
+     * @param events Whether the format can use event tags.
+     * @return Chat Format Builder.
+     */
+    @Deprecated
     public ChatFormatBuilder events(boolean events) {
-        chatFormat.events(events);
+        chatFormat.eventTags(events);
+        return this;
+    }
+
+    /**
+     * Set if the format should be able to use event tags.
+     * This includes hover and click events.
+     * @param eventTags Whether the format can use event tags.
+     * @return Chat Format Builder.
+     */
+    public ChatFormatBuilder eventTags(boolean eventTags) {
+        chatFormat.eventTags(eventTags);
         return this;
     }
 }

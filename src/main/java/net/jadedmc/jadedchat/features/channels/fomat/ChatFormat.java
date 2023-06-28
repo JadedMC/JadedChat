@@ -95,6 +95,7 @@ public class ChatFormat {
      * Get if the chat format should be able to use colors.
      * @return Whether colors should be usable.
      */
+    @Deprecated
     public boolean color() {
         return color;
     }
@@ -103,15 +104,33 @@ public class ChatFormat {
      * Set if the chat format should be able to use colors.
      * @param color Whether colors should be usable.
      */
+    @Deprecated
     public void color(boolean color) {
         this.color = color;
         updateMiniMessage();
     }
 
     /**
+     * Get if the chat format should be able to use colors.
+     * @return Whether colors should be usable.
+     */
+    public boolean colorTags() {
+        return color;
+    }
+
+    /**
+     * Set if the chat format should be able to use colors.
+     * @param color Whether colors should be usable.
+     */
+    public void colorTags(boolean color) {
+        this.color = color;
+    }
+
+    /**
      * Get if the chat format should be able to use decorations.
      * @return Whether decorations should be usable.
      */
+    @Deprecated
     public boolean decorations() {
         return decorations;
     }
@@ -120,15 +139,33 @@ public class ChatFormat {
      * Set if the chat format should be able to use decorations.
      * @param decorations Whether decorations should be usable.
      */
+    @Deprecated
     public void decorations(boolean decorations) {
         this.decorations = decorations;
         updateMiniMessage();
     }
 
     /**
+     * Get if the chat format should be able to use decorations.
+     * @return Whether decorations should be usable.
+     */
+    public boolean decorationTags() {
+        return decorations;
+    }
+
+    /**
+     * Set if the chat format should be able to use decorations.
+     * @param decorations Whether decorations should be usable.
+     */
+    public void decorationTags(boolean decorations) {
+        this.decorations = decorations;
+    }
+
+    /**
      * Get if the chat format should be able to use events.
      * @return Whether events should be usable.
      */
+    @Deprecated
     public boolean events() {
         return events;
     }
@@ -137,9 +174,26 @@ public class ChatFormat {
      * Set if the chat format should be able to use events.
      * @param events Whether events should be usable.
      */
+    @Deprecated
     public void events(boolean events) {
         this.events = events;
         updateMiniMessage();
+    }
+
+    /**
+     * Get if the chat format should be able to use events.
+     * @return Whether events should be usable.
+     */
+    public boolean eventTags() {
+        return events;
+    }
+
+    /**
+     * Set if the chat format should be able to use events.
+     * @param events Whether events should be usable.
+     */
+    public void eventTags(boolean events) {
+        this.events = events;
     }
 
     /**
