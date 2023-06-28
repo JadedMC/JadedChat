@@ -40,6 +40,7 @@ import org.bukkit.inventory.ItemStack;
 
 import java.util.HashMap;
 import java.util.LinkedHashMap;
+import java.util.Objects;
 
 /**
  * Represents a format used in a channel.
@@ -215,7 +216,7 @@ public class ChatFormat {
             }
             else {
                 // Processes placeholders for the section.
-                component.append(plugin.emoteManager().replaceEmotes(MiniMessage.miniMessage().deserialize(ChatUtils.replaceLegacy(PlaceholderAPI.setPlaceholders(player, section)))));
+                component.append(plugin.emoteManager().replaceEmotes(MiniMessage.miniMessage().deserialize(ChatUtils.replaceLegacy(PlaceholderAPI.setPlaceholders(player, section)), Placeholder.parsed("server", Objects.requireNonNull(plugin.settingsManager().getConfig().getString("server"))))));
             }
         }
 
