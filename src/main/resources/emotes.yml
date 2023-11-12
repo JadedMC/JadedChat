@@ -1,63 +1,139 @@
-enabled: false
+enabled: true
 
 emotes:
   1:
     identifier: ":shrug:"
     emote: "¯\\_(ツ)_/¯"
-    permission: ""
+    permission: "jadedchat.emotes"
   2:
     identifier: ":bear:"
     emote: "ʕ•ᴥ•ʔ"
-    permission: ""
+    permission: "jadedchat.emotes"
   3:
     identifier: ":hearteyes:"
-    emote: "♥‿♥"
-    permission: ""
+    emote: "<red>♥‿♥</red>"
+    permission: "jadedchat.emotes"
   4:
     identifier: "<3"
     emote: "<red>❤</red>"
-    permission: ""
+    permission: "jadedchat.emotes"
   5:
     identifier: "o/"
-    emote: "( ﾟ◡ﾟ)/"
-    permission: ""
+    emote: "<lig( ﾟ◡ﾟ)/"
+    permission: "jadedchat.emotes"
   6:
     identifier: ":yes:"
     emote: "<green>✔</green>"
-    permission: ""
+    permission: "jadedchat.emotes"
   7:
     identifier: ":no:"
     emote: "<red>✖</red>"
-    permission: ""
+    permission: "jadedchat.emotes"
   8:
     identifier: ":star:"
     emote: "<yellow>✮</yellow>"
-    permission: ""
+    permission: "jadedchat.emotes"
   9:
     identifier: ":cute:"
     emote: "(✿ᴖ‿ᴖ)"
-    permission: ""
+    permission: "jadedchat.emotes"
   10:
     identifier: ":dj:"
     emote: "ヽ(⌐■_■)ノ♬"
-    permission: ""
+    permission: "jadedchat.emotes"
   11:
     identifier: ":typing:"
     emote: "✎..."
-    permission: ""
+    permission: "jadedchat.emotes"
   12:
     identifier: ":gimmie:"
     emote: "༼つ◕_◕༽つ"
-    permission: ""
+    permission: "jadedchat.emotes"
   13:
     identifier: ":maths:"
     emote: "√(π+x)=L"
-    permission: ""
+    permission: "jadedchat.emotes"
   14:
     identifier: ":arrow:"
     emote: "➜"
-    permission: ""
+    permission: "jadedchat.emotes"
   15:
     identifier: ":sus:"
-    emote: "ඞ"
-    permission: ""
+    emote: "<red>ඞ</red>"
+    permission: "jadedchat.emotes"
+  16:
+    identifier: ":star:"
+    emote: "<yellow>✮</yellow>"
+    permission: "jadedchat.emotes"
+  17:
+    identifier: ":tableflip:"
+    emote: "<red>(╯°□°）╯</red><white>︵ ┻━┻</white>"
+    permission: "jadedchat.emotes"
+  18:
+    identifier: ":123:"
+    emote: "<green>1</green><yellow>2</yellow><red>3</red>"
+    permission: "jadedchat.emotes"
+  19:
+    identifier: ":totem:"
+    emote: "<aqua>◎</aqua><yellow>_</yellow><aqua>◎</aqua>"
+    permission: "jadedchat.emotes"
+  20:
+    identifier: ":snail:"
+    emote: "<yellow>@</yellow><aqua>'</aqua><yellow>_</yellow><aqua>'</aqua>"
+    permission: "jadedchat.emotes"
+  21:
+    identifier: ":thinking:"
+    emote: "<gold>(<green>O</green><gold>.</gold><green>o</green><red>?</red><gold>)</gold>"
+    permission: "jadedchat.emotes"
+  22:
+    identifier: ":wizard:"
+    emote: "<yellow>(</yellow><aqua>'</aqua><yellow>-</yellow><aqua>'</aqua><yellow>)⊃</yellow><red>━</red><light_purple>☆ﾟ.*･｡ﾟ</light_purple>"
+    permission: "jadedchat.emotes"
+  23:
+    identifier: ":pvp:"
+    emote: "<yellow>⚔</yellow>"
+    permission: "jadedchat.emotes"
+  24:
+    identifier: ":peace:"
+    emote: "<green>✌</green>"
+    permission: "jadedchat.emotes"
+  25:
+    identifier: ":oof:"
+    emote: "<red><bold>OOF</bold></red>"
+    permission: "jadedchat.emotes"
+  26:
+    identifier: ":puffer:"
+    emote: "<yellow><('O')></yellow>"
+    permission: "jadedchat.emotes"
+  27:
+    identifier: ":snow:"
+    emote: "<aqua>☃</aqua>"
+    permission: "jadedchat.emotes"
+  28:
+    identifier: ":dog:"
+    emote: "<gold>(ᵔᴥᵔ)</gold>"
+    permission: "jadedchat.emotes"
+  29:
+    identifier: ":sloth:"
+    emote: "<gold>(</gold><gray> ⬩ </gray><gold>⊝</gold><gray> ⬩ </gray><gold>)</gold>"
+    permission: "jadedchat.emotes"
+  30:
+    identifier: "^_^"
+    emote: "<green>^_^</green>"
+    permission: "jadedchat.emotes"
+  31:
+    identifier: ":cat:"
+    emote: "<yellow> = </yellow><aqua>＾● ⋏ ●＾</aqua><yellow> = </yellow>"
+    permission: "jadedchat.emotes"
+  32:
+    identifier: ":yey:"
+    emote: "<green>ヽ (◕◡◕) ﾉ</green>"
+    permission: "jadedchat.emotes"
+  33:
+    identifier: ":cute:"
+    emote: "<yellow>(</yellow><green>✿</green><yellow>ᴖ‿ᴖ)</yellow>"
+    permission: "jadedchat.emotes"
+  34:
+    identifier: "^-^"
+    emote: "<green>^-^green>"
+    permission: "jadedchat.emotes"
