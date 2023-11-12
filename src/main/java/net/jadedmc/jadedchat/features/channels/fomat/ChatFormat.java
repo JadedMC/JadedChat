@@ -265,7 +265,7 @@ public class ChatFormat {
             // Makes sure we don't process placeholders sent in the chat message.
             if(section.contains("<message>")) {
                 section = PlaceholderAPI.setPlaceholders(player, section.replace("<message_raw>", message));
-                component.append(MiniMessage.miniMessage().deserialize(section, Placeholder.component("message", plugin.emoteManager().replaceEmotes(miniMessage.deserialize(message, Placeholder.component("item", itemComponent.build()))))));
+                component.append(MiniMessage.miniMessage().deserialize(section, Placeholder.component("message", plugin.emoteManager().replaceEmotes(miniMessage.deserialize(message, Placeholder.component("item", itemComponent.build())), player))));
             }
             else {
                 // Processes placeholders for the section.
