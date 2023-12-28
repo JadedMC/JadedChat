@@ -86,19 +86,19 @@ public class FilterManager {
             // Checks for permissions to prevent sending the player the same message twice.
             Component playerMessage = channel.format(player).processMessage(plugin, player, message);
             if(!player.hasPermission("jadedchat.filter.view")) {
-                player.sendMessage(playerMessage);
+                ChatUtils.chat(player, playerMessage);
             }
 
             // Sends staff the filtered message.
             Component staffMessage = MiniMessage.miniMessage().deserialize(Objects.requireNonNull(plugin.settingsManager().getFilter().getString("FilteredPrefix"))).append(playerMessage);
             for(Player viewer : Bukkit.getOnlinePlayers()) {
                 if(viewer.hasPermission("jadedchat.filter.view")) {
-                    viewer.sendMessage(staffMessage);
+                    ChatUtils.chat(viewer, staffMessage);
                 }
             }
 
             // Send the message to the console as well
-            Bukkit.getServer().getConsoleSender().sendMessage(Component.text().content("(filtered) [" + channel.name() + "] ").append(playerMessage).build());
+            ChatUtils.chat(Bukkit.getConsoleSender(), Component.text().content("(filtered) [" + channel.name() + "] ").append(playerMessage).build());
         }
 
         return passes;
