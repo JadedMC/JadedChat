@@ -285,16 +285,17 @@ public class ChatChannel {
             return;
         }
 
-        ChannelMessageSendEvent messageEvent = new ChannelMessageSendEvent(player, this, message);
+        // Creates the formatted component of the message.
+        Component messageComponent = format.processMessage(plugin, player, message);
+
+        // Calls the message send event.
+        ChannelMessageSendEvent messageEvent = new ChannelMessageSendEvent(player, this, message, messageComponent);
         Bukkit.getPluginManager().callEvent(messageEvent);
 
         // Exit if the message sent event is cancelled.
         if(messageEvent.isCancelled()) {
             return;
         }
-
-        // Creates the formatted component of the message.
-        Component messageComponent = format.processMessage(plugin, player, message);
 
         // Send the message to all channel viewers.
         messageEvent.getViewers().forEach(viewer -> ChatUtils.chat(viewer, messageComponent));
@@ -343,7 +344,10 @@ public class ChatChannel {
                 return;
             }
 
-            ChannelMessageSendEvent messageEvent = new ChannelMessageSendEvent(player, this, message);
+            // Creates the formatted component of the message.
+            Component messageComponent = format(player).processMessage(plugin, player, message);
+
+            ChannelMessageSendEvent messageEvent = new ChannelMessageSendEvent(player, this, message, messageComponent);
             Bukkit.getPluginManager().callEvent(messageEvent);
 
             // Exit if the message sent event is cancelled.
@@ -353,9 +357,6 @@ public class ChatChannel {
 
             // Log the message to MySQL.
             plugin.channelManager().logMessage(this, player, message, false);
-
-            // Creates the formatted component of the message.
-            Component messageComponent = format(player).processMessage(plugin, player, message);
 
             // Send the message to all channel viewers.
             messageEvent.getViewers().forEach(viewer -> ChatUtils.chat(viewer, messageComponent));

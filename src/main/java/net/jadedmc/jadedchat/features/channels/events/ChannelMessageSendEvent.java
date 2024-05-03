@@ -25,6 +25,7 @@
 package net.jadedmc.jadedchat.features.channels.events;
 
 import net.jadedmc.jadedchat.features.channels.channel.ChatChannel;
+import net.kyori.adventure.text.Component;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Cancellable;
 import org.bukkit.event.Event;
@@ -44,18 +45,24 @@ public class ChannelMessageSendEvent  extends Event implements Cancellable {
     private final Player player;
     private final ChatChannel channel;
     private final String message;
+    private final Component formattedMessage;
     private Collection<Player> viewers;
 
-    public ChannelMessageSendEvent(Player player, ChatChannel channel, String message) {
+    public ChannelMessageSendEvent(Player player, ChatChannel channel, String message, Component formattedMessage) {
         this.player = player;
         this.channel = channel;
         this.message = message;
+        this.formattedMessage = formattedMessage;
 
         viewers = channel.viewers(player);
     }
 
     public ChatChannel getChannel() {
         return channel;
+    }
+
+    public Component getFormattedMessage() {
+        return formattedMessage;
     }
 
     @Override
