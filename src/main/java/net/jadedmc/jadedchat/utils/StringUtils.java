@@ -24,6 +24,8 @@
  */
 package net.jadedmc.jadedchat.utils;
 
+import org.bukkit.ChatColor;
+
 import java.util.Arrays;
 import java.util.List;
 
@@ -38,10 +40,10 @@ public class StringUtils {
      * @param separator What should be between each string.
      * @return Combined string.
      */
-    public static String join(List<String> args, String separator) {
-        StringBuilder temp = new StringBuilder();
+    public static String join(final List<String> args, final String separator) {
+        final StringBuilder temp = new StringBuilder();
 
-        for(String str : args) {
+        for(final String str : args) {
             if(!temp.toString().equals("")) {
                 temp.append(separator);
             }
@@ -58,7 +60,17 @@ public class StringUtils {
      * @param separator What should be between each string.
      * @return Combined string.
      */
-    public static String join(String[] args, String separator) {
+    public static String join(final String[] args, final String separator) {
         return join(Arrays.asList(args), separator);
+    }
+
+    /**
+     * Translate a message using legacy ChatColor enum.
+     * Important for everything non-chat related, like item names and scoreboards.
+     * @param message Message to translate.
+     * @return Translated message.
+     */
+    public static String translateLegacyMessage(final String message) {
+        return ChatColor.translateAlternateColorCodes('&', message);
     }
 }
