@@ -15,6 +15,7 @@ commands:
   jadedchat:
     description: Main command for JadedChat.
     aliases: [jc]
+    permission: jadedchat.admin
   message:
     description: Send a private message to a player.
     aliases: [msg,tell,whisper,w,pm,dm]
@@ -24,6 +25,7 @@ commands:
   socialspy:
     description: Spy on private messages.
     aliases: [spy, ss]
+    permission: jadedchat.socialspy
 
 permissions:
   jadedchat.admin:
