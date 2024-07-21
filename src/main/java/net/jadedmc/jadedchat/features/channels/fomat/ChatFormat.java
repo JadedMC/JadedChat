@@ -89,6 +89,7 @@ public class ChatFormat {
      */
     public void allTags(boolean all) {
         this.all = all;
+        updateMiniMessage();
     }
 
     /**
@@ -124,6 +125,7 @@ public class ChatFormat {
      */
     public void colorTags(boolean color) {
         this.color = color;
+        updateMiniMessage();
     }
 
     /**
@@ -159,6 +161,7 @@ public class ChatFormat {
      */
     public void decorationTags(boolean decorations) {
         this.decorations = decorations;
+        updateMiniMessage();
     }
 
     /**
@@ -194,6 +197,7 @@ public class ChatFormat {
      */
     public void eventTags(boolean events) {
         this.events = events;
+        updateMiniMessage();
     }
 
     /**
