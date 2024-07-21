@@ -102,7 +102,7 @@ public class MessageManager {
         Component toReceiver = generateComponent(configuration.getConfigurationSection("PrivateMessages.ReceiverMessage.segments"), sender, receiver, message);
         Component toSpy = generateComponent(configuration.getConfigurationSection("PrivateMessages.SpyMessage.segments"), sender, receiver, message);
 
-        sender.sendMessage(toSender);
+        ChatUtils.chat(sender, toSender);
         {
             if(configuration.isSet("PrivateMessages.SenderMessage.sounds")) {
                 List<String> sounds = configuration.getStringList("PrivateMessages.SenderMessage.sounds");
@@ -114,7 +114,7 @@ public class MessageManager {
             }
         }
 
-        receiver.sendMessage(toReceiver);
+        ChatUtils.chat(receiver, toReceiver);
         {
             if(configuration.isSet("PrivateMessages.ReceiverMessage.sounds")) {
                 List<String> sounds = configuration.getStringList("PrivateMessages.ReceiverMessage.sounds");
@@ -133,7 +133,7 @@ public class MessageManager {
                 continue;
             }
 
-            stalker.sendMessage(toSpy);
+            ChatUtils.chat(stalker, toSpy);
 
             {
                 if(configuration.isSet("PrivateMessages.SpyMessage.sounds")) {
@@ -196,29 +196,6 @@ public class MessageManager {
             return null;
         }
 
-        TextComponent.Builder itemComponent = Component.text();
-        // Enables displaying the held item in chat if the player has permission.
-        if(sender.hasPermission("jadedchat.showitem") && JadedChat.isPaper()) {
-            if(sender.getInventory().getItemInHand().getType() != Material.AIR) {
-                ItemStack itemStack = sender.getInventory().getItemInHand();
-
-                String nbtString = "";
-                if(itemStack.getItemMeta() != null) {
-                    nbtString += itemStack.getItemMeta().getAsString();
-                }
-
-                String miniMessageString = "<hover:show_item:" + itemStack.getType().toString().toLowerCase() + ":" + itemStack.getAmount() + ": '" + nbtString + "'>";
-                miniMessageString += "<name></hover>";
-                itemComponent.append(MiniMessage.miniMessage().deserialize(miniMessageString, Placeholder.component("name", itemStack.displayName())));
-            }
-            else {
-                itemComponent.append(ChatUtils.translate("<hover:show_text:Air><white>[Air]</white></hover>"));
-            }
-        }
-        else {
-            itemComponent.content("<item>");
-        }
-
         // Checks which tags we should process in a sender's message.
         TagResolver.Builder tagsResolverBuilder = TagResolver.builder();
         if(sender.hasPermission("jadedchat.message.colors")) {
@@ -253,7 +230,7 @@ public class MessageManager {
 
             message = plugin.emoteManager().replaceEmotes(message, sender);
 
-            Component component = MiniMessage.miniMessage().deserialize(value, Placeholder.component("message", miniMessage.deserialize(message, Placeholder.component("item", itemComponent.build()))));
+            Component component = MiniMessage.miniMessage().deserialize(value, Placeholder.component("message", miniMessage.deserialize(message)));
             output.append(component);
         }
 

@@ -234,29 +234,6 @@ public class ChatFormat {
         }
 
         TextComponent.Builder component = Component.text();
-        TextComponent.Builder itemComponent = Component.text();
-
-        // Enables displaying the held item in chat if the player has permission.
-        if(player.hasPermission("jadedchat.showitem") && JadedChat.isPaper()) {
-            if(player.getInventory().getItemInHand().getType() != Material.AIR) {
-                ItemStack itemStack = player.getInventory().getItemInHand();
-
-                String nbtString = "";
-                if(itemStack.getItemMeta() != null) {
-                    nbtString += itemStack.getItemMeta().getAsString();
-                }
-
-                String miniMessageString = "<hover:show_item:" + itemStack.getType().toString().toLowerCase() + ":" + itemStack.getAmount() + ": '" + nbtString + "'>";
-                miniMessageString += "<name></hover>";
-                itemComponent.append(MiniMessage.miniMessage().deserialize(miniMessageString, Placeholder.component("name", itemStack.displayName())));
-            }
-            else {
-                itemComponent.append(ChatUtils.translate("<hover:show_text:Air><white>[Air]</white></hover>"));
-            }
-        }
-        else {
-            itemComponent.content("<item>");
-        }
 
         // Loop through each section of the format.
         for(String sectionID : sections.keySet()) {
@@ -265,7 +242,7 @@ public class ChatFormat {
             // Makes sure we don't process placeholders sent in the chat message.
             if(section.contains("<message>")) {
                 section = PlaceholderAPI.setPlaceholders(player, section.replace("<message_raw>", message));
-                component.append(MiniMessage.miniMessage().deserialize(section, Placeholder.component("message", plugin.emoteManager().replaceEmotes(miniMessage.deserialize(message, Placeholder.component("item", itemComponent.build())), player))));
+                component.append(MiniMessage.miniMessage().deserialize(section, Placeholder.component("message", plugin.emoteManager().replaceEmotes(miniMessage.deserialize(message), player))));
             }
             else {
                 // Processes placeholders for the section.

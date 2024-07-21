@@ -15,7 +15,6 @@ JadedChat is a feature-rich JSON chat plugin for [Paper](http://www.papermc.io) 
 * Cross-server chat using BungeeCord
 * DiscordSRV support
 * LuckPerms support
-* Display held items in chat using <item>
 
 ## Requirements
 * Java 17 or newer
