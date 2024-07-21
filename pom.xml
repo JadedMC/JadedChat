@@ -6,7 +6,7 @@
 
     <groupId>net.jadedmc</groupId>
     <artifactId>JadedChat</artifactId>
-    <version>0.6</version>
+    <version>1.0 Snapshot</version>
     <packaging>jar</packaging>
 
     <name>JadedChat</name>
