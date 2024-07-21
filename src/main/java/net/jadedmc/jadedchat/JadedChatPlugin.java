@@ -38,6 +38,7 @@ import net.jadedmc.jadedchat.settings.HookManager;
 import net.jadedmc.jadedchat.settings.SettingsManager;
 import net.jadedmc.jadedchat.utils.ChatUtils;
 import net.kyori.adventure.platform.bukkit.BukkitAudiences;
+import org.bstats.bukkit.Metrics;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
