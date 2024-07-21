@@ -19,12 +19,10 @@ public class SocialSpyCMD implements CommandExecutor {
     @Override
     public boolean onCommand(@NotNull CommandSender sender, @NotNull Command cmd, @NotNull String label, @NotNull String[] args) {
         // Makes sure the sender is a player, and not the console.
-        if(!(sender instanceof Player)) {
+        if(!(sender instanceof Player player)) {
             ChatUtils.chat(sender, plugin.settingsManager().getMessage(Message.SOCIAL_SPY_NOT_A_PLAYER));
             return true;
         }
-
-        Player player = (Player) sender;
 
         // Makes sure the player has permission to use the command.
         if(!player.hasPermission("jadedchat.socialspy")) {

@@ -39,11 +39,9 @@ public class ReplyCMD implements CommandExecutor {
     @Override
     public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
         // Only players should be able to message each other.
-        if(!(sender instanceof Player)) {
+        if(!(sender instanceof Player player)) {
             return true;
         }
-
-        Player player = (Player) sender;
 
         // Make sure they're using the command properly.
         if(args.length < 1) {
