@@ -34,6 +34,7 @@ import net.jadedmc.jadedchat.features.messaging.MessageManager;
 import net.jadedmc.jadedchat.listeners.AsyncPlayerChatListener;
 import net.jadedmc.jadedchat.listeners.PlayerJoinListener;
 import net.jadedmc.jadedchat.listeners.PlayerQuitListener;
+import net.jadedmc.jadedchat.listeners.ReloadListener;
 import net.jadedmc.jadedchat.settings.HookManager;
 import net.jadedmc.jadedchat.settings.SettingsManager;
 import net.jadedmc.jadedchat.utils.ChatUtils;
@@ -93,6 +94,9 @@ public class JadedChatPlugin extends JavaPlugin implements PluginMessageListener
         Bukkit.getPluginManager().registerEvents(new AsyncPlayerChatListener(this), this);
         Bukkit.getPluginManager().registerEvents(new PlayerJoinListener(this), this);
         Bukkit.getPluginManager().registerEvents(new PlayerQuitListener(this), this);
+
+        // Supports BetterReload if installed.
+        if(this.hookManager.useBetterReload()) getServer().getPluginManager().registerEvents(new ReloadListener(this), this);
 
         // Registers the commands created by the plugin.
         getCommand("jadedchat").setExecutor(new JadedChatCMD(this));

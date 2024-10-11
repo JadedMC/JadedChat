@@ -25,12 +25,14 @@
 package net.jadedmc.jadedchat.settings;
 
 import net.jadedmc.jadedchat.JadedChatPlugin;
+import org.jetbrains.annotations.NotNull;
 
 /**
  * Manages various hooks into other plugins.
  */
 public class HookManager {
     private final JadedChatPlugin plugin;
+    private final boolean hasBetterReload;
     private final boolean hasDiscordSRV;
     private final boolean hasLuckPerms;
 
@@ -38,11 +40,22 @@ public class HookManager {
      * Creates the HookManager.
      * @param plugin Instance of the plugin.
      */
-    public HookManager(JadedChatPlugin plugin) {
+    public HookManager(@NotNull final JadedChatPlugin plugin) {
         this.plugin = plugin;
 
         this.hasDiscordSRV = plugin.getServer().getPluginManager().isPluginEnabled("DiscordSRV");
         this.hasLuckPerms = plugin.getServer().getPluginManager().isPluginEnabled("LuckPerms");
+
+        this.hasBetterReload = plugin.getServer().getPluginManager().isPluginEnabled("BetterReload");
+        if(this.hasBetterReload) plugin.getLogger().info("BetterReload detected. Enabling hook...");
+    }
+
+    /**
+     * Get if the plugin should use BetterReload.
+     * @return Whether the plugin should interface with BetterReload.
+     */
+    public boolean useBetterReload() {
+        return this.hasBetterReload;
     }
 
     /**
