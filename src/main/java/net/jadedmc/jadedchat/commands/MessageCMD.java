@@ -50,7 +50,7 @@ public class MessageCMD implements CommandExecutor {
 
         // Make sure they're using the command properly.
         if(args.length < 2) {
-            ChatUtils.chat(player, plugin.settingsManager().getMessage(Message.MESSAGE_USAGE));
+            ChatUtils.chat(player, plugin.getConfigManager().getMessage(Message.MESSAGE_USAGE));
             return true;
         }
 
@@ -59,13 +59,13 @@ public class MessageCMD implements CommandExecutor {
 
         // Make sure they're online.
         if(target == null) {
-            ChatUtils.chat(player, plugin.settingsManager().getMessage(Message.MESSAGE_NOT_ONLINE));
+            ChatUtils.chat(player, plugin.getConfigManager().getMessage(Message.MESSAGE_NOT_ONLINE));
             return true;
         }
 
         // Make sure the target isn't the player.
         if(target.equals(player)) {
-            ChatUtils.chat(player, plugin.settingsManager().getMessage(Message.MESSAGE_SELF));
+            ChatUtils.chat(player, plugin.getConfigManager().getMessage(Message.MESSAGE_SELF));
             return true;
         }
 

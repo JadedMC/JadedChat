@@ -44,8 +44,8 @@ public class RegexFilter extends Filter {
      */
     public RegexFilter(JadedChatPlugin plugin) {
         this.plugin = plugin;
-        setSilentFail(plugin.settingsManager().getFilter().getBoolean("RegexFilter.silent"));
-        setFailMessage(plugin.settingsManager().getMessage(Message.FILTER_REGEX));
+        setSilentFail(plugin.getConfigManager().getFilter().getBoolean("RegexFilter.silent"));
+        setFailMessage(plugin.getConfigManager().getMessage(Message.FILTER_REGEX));
     }
 
     /**
@@ -57,7 +57,7 @@ public class RegexFilter extends Filter {
     @Override
     public boolean passesFilter(Player player, String message) {
         // Exit if the filter is disabled.
-        if(!plugin.settingsManager().getFilter().getBoolean("RegexFilter.enabled")) {
+        if(!plugin.getConfigManager().getFilter().getBoolean("RegexFilter.enabled")) {
             return true;
         }
 
@@ -68,12 +68,12 @@ public class RegexFilter extends Filter {
 
         // Remove misc characters before filtering.
         String toFilter = message;
-        for(String toRemove : plugin.settingsManager().getFilter().getStringList("MiscCharacters.characters")) {
+        for(String toRemove : plugin.getConfigManager().getFilter().getStringList("MiscCharacters.characters")) {
             toFilter = toFilter.replace(toRemove, "");
         }
 
         // Loops through each regex statement in the configured list.
-        for(String filter : plugin.settingsManager().getFilter().getStringList("RegexFilter.filter")) {
+        for(String filter : plugin.getConfigManager().getFilter().getStringList("RegexFilter.filter")) {
             Pattern pattern = Pattern.compile(filter);
             Matcher matcher = pattern.matcher(toFilter);
 

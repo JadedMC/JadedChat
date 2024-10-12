@@ -46,7 +46,7 @@ public class RepeatMessageFilter extends Filter {
     public RepeatMessageFilter(JadedChatPlugin plugin) {
         this.plugin = plugin;
         setSilentFail(false);
-        setFailMessage(plugin.settingsManager().getMessage(Message.FILTER_REPEAT_MESSAGE));
+        setFailMessage(plugin.getConfigManager().getMessage(Message.FILTER_REPEAT_MESSAGE));
     }
 
     /**
@@ -58,7 +58,7 @@ public class RepeatMessageFilter extends Filter {
     @Override
     public boolean passesFilter(Player player, String message) {
         // Exit if the filter is disabled.
-        if(!plugin.settingsManager().getFilter().getBoolean("RepeatMessageFilter.enabled")) {
+        if(!plugin.getConfigManager().getFilter().getBoolean("RepeatMessageFilter.enabled")) {
             return true;
         }
 

@@ -91,7 +91,7 @@ public class ChatChannelManager {
         plugin.getServer().getScheduler().runTaskAsynchronously(plugin, () -> {
             try {
                 PreparedStatement statement = plugin.getMySQL().getConnection().prepareStatement("INSERT INTO chat_logs (server,channel,uuid,username,message) VALUES (?,?,?,?,?)");
-                statement.setString(1, plugin.settingsManager().getConfig().getString("server"));
+                statement.setString(1, plugin.getConfigManager().getConfig().getString("server"));
                 statement.setString(2, channel.name());
                 statement.setString(3, player.getUniqueId().toString());
                 statement.setString(4, player.getName());

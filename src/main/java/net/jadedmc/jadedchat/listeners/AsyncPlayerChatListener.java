@@ -62,7 +62,7 @@ public class AsyncPlayerChatListener implements Listener {
 
         // Make sure they are actually in a channel.
         if(channel == null) {
-            ChatUtils.chat(player, plugin.settingsManager().getMessage(Message.CHANNEL_NOT_IN_CHANNEL));
+            ChatUtils.chat(player, plugin.getConfigManager().getMessage(Message.CHANNEL_NOT_IN_CHANNEL));
             return;
         }
 

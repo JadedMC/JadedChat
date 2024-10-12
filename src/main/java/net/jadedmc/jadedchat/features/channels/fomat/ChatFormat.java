@@ -25,7 +25,6 @@
 package net.jadedmc.jadedchat.features.channels.fomat;
 
 import me.clip.placeholderapi.PlaceholderAPI;
-import net.jadedmc.jadedchat.JadedChat;
 import net.jadedmc.jadedchat.JadedChatPlugin;
 import net.jadedmc.jadedchat.utils.ChatUtils;
 import net.kyori.adventure.text.Component;
@@ -34,9 +33,7 @@ import net.kyori.adventure.text.minimessage.MiniMessage;
 import net.kyori.adventure.text.minimessage.tag.resolver.Placeholder;
 import net.kyori.adventure.text.minimessage.tag.resolver.TagResolver;
 import net.kyori.adventure.text.minimessage.tag.standard.StandardTags;
-import org.bukkit.Material;
 import org.bukkit.entity.Player;
-import org.bukkit.inventory.ItemStack;
 
 import java.util.HashMap;
 import java.util.LinkedHashMap;
@@ -250,7 +247,7 @@ public class ChatFormat {
             }
             else {
                 // Processes placeholders for the section.
-                component.append(plugin.emoteManager().replaceEmotes(MiniMessage.miniMessage().deserialize(ChatUtils.replaceLegacy(PlaceholderAPI.setPlaceholders(player, section)), Placeholder.parsed("server", Objects.requireNonNull(plugin.settingsManager().getConfig().getString("server"))))));
+                component.append(plugin.emoteManager().replaceEmotes(MiniMessage.miniMessage().deserialize(ChatUtils.replaceLegacy(PlaceholderAPI.setPlaceholders(player, section)), Placeholder.parsed("server", Objects.requireNonNull(plugin.getConfigManager().getConfig().getString("server"))))));
             }
         }
 

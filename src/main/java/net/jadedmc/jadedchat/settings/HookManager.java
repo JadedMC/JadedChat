@@ -69,12 +69,12 @@ public class HookManager {
         }
 
         // Return true if the DiscordSRV setting is not set.
-        if(!plugin.settingsManager().getConfig().isSet("Hooks.DiscordSRV")) {
+        if(!plugin.getConfigManager().getConfig().isSet("Hooks.DiscordSRV")) {
             return true;
         }
 
         // Otherwise return what the setting is set to.
-        return plugin.settingsManager().getConfig().getBoolean("Hooks.DiscordSRV");
+        return plugin.getConfigManager().getConfig().getBoolean("Hooks.DiscordSRV");
     }
 
     /**
@@ -88,11 +88,11 @@ public class HookManager {
         }
 
         // Return true if the LuckPerms setting is not set.
-        if(!plugin.settingsManager().getConfig().isSet("Hooks.LuckPerms")) {
+        if(!plugin.getConfigManager().getConfig().isSet("Hooks.LuckPerms")) {
             return true;
         }
 
         // Otherwise return what the setting is set to.
-        return plugin.settingsManager().getConfig().getBoolean("Hooks.LuckPerms");
+        return plugin.getConfigManager().getConfig().getBoolean("Hooks.LuckPerms");
     }
 }

@@ -71,7 +71,7 @@ public class JadedChatCMD implements CommandExecutor, TabCompleter {
 
         // Makes sure the sender has permission to use the command.
         if(!sender.hasPermission("jadedchat.admin")) {
-            ChatUtils.chat(sender, plugin.settingsManager().getMessage(Message.JADEDCHAT_NO_PERMISSION));
+            ChatUtils.chat(sender, plugin.getConfigManager().getMessage(Message.JADEDCHAT_NO_PERMISSION));
             return true;
         }
 
@@ -87,7 +87,7 @@ public class JadedChatCMD implements CommandExecutor, TabCompleter {
         switch (subCommand) {
             // Reloads all plugin configuration files.
             case "reload" -> {
-                plugin.settingsManager().reload();
+                plugin.getConfigManager().reload();
                 plugin.channelManager().loadChannels();
                 plugin.emoteManager().registerEmotes();
                 ChatUtils.chat(sender, "<green><bold>JadedChat</bold> <dark_gray>» <green>Configuration files reloaded successfully!");

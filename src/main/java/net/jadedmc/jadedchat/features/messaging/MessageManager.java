@@ -24,7 +24,6 @@
  */
 package net.jadedmc.jadedchat.features.messaging;
 
-import net.jadedmc.jadedchat.JadedChat;
 import net.jadedmc.jadedchat.JadedChatPlugin;
 import net.jadedmc.jadedchat.utils.ChatUtils;
 import net.kyori.adventure.text.Component;
@@ -33,12 +32,10 @@ import net.kyori.adventure.text.minimessage.MiniMessage;
 import net.kyori.adventure.text.minimessage.tag.resolver.Placeholder;
 import net.kyori.adventure.text.minimessage.tag.resolver.TagResolver;
 import net.kyori.adventure.text.minimessage.tag.standard.StandardTags;
-import org.bukkit.Material;
 import org.bukkit.Sound;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
-import org.bukkit.inventory.ItemStack;
 
 import java.util.*;
 
@@ -97,7 +94,7 @@ public class MessageManager {
      * @param message The message being sent.
      */
     public void processMessage(Player sender, Player receiver, String message) {
-        FileConfiguration configuration = plugin.settingsManager().getConfig();
+        FileConfiguration configuration = plugin.getConfigManager().getConfig();
         Component toSender = generateComponent(configuration.getConfigurationSection("PrivateMessages.SenderMessage.segments"), sender, receiver, message);
         Component toReceiver = generateComponent(configuration.getConfigurationSection("PrivateMessages.ReceiverMessage.segments"), sender, receiver, message);
         Component toSpy = generateComponent(configuration.getConfigurationSection("PrivateMessages.SpyMessage.segments"), sender, receiver, message);

@@ -45,7 +45,7 @@ public class ReplyCMD implements CommandExecutor {
 
         // Make sure they're using the command properly.
         if(args.length < 1) {
-            ChatUtils.chat(player, plugin.settingsManager().getMessage(Message.REPLY_USAGE));
+            ChatUtils.chat(player, plugin.getConfigManager().getMessage(Message.REPLY_USAGE));
             return true;
         }
 
@@ -54,7 +54,7 @@ public class ReplyCMD implements CommandExecutor {
 
         // Make sure there is a target.
         if(target == null) {
-            ChatUtils.chat(player, plugin.settingsManager().getMessage(Message.REPLY_NOT_ONLINE));
+            ChatUtils.chat(player, plugin.getConfigManager().getMessage(Message.REPLY_NOT_ONLINE));
             return true;
         }
 

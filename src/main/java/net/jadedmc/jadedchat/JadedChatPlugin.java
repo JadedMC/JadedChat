@@ -36,7 +36,7 @@ import net.jadedmc.jadedchat.listeners.PlayerJoinListener;
 import net.jadedmc.jadedchat.listeners.PlayerQuitListener;
 import net.jadedmc.jadedchat.listeners.ReloadListener;
 import net.jadedmc.jadedchat.settings.HookManager;
-import net.jadedmc.jadedchat.settings.SettingsManager;
+import net.jadedmc.jadedchat.settings.ConfigManager;
 import net.jadedmc.jadedchat.utils.ChatUtils;
 import net.kyori.adventure.platform.bukkit.BukkitAudiences;
 import org.bstats.bukkit.Metrics;
@@ -57,7 +57,7 @@ import java.io.IOException;
 public class JadedChatPlugin extends JavaPlugin implements PluginMessageListener {
     private BukkitAudiences adventure;
     private EmoteManager emoteManager;
-    private SettingsManager settingsManager;
+    private ConfigManager configManager;
     private ChatChannelManager channelManager;
     private HookManager hookManager;
     private FilterManager filterManager;
@@ -76,7 +76,7 @@ public class JadedChatPlugin extends JavaPlugin implements PluginMessageListener
         }
 
         // Load configuration files first.
-        settingsManager = new SettingsManager(this);
+        configManager = new ConfigManager(this);
 
         // Load other aspects later.
         channelManager = new ChatChannelManager(this);
@@ -213,10 +213,10 @@ public class JadedChatPlugin extends JavaPlugin implements PluginMessageListener
     }
 
     /**
-     * Gets the current settings manager instance.
-     * @return Settings Manager.
+     * Gets the current config manager instance.
+     * @return Config Manager.
      */
-    public SettingsManager settingsManager() {
-        return settingsManager;
+    public ConfigManager getConfigManager() {
+        return configManager;
     }
 }

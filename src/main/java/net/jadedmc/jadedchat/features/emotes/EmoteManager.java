@@ -25,7 +25,7 @@
 package net.jadedmc.jadedchat.features.emotes;
 
 import net.jadedmc.jadedchat.JadedChatPlugin;
-import net.jadedmc.jadedchat.settings.SettingsManager;
+import net.jadedmc.jadedchat.settings.ConfigManager;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.TextReplacementConfig;
 import net.kyori.adventure.text.minimessage.MiniMessage;
@@ -67,7 +67,7 @@ public class EmoteManager {
     public void registerEmotes() {
         emotes.clear();
 
-        SettingsManager settings = plugin.settingsManager();
+        ConfigManager settings = plugin.getConfigManager();
 
         // Set if emotes should be enabled.
         if(!settings.getEmotes().isSet("enabled")) {

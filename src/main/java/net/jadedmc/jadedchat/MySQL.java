@@ -24,14 +24,14 @@ public class MySQL {
      */
     public MySQL(JadedChatPlugin plugin) {
         this.plugin = plugin;
-        host = plugin.settingsManager().getConfig().getString("MySQL.host");
-        database = plugin.settingsManager().getConfig().getString("MySQL.database");
-        username = plugin.settingsManager().getConfig().getString("MySQL.username");
-        password = plugin.settingsManager().getConfig().getString("MySQL.password");
-        port = plugin.settingsManager().getConfig().getInt("MySQL.port");
+        host = plugin.getConfigManager().getConfig().getString("MySQL.host");
+        database = plugin.getConfigManager().getConfig().getString("MySQL.database");
+        username = plugin.getConfigManager().getConfig().getString("MySQL.username");
+        password = plugin.getConfigManager().getConfig().getString("MySQL.password");
+        port = plugin.getConfigManager().getConfig().getInt("MySQL.port");
 
-        if(plugin.settingsManager().getConfig().isSet("MySQL.enabled")) {
-            enabled = plugin.settingsManager().getConfig().getBoolean("MySQL.enabled");
+        if(plugin.getConfigManager().getConfig().isSet("MySQL.enabled")) {
+            enabled = plugin.getConfigManager().getConfig().getBoolean("MySQL.enabled");
         }
         else {
             enabled = false;

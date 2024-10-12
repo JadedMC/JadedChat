@@ -20,13 +20,13 @@ public class SocialSpyCMD implements CommandExecutor {
     public boolean onCommand(@NotNull CommandSender sender, @NotNull Command cmd, @NotNull String label, @NotNull String[] args) {
         // Makes sure the sender is a player, and not the console.
         if(!(sender instanceof Player player)) {
-            ChatUtils.chat(sender, plugin.settingsManager().getMessage(Message.SOCIAL_SPY_NOT_A_PLAYER));
+            ChatUtils.chat(sender, plugin.getConfigManager().getMessage(Message.SOCIAL_SPY_NOT_A_PLAYER));
             return true;
         }
 
         // Makes sure the player has permission to use the command.
         if(!player.hasPermission("jadedchat.socialspy")) {
-            ChatUtils.chat(player, plugin.settingsManager().getMessage(Message.SOCIAL_SPY_NO_PERMISSION));
+            ChatUtils.chat(player, plugin.getConfigManager().getMessage(Message.SOCIAL_SPY_NO_PERMISSION));
             return true;
         }
 
@@ -35,10 +35,10 @@ public class SocialSpyCMD implements CommandExecutor {
 
         // Sends a message to the player telling them what they did.
         if(plugin.messageManager().isSpying(player)) {
-            ChatUtils.chat(player, plugin.settingsManager().getMessage(Message.SOCIAL_SPY_ENABLED));
+            ChatUtils.chat(player, plugin.getConfigManager().getMessage(Message.SOCIAL_SPY_ENABLED));
         }
         else {
-            ChatUtils.chat(player, plugin.settingsManager().getMessage(Message.SOCIAL_SPY_DISABLED));
+            ChatUtils.chat(player, plugin.getConfigManager().getMessage(Message.SOCIAL_SPY_DISABLED));
         }
 
         return true;

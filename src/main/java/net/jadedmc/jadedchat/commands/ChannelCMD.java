@@ -54,13 +54,13 @@ public class ChannelCMD implements CommandExecutor, TabCompleter {
 
         // Make sure they're using the command properly.
         if(args.length < 1) {
-            ChatUtils.chat(player, plugin.settingsManager().getMessage(Message.CHANNEL_USAGE));
+            ChatUtils.chat(player, plugin.getConfigManager().getMessage(Message.CHANNEL_USAGE));
             return true;
         }
 
         // Makes sure the channel exists.
         if(plugin.channelManager().getChannel(args[0]) == null) {
-            ChatUtils.chat(player, plugin.settingsManager().getMessage(Message.CHANNEL_DOES_NOT_EXIST));
+            ChatUtils.chat(player, plugin.getConfigManager().getMessage(Message.CHANNEL_DOES_NOT_EXIST));
             return true;
         }
 
@@ -68,7 +68,7 @@ public class ChannelCMD implements CommandExecutor, TabCompleter {
 
         // Makes sure the player has access to the channel.
         if(!player.hasPermission(channel.permission()) && !channel.permission().equalsIgnoreCase("")) {
-            ChatUtils.chat(player, plugin.settingsManager().getMessage(Message.CHANNEL_NO_PERMISSION));
+            ChatUtils.chat(player, plugin.getConfigManager().getMessage(Message.CHANNEL_NO_PERMISSION));
             return true;
         }
 
@@ -84,7 +84,7 @@ public class ChannelCMD implements CommandExecutor, TabCompleter {
 
             // Toggles the channel being used.
             plugin.channelManager().setChannel(player, event.getToChannel());
-            ChatUtils.chat(player, plugin.settingsManager().getMessage(Message.CHANNEL_SWITCH).replace("<channel>", event.getToChannel().displayName()));
+            ChatUtils.chat(player, plugin.getConfigManager().getMessage(Message.CHANNEL_SWITCH).replace("<channel>", event.getToChannel().displayName()));
         }
         else {
             // Gets the message from the arguments by creating a new array ignoring the username and turning it into a list.

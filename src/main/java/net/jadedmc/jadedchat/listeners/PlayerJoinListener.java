@@ -59,18 +59,18 @@ public class PlayerJoinListener implements Listener {
     public void onJoin(PlayerJoinEvent event) {
 
         // If this is the player's first time playing, displays the first join message if enabled.
-        if(!event.getPlayer().hasPlayedBefore() && plugin.settingsManager().getConfig().isSet("FirstJoinMessage.enabled") && plugin.settingsManager().getConfig().getBoolean("FirstJoinMessage.enabled")) {
-            Component joinMessage = ChatUtils.translateWithPlaceholders(plugin.settingsManager().getConfig().getString("FirstJoinMessage.message"), event.getPlayer());
+        if(!event.getPlayer().hasPlayedBefore() && plugin.getConfigManager().getConfig().isSet("FirstJoinMessage.enabled") && plugin.getConfigManager().getConfig().getBoolean("FirstJoinMessage.enabled")) {
+            Component joinMessage = ChatUtils.translateWithPlaceholders(plugin.getConfigManager().getConfig().getString("FirstJoinMessage.message"), event.getPlayer());
             Bukkit.spigot().broadcast(ChatUtils.translateToBaseComponent(joinMessage));
         }
 
         // We only want to modify the join message if the plugin is configured to.
-        if(!plugin.settingsManager().getConfig().getBoolean("JoinMessage.override")) {
+        if(!plugin.getConfigManager().getConfig().getBoolean("JoinMessage.override")) {
             return;
         }
 
         // Makes sure there is no join message if that is what the plugin is configured for.
-        if(!plugin.settingsManager().getConfig().isSet("JoinMessage.message")) {
+        if(!plugin.getConfigManager().getConfig().isSet("JoinMessage.message")) {
             event.setJoinMessage(null);
             return;
         }
@@ -81,7 +81,7 @@ public class PlayerJoinListener implements Listener {
         }
 
         // Grabs the configured join message.
-        String messageString = plugin.settingsManager().getConfig().getString("JoinMessage.message");
+        String messageString = plugin.getConfigManager().getConfig().getString("JoinMessage.message");
 
         // Another check to make sure there is no join message if that is what is set up.
         if(messageString == null || messageString.equals("null")) {

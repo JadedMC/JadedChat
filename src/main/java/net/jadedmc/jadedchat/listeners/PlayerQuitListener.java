@@ -62,12 +62,12 @@ public class PlayerQuitListener implements Listener {
         plugin.filterManager().removePlayer(event.getPlayer());
 
         // We only want to modify the quit message if the plugin is configured to.
-        if(!plugin.settingsManager().getConfig().getBoolean("QuitMessage.override")) {
+        if(!plugin.getConfigManager().getConfig().getBoolean("QuitMessage.override")) {
             return;
         }
 
         // Makes sure there is no quit message if that is what the plugin is configured for.
-        if(!plugin.settingsManager().getConfig().isSet("QuitMessage.message")) {
+        if(!plugin.getConfigManager().getConfig().isSet("QuitMessage.message")) {
             event.setQuitMessage(null);
             return;
         }
@@ -78,7 +78,7 @@ public class PlayerQuitListener implements Listener {
         }
 
         // Grabs the configured quit message.
-        String messageString = plugin.settingsManager().getConfig().getString("QuitMessage.message");
+        String messageString = plugin.getConfigManager().getConfig().getString("QuitMessage.message");
 
         // Another check to make sure there is no quit message if that is what is set up.
         if(messageString == null || messageString.equals("null")) {

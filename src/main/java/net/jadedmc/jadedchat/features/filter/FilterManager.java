@@ -90,7 +90,7 @@ public class FilterManager {
             }
 
             // Sends staff the filtered message.
-            Component staffMessage = MiniMessage.miniMessage().deserialize(Objects.requireNonNull(plugin.settingsManager().getFilter().getString("FilteredPrefix"))).append(playerMessage);
+            Component staffMessage = MiniMessage.miniMessage().deserialize(Objects.requireNonNull(plugin.getConfigManager().getFilter().getString("FilteredPrefix"))).append(playerMessage);
             for(Player viewer : Bukkit.getOnlinePlayers()) {
                 if(viewer.hasPermission("jadedchat.filter.view")) {
                     ChatUtils.chat(viewer, staffMessage);
