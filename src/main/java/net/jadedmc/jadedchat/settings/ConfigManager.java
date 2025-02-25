@@ -119,7 +119,7 @@ public class ConfigManager {
     /**
      * Update the configuration files.
      */
-    public void reload() {
+    public void reloadConfig() {
         config = YamlConfiguration.loadConfiguration(configFile);
         emotes = YamlConfiguration.loadConfiguration(emotesFile);
         filter = YamlConfiguration.loadConfiguration(filterFile);

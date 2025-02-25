@@ -51,7 +51,7 @@ public class ReloadListener implements Listener {
      */
     @EventHandler
     public void onReload(@NotNull final ReloadEvent event) {
-        plugin.getConfigManager().reload();
+        plugin.getConfigManager().reloadConfig();
         plugin.channelManager().loadChannels();
         plugin.emoteManager().registerEmotes();
     }

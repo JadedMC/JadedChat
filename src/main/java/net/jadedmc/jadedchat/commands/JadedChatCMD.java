@@ -87,7 +87,7 @@ public class JadedChatCMD implements CommandExecutor, TabCompleter {
         switch (subCommand) {
             // Reloads all plugin configuration files.
             case "reload" -> {
-                plugin.getConfigManager().reload();
+                plugin.getConfigManager().reloadConfig();
                 plugin.channelManager().loadChannels();
                 plugin.emoteManager().registerEmotes();
                 ChatUtils.chat(sender, "<green><bold>JadedChat</bold> <dark_gray>» <green>Configuration files reloaded successfully!");
