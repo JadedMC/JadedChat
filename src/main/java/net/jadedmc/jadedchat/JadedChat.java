@@ -85,23 +85,6 @@ public class JadedChat {
         return plugin.channelManager().getLoadedChannels();
     }
 
-
-    /**
-     * Check if the server is using paper.
-     * @return Whether the server is using paper.
-     */
-    public static boolean isPaper() {
-
-        try {
-            Class.forName("com.destroystokyo.paper.ParticleBuilder");
-        }
-        catch (ClassNotFoundException ignored) {
-            return false;
-        }
-
-        return true;
-    }
-
     /**
      * Registers a channel with JadedChat.
      * @param channel Channel to register.

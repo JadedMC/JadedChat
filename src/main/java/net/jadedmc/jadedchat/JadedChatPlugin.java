@@ -71,10 +71,6 @@ public class JadedChatPlugin extends JavaPlugin implements PluginMessageListener
         new ChatUtils(this);
         JadedChat.setPlugin(this);
 
-        if(JadedChat.isPaper()) {
-            Bukkit.getLogger().info("Paper Detected. Enabling Paper-Only Features.");
-        }
-
         // Load configuration files first.
         configManager = new ConfigManager(this);
 
