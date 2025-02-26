@@ -55,7 +55,6 @@ import java.io.IOException;
  * It links all parts together and registers them with the server.
  */
 public class JadedChatPlugin extends JavaPlugin implements PluginMessageListener {
-    private BukkitAudiences adventure;
     private EmoteManager emoteManager;
     private ConfigManager configManager;
     private ChatChannelManager channelManager;
@@ -66,9 +65,7 @@ public class JadedChatPlugin extends JavaPlugin implements PluginMessageListener
 
     @Override
     public void onEnable() {
-        // Initialize an audiences instance for the plugin
-        this.adventure = BukkitAudiences.create(this);
-        new ChatUtils(this);
+        ChatUtils.initialize(this);
         JadedChat.setPlugin(this);
 
         // Load configuration files first.
@@ -106,6 +103,11 @@ public class JadedChatPlugin extends JavaPlugin implements PluginMessageListener
 
         // Enables bStats statistics tracking.
         new Metrics(this, 17832);
+    }
+
+    @Override
+    public void onDisable() {
+        ChatUtils.disable();
     }
 
     @Override
@@ -151,13 +153,6 @@ public class JadedChatPlugin extends JavaPlugin implements PluginMessageListener
         catch (IOException exception) {
             exception.printStackTrace();
         }
-    }
-
-    public BukkitAudiences adventure() {
-        if(this.adventure == null) {
-            throw new IllegalStateException("Tried to access Adventure when the plugin was disabled!");
-        }
-        return this.adventure;
     }
 
     /**
