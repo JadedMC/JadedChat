@@ -125,11 +125,14 @@ public class JadedChatCMD implements CommandExecutor, TabCompleter {
 
             // Displays the help menu.
             default -> {
-                ChatUtils.chat(sender, "<green><bold>JadedChat Commands");
-                ChatUtils.chat(sender, "<green>/jc channels <dark_gray>» <white>Lists all loaded channels.");
-                ChatUtils.chat(sender, "<green>/jc reload <dark_gray>» <white>Reloads all configuration files.");
-                ChatUtils.chat(sender, "<green>/jc test <dark_gray>» <white>Send a message using a specific channel and format.");
-                ChatUtils.chat(sender, "<green>/jc version <dark_gray>» <white>Displays the plugin version.");
+                ChatUtils.chat(sender, "");
+                ChatUtils.chat(sender, "<center><dark_gray><st>        </st> <green><bold>JadedChat <dark_gray><st>        </st> ");
+                ChatUtils.chat(sender, "");
+                ChatUtils.chat(sender, "  <dark_gray>» <green>/jc channels <dark_gray>- <white>Lists all loaded channels.");
+                ChatUtils.chat(sender, "  <dark_gray>» <green>/jc reload <dark_gray>- <white>Reloads all configuration files.");
+                ChatUtils.chat(sender, "  <dark_gray>» <green>/jc test <dark_gray>- <white>Send a message with a given channel & format.");
+                ChatUtils.chat(sender, "  <dark_gray>» <green>/jc version <dark_gray>- <white>Displays the plugin version.");
+                ChatUtils.chat(sender, "");
             }
         }
 
