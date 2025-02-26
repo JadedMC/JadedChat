@@ -97,7 +97,7 @@ public class JadedChatCMD implements CommandExecutor, TabCompleter {
             case "list", "channels" -> {
                 ChatUtils.chat(sender, "<green><bold>JadedChat</bold> <dark_gray>» <green>Currently Loaded Channels:");
                 for (ChatChannel channel : plugin.channelManager().getLoadedChannels()) {
-                    ChatUtils.chat(sender, "  <dark_gray>➤ <gray><hover:show_text:\"<green>Click to switch channels</green>\"><click:suggest_command:/channel " + channel.name() + ">" + channel.displayName() + "</click></hover>");
+                    ChatUtils.chat(sender, "  <dark_gray>➤ <gray><hover:show_text:\"<green>Click to switch channels</green>\"><click:run_command:/channel " + channel.name() + ">" + channel.displayName() + "</click></hover>");
                 }
             }
 
