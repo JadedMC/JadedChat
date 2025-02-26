@@ -86,6 +86,14 @@ public class JadedChat {
     }
 
     /**
+     * Gets the configured server name.
+     * @return Configured server name.
+     */
+    public String getServer() {
+        return plugin.getConfigManager().getConfig().getString("server");
+    }
+
+    /**
      * Registers a channel with JadedChat.
      * @param channel Channel to register.
      */
