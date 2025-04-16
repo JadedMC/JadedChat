@@ -24,7 +24,13 @@
  */
 package net.jadedmc.jadedchat.settings;
 
+import net.jadedmc.jadedchat.JadedChat;
 import net.jadedmc.jadedchat.JadedChatPlugin;
+import net.jadedmc.jadedchat.features.channels.channel.ChatChannel;
+import net.jadedmc.jadedsync.api.JadedSyncAPI;
+import net.jadedmc.jadedsync.api.integration.Integration;
+import net.jadedmc.jadedsync.libraries.bson.Document;
+import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 
 /**
@@ -35,6 +41,7 @@ public class HookManager {
     private final boolean hasBetterReload;
     private final boolean hasDiscordSRV;
     private final boolean hasLuckPerms;
+    private final boolean hasJadedSync;
 
     /**
      * Creates the HookManager.
@@ -48,6 +55,12 @@ public class HookManager {
 
         this.hasBetterReload = plugin.getServer().getPluginManager().isPluginEnabled("BetterReload");
         if(this.hasBetterReload) plugin.getLogger().info("BetterReload detected. Enabling hook...");
+
+        this.hasJadedSync = plugin.getServer().getPluginManager().isPluginEnabled("JadedSync");
+        if(hasJadedSync) {
+            plugin.getLogger().info("JadedSync detected. Enabling hook...");
+            JadedSyncAPI.registerIntegration(new JadedSyncIntegration());
+        }
     }
 
     /**
@@ -94,5 +107,38 @@ public class HookManager {
 
         // Otherwise return what the setting is set to.
         return plugin.getConfigManager().getConfig().getBoolean("Hooks.LuckPerms");
+    }
+
+    public boolean useJadedSync() {
+        return hasJadedSync;
+    }
+
+    private static class JadedSyncIntegration extends Integration {
+        public JadedSyncIntegration() {
+            super("jadedchat");
+        }
+
+
+        @Override
+        public Document getPlayerDocument(@NotNull Player player) {
+            final Document document = new Document();
+            document.append("channel", JadedChat.getChannel(player).name());
+            return document;
+        }
+
+        @Override
+        public boolean onPlayerJoin(@NotNull final Player player, @NotNull final Document document) {
+            final String channelID = document.getString("channel");
+            final ChatChannel channel = JadedChat.getChannel(channelID);
+
+            if(channel == null) {
+                JadedChat.setChannel(player, JadedChat.getDefaultChannel());
+                return true;
+            }
+
+            JadedChat.setChannel(player, channel);
+
+            return false;
+        }
     }
 }

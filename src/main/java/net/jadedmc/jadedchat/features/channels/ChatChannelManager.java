@@ -27,6 +27,7 @@ package net.jadedmc.jadedchat.features.channels;
 import net.jadedmc.jadedchat.JadedChatPlugin;
 import net.jadedmc.jadedchat.features.channels.channel.ChatChannel;
 import net.jadedmc.jadedchat.features.channels.channel.ChatChannelBuilder;
+import net.jadedmc.jadedsync.api.JadedSyncAPI;
 import org.bukkit.entity.Player;
 
 import java.io.File;
@@ -171,5 +172,9 @@ public class ChatChannelManager {
      */
     public void setChannel(Player player, ChatChannel channel) {
         playerChannels.put(player.getUniqueId(), channel.name());
+
+        if(plugin.hookManager().useJadedSync()) {
+            JadedSyncAPI.updatePlayer(player);
+        }
     }
 }
