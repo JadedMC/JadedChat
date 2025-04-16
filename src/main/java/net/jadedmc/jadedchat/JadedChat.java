@@ -89,7 +89,7 @@ public class JadedChat {
      * Gets the configured server name.
      * @return Configured server name.
      */
-    public String getServer() {
+    public static String getServer() {
         return plugin.getConfigManager().getConfig().getString("server");
     }
 
