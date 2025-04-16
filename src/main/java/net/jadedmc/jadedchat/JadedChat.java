@@ -94,6 +94,14 @@ public class JadedChat {
     }
 
     /**
+     * Get if MySQL support is enabled.
+     * @return true if MySQL is enabled, false if it is not.
+     */
+    public static boolean isMySQLEnabled() {
+        return plugin.getMySQL().isEnabled();
+    }
+
+    /**
      * Registers a channel with JadedChat.
      * @param channel Channel to register.
      */
