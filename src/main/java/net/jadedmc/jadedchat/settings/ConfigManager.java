@@ -27,6 +27,7 @@ package net.jadedmc.jadedchat.settings;
 import net.jadedmc.jadedchat.JadedChatPlugin;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
+import org.jetbrains.annotations.NotNull;
 
 import java.io.File;
 
@@ -47,18 +48,14 @@ public class ConfigManager {
      * Loads or Creates configuration files.
      * @param plugin Instance of the plugin.
      */
-    public ConfigManager(JadedChatPlugin plugin) {
+    public ConfigManager(@NotNull final JadedChatPlugin plugin) {
         configFile = new File(plugin.getDataFolder(), "config.yml");
         if(!configFile.exists()) {
             plugin.saveResource("config.yml", false);
-        }
-        config = YamlConfiguration.loadConfiguration(configFile);
-
-        File globalChannel = new File(plugin.getDataFolder(), "/channels/global.yml");
-        if(!globalChannel.exists()) {
             plugin.saveResource("channels/global.yml", false);
             plugin.saveResource("channels/staff.yml", false);
         }
+        config = YamlConfiguration.loadConfiguration(configFile);
 
         emotesFile = new File(plugin.getDataFolder(), "emotes.yml");
         if(!emotesFile.exists()) {
@@ -108,7 +105,7 @@ public class ConfigManager {
      * @param message Message num to get message of.
      * @return Resulting configured message.
      */
-    public String getMessage(Message message) {
+    public String getMessage(final Message message) {
         if(messages.isSet(message.getMessagePath())) {
             return messages.getString(message.getMessagePath());
         }
