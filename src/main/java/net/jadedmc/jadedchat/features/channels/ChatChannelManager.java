@@ -24,6 +24,7 @@
  */
 package net.jadedmc.jadedchat.features.channels;
 
+import net.jadedmc.jadedchat.JadedChat;
 import net.jadedmc.jadedchat.JadedChatPlugin;
 import net.jadedmc.jadedchat.features.channels.channel.ChatChannel;
 import net.jadedmc.jadedchat.features.channels.channel.ChatChannelBuilder;
@@ -92,7 +93,7 @@ public class ChatChannelManager {
         plugin.getServer().getScheduler().runTaskAsynchronously(plugin, () -> {
             try {
                 PreparedStatement statement = plugin.getMySQL().getConnection().prepareStatement("INSERT INTO chat_logs (server,channel,uuid,username,message) VALUES (?,?,?,?,?)");
-                statement.setString(1, plugin.getConfigManager().getConfig().getString("server"));
+                statement.setString(1, JadedChat.getServer());
                 statement.setString(2, channel.name());
                 statement.setString(3, player.getUniqueId().toString());
                 statement.setString(4, player.getName());
@@ -170,11 +171,11 @@ public class ChatChannelManager {
      * @param player Player to change the channel of.
      * @param channel Channel to change them to.
      */
-    public void setChannel(Player player, ChatChannel channel) {
+    public void setChannel(Player player, ChatChannel channel, boolean silent) {
         playerChannels.put(player.getUniqueId(), channel.name());
 
-        if(plugin.hookManager().useJadedSync()) {
-            JadedSyncAPI.updatePlayer(player);
+        if(plugin.hookManager().useJadedSync() && !silent) {
+            JadedSyncAPI.getPlayer(player.getUniqueId()).updateIntegrations();
         }
     }
 }
